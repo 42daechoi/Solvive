@@ -1,68 +1,126 @@
+using System;
 using Photon.Pun;
 using UnityEngine;
-using Cinemachine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
     private PhotonView photonView;
+    
+    [Header("Character Input Values")]
+    public Vector2 move;
+    public Vector2 look;
+    public bool jump;
+    public bool sprint;
 
-    [SerializeField]
-    private float speed = 4.0f;
+    [Header("Movement Settings")]
+    public bool analogMovement;
 
-    [SerializeField]
-    private CinemachineVirtualCamera virtualCamera;
+    [Header("Mouse Cursor Settings")]
+    public bool cursorLocked = true;
+    public bool cursorInputForLook = true;
 
+    [SerializeField] private float speed = 4.0f;
+    [SerializeField] private float rotationSpeed = 10.0f;
+    
     private Vector3 _moveDirection;
     private Quaternion _targetRotation;
+    
+#if ENABLE_INPUT_SYSTEM
+    public void OnMove(InputValue value)
+    {
+        MoveInput(value.Get<Vector2>());
+    }
 
+    public void OnLook(InputValue value)
+    {
+        if(cursorInputForLook)
+        {
+            LookInput(value.Get<Vector2>());
+        }
+    }
+
+    public void OnJump(InputValue value)
+    {
+        JumpInput(value.isPressed);
+    }
+
+    public void OnSprint(InputValue value)
+    {
+        SprintInput(value.isPressed);
+    }
+#endif
     private void Start()
     {
         photonView = GetComponent<PhotonView>();
 
-        if (photonView.IsMine)
+        if (!photonView.IsMine)
         {
-            virtualCamera.Follow = transform;
-            virtualCamera.LookAt = transform;
-            virtualCamera.gameObject.SetActive(true);
-            
-            EventManager.Instance.PlayerMove += OnPlayerMove;
-        }
-        else
-        {
-            virtualCamera.gameObject.SetActive(false);
+            enabled = false;
         }
     }
 
-    private void OnDestroy()
+    private void Update()
     {
         if (photonView.IsMine)
         {
-            EventManager.Instance.PlayerMove -= OnPlayerMove;
-        }
-    }
-
-    private void OnPlayerMove(Vector3 moveDirection)
-    {
-        _moveDirection = moveDirection;
-        
-        if (moveDirection != Vector3.zero)
-        {
-            _targetRotation = Quaternion.LookRotation(moveDirection);
-            MoveAndRotatePlayer();
+            HandleMovement();
+            HandleRotation();
         }
     }
     
-    private void MoveAndRotatePlayer()
+    private void HandleMovement()
     {
-        Vector3 newPosition = transform.position + _moveDirection * speed * Time.deltaTime;
-        Quaternion newRotation = Quaternion.Slerp(transform.rotation, _targetRotation, 0.2f);
+        // PlayerInput으로 받은 이동 입력을 이용해 이동 방향 계산
+        _moveDirection = new Vector3(move.x, 0, move.y).normalized;
 
-        // 자신의 움직임이 발생했을 때만 RPC 호출
-        if (newPosition != transform.position || newRotation != transform.rotation)
+        if (_moveDirection != Vector3.zero)
         {
-            // RPC 호출
-            photonView.RPC("Move", RpcTarget.All, newPosition, newRotation);
+            _targetRotation = Quaternion.LookRotation(_moveDirection);
+
+            // 캐릭터 이동 처리
+            transform.Translate(_moveDirection * speed * Time.deltaTime, Space.World);
+
+            // 이동한 위치 및 회전 각도를 다른 클라이언트에 동기화
+            photonView.RPC("Move", RpcTarget.All, transform.position, transform.rotation);
         }
+    }
+    
+    private void HandleRotation()
+    {
+        // Look 입력을 통해 캐릭터 좌우 회전 처리
+        float mouseX = look.x * rotationSpeed * Time.deltaTime;
+        transform.Rotate(Vector3.up * mouseX);
+    }
+
+    public void MoveInput(Vector2 newMoveDirection)
+    {
+        move = newMoveDirection;
+    } 
+
+    public void LookInput(Vector2 newLookDirection)
+    {
+        look = newLookDirection;
+    }
+
+    public void JumpInput(bool newJumpState)
+    {
+        jump = newJumpState;
+    }
+
+    public void SprintInput(bool newSprintState)
+    {
+        sprint = newSprintState;
+    }
+
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        SetCursorState(cursorLocked);
+    }
+
+    private void SetCursorState(bool newState)
+    {
+        Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
     }
 
     [PunRPC]

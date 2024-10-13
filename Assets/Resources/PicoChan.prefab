@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 369107144811762995}
   - component: {fileID: 7919215339226829850}
   - component: {fileID: 6140549303847248726}
-  - component: {fileID: 1552522602091982331}
+  - component: {fileID: 4453538186431351507}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -73,7 +73,7 @@ MonoBehaviour:
   m_BiasX: 0
   m_BiasY: 0
   m_CenterOnActivate: 1
---- !u!114 &1552522602091982331
+--- !u!114 &4453538186431351507
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -82,19 +82,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 116763626818538686}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa7155796051b734daa718462081dc5f, type: 3}
+  m_Script: {fileID: 11500000, guid: bd6043bde05a7fc4cba197d06915c1e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 2, z: -15}
-  m_XDamping: 1
-  m_YDamping: 1
-  m_ZDamping: 1
-  m_AngularDampingMode: 0
-  m_PitchDamping: 0
-  m_YawDamping: 0
-  m_RollDamping: 0
-  m_AngularDamping: 0
+  Damping: {x: 0.1, y: 0.5, z: 0.3}
+  ShoulderOffset: {x: 0.5, y: -0.4, z: 0}
+  VerticalArmLength: 0.4
+  CameraSide: 1
+  CameraDistance: 2
+  CameraCollisionFilter:
+    serializedVersion: 2
+    m_Bits: 0
+  IgnoreTag: 
+  CameraRadius: 0.2
+  DampingIntoCollision: 0
+  DampingFromCollision: 2
 --- !u!1 &2350652681907635850
 GameObject:
   m_ObjectHideFlags: 0
@@ -104,7 +106,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1327674205686831306}
-  - component: {fileID: 8365983152804166557}
   - component: {fileID: 1540881665616369963}
   m_Layer: 0
   m_Name: PicoChan
@@ -130,20 +131,6 @@ Transform:
   - {fileID: 4698523249803487084}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8365983152804166557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2350652681907635850}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9d75036666ef094aa5ce79cbe1c527b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 4
-  virtualCamera: {fileID: 7295938873146698239}
 --- !u!114 &1540881665616369963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,7 +204,7 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 10
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 4134766712689147234}
+  m_LookAt: {fileID: 4571053270737100285}
   m_Follow: {fileID: 1327674205686831306}
   m_Lens:
     FieldOfView: 10
@@ -304,8 +291,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 10038fdbf93c4dd43af9ce774d03a956, type: 3}
   m_PrefabInstance: {fileID: 3101518885914528314}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &4134766712689147234 stripped
+--- !u!4 &4571053270737100285 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1327271705821575000, guid: 10038fdbf93c4dd43af9ce774d03a956, type: 3}
+  m_CorrespondingSourceObject: {fileID: 1469697700956329927, guid: 10038fdbf93c4dd43af9ce774d03a956, type: 3}
   m_PrefabInstance: {fileID: 3101518885914528314}
   m_PrefabAsset: {fileID: 0}
