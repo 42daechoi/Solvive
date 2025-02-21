@@ -8,16 +8,17 @@ public class PlayerController : MonoBehaviourPun
     private IState IdleState { get; set; }
     private IState JumpState { get; set; }
     private IState UseComputerState { get; set; }
+    public float VerticalVelocity { get; set; }
+    
     private IState _previousState;
     private IState _currentState;
 
     private PlayerMovement _playerMovement;
     private PlayerAnimator _playerAnimator;
-    
+    private CharacterController _controller;
     [Header("Speed Settings")]
     [SerializeField] private MovementSettings _speedSettings;
     
-    private Rigidbody _rigidbody;
     private PhotonView _photonView;
     private Interaction _interaction;
     
@@ -29,8 +30,8 @@ public class PlayerController : MonoBehaviourPun
     private InputManager_Computer _computerInputManager;
     
     
-    public Rigidbody Rigidbody => _rigidbody;
     public MovementSettings SpeedSettings => _speedSettings;
+    public CharacterController Controller => _controller;
 
     private void Awake()
     {
@@ -51,7 +52,7 @@ public class PlayerController : MonoBehaviourPun
     
     private void Start()
     {
-        _rigidbody = GetComponent<Rigidbody>();
+        _controller = GetComponent<CharacterController>();
         _photonView = GetComponent<PhotonView>();
         _interaction = GetComponent<Interaction>();
         _playerAnimator = GetComponent<PlayerAnimator>();
@@ -130,6 +131,11 @@ public class PlayerController : MonoBehaviourPun
         }
     }
     
+    public bool WasInSprintState()
+    {
+        return _previousState is SprintState;
+    }
+    
     private void HandleInteraction()
     {
         if (_currentState.CanInteraction())
@@ -188,7 +194,6 @@ public class PlayerController : MonoBehaviourPun
     {
         StopAllCoroutines();
         StartCoroutine(WalkToComputer(_computerInteractionPoint, _computerInteractionRotation));
-        // transform.position = _computerInteractionPoint; 즉시텔레포트
     }
     
     private IEnumerator WalkToComputer(Vector3 targetPosition, Quaternion targetRotation)
@@ -196,10 +201,10 @@ public class PlayerController : MonoBehaviourPun
         float distanceThreshold = 0.1f;
         float moveSpeed = _speedSettings.walkSpeed;
         float rotationSpeed = 1f;
-        
+   
         Vector3 startPosition = transform.position;
         Vector3 direction = (targetPosition - startPosition).normalized;
-        
+   
         if (_playerAnimator != null)
         {
             _playerAnimator.SetMoveAnim(direction.x, direction.z, 1f);
@@ -208,15 +213,18 @@ public class PlayerController : MonoBehaviourPun
         while (Vector3.Distance(transform.position, targetPosition) > distanceThreshold)
         {
             Vector3 newPosition = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-            _rigidbody.MovePosition(newPosition);
+            Vector3 movement = newPosition - transform.position;
+       
+            // CharacterController를 사용하여 이동
+            _controller.Move(movement);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
             yield return null;
         }
-        
+   
         transform.position = targetPosition;
         transform.rotation = targetRotation;
-        
+   
         if (_playerAnimator != null)
         {
             _playerAnimator.SetMoveAnim(0, 0, 1f);
@@ -254,11 +262,27 @@ public class PlayerController : MonoBehaviourPun
     
     public bool IsGrounded()
     {
-        return Physics.Raycast(transform.position, Vector3.down, 0.1f);
+        return _controller.isGrounded;
+    }
+    
+    public void ApplyGravity()
+    {
+        if (IsGrounded())
+        {
+            VerticalVelocity = _speedSettings.groundedGravity;
+        }
+        else
+        {
+            VerticalVelocity += _speedSettings.gravity * Time.fixedDeltaTime;
+        }
     }
 
     public IState GetCurrentState()
     {
         return _currentState;
+    }
+    public IState GetPreviousState()
+    {
+        return _previousState;
     }
 }

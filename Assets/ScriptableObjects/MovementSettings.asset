@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 2
   sprintSpeed: 4
-  maxVelocityChange: 5
-  jumpForce: 250
+  jumpForce: 4
+  gravity: -9.81
+  groundedGravity: -1
