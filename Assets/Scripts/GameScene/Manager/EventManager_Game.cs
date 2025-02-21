@@ -128,6 +128,7 @@ public class EventManager_Game : MonoBehaviour
 
     public void InvokeTypeNumberAtComputer(char keyCode)
     {
+        Debug.Log("EventManager_Game : 컴퓨터 숫자 입력 이벤트 발생");
         OnTypeNumberAtComputer?.Invoke(keyCode);
     }
 

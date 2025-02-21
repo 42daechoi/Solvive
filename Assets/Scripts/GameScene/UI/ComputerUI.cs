@@ -1,11 +1,11 @@
+using Photon.Pun;
 using UnityEngine;
 using TMPro;
 using System.Collections;
 
-public class ComputerUI : MonoBehaviour
+public class ComputerUI : MonoBehaviourPun
 {
-	[SerializeField] private TextMeshProUGUI tmp;
-
+    [SerializeField] private TextMeshProUGUI tmp;
     private IEnumerator WaitForEventManager()
     {
         while (EventManager_Game.Instance == null)
@@ -20,6 +20,7 @@ public class ComputerUI : MonoBehaviour
     {
         StartCoroutine(WaitForEventManager());
     }
+
     private void OnDisable()
     {
         EventManager_Game.Instance.OnTypeBackspaceAtComputer -= HandleTypeBackspace;
@@ -27,30 +28,36 @@ public class ComputerUI : MonoBehaviour
     }
 
     public void HandleTypeNumber(char keyCode)
-	{
-		if (tmp.text.Length < 6)
-		{
+    {
+        if (tmp.text.Length < 6)
+        {
             tmp.text += keyCode;
         }
-		if (tmp.text.Length == 6)
-		{
-			CompareWithValidPassword(tmp.text);
+        photonView.RPC("UpdateText", RpcTarget.All, tmp.text);
+        if (tmp.text.Length == 6)
+        {
+            ComparePassword(tmp.text);
+        }
+    }
+
+    private void ComparePassword(string password)
+    {
+        password = "";
+    }
+
+    [PunRPC]
+    public void UpdateText(string newText)
+    {
+        tmp.text = newText;
+    }
+
+    public void HandleTypeBackspace()
+    {
+        if (tmp.text.Length > 0)
+        {
+            tmp.text = tmp.text.Substring(0, tmp.text.Length - 1);
         }
 
-	}
-
-	private void CompareWithValidPassword(string typedPassword)
-	{
-		tmp.text = "";
-	}
-
-	public void HandleTypeBackspace()
-	{
-		if (tmp.text.Length > 0)
-		{
-			tmp.text = tmp.text.Substring(0, tmp.text.Length - 1);
-		}
-	}
-
-
+        photonView.RPC("UpdateText", RpcTarget.All, tmp.text);
+    }
 }
