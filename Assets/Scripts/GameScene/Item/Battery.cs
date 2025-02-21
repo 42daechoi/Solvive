@@ -21,6 +21,7 @@ public class Battery : Item
                 Generator generator = raycastHit.Value.collider.GetComponent<Generator>();
                 if (generator != null)
                 {
+                    Debug.Log("Battery : 발전기 레이 히트 성공");
                     HeldItem heldItem = shooterTransform.gameObject.GetComponent<HeldItem>();
                     generator.TryInstallBattery(heldItem);
                 }

@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
-public class InventoryUI : MonoBehaviour
+public class InventoryUI : MonoBehaviourPun
 {
     public static InventoryUI Instance { get; private set; }
 

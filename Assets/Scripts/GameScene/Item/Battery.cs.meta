@@ -3,7 +3,9 @@ guid: 40b20c4737da6d640ac5c94dbc149282
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - icon: {instanceID: 0}
+  - rayModule: {fileID: 11400000, guid: 415e93ab7a3fb6c439873c8febaef11f, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

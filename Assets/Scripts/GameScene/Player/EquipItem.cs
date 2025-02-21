@@ -8,7 +8,7 @@ public class EquipItem : MonoBehaviourPunCallbacks
 
     public GameObject Equip(Item item)
     {
-        if (!photonView.IsMine || item == null)
+        if (item == null)
         {
             return null;
         }
@@ -52,7 +52,6 @@ public class EquipItem : MonoBehaviourPunCallbacks
 
     public void UnEquip(Item item, GameObject itemObject, bool isReturnPool, bool needCollider)
     {
-        if (!photonView.IsMine) return;
         if (itemObject)
         {
             if (isReturnPool)

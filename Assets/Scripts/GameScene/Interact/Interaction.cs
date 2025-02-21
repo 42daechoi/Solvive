@@ -10,6 +10,7 @@ public class Interaction : MonoBehaviourPun
     private void TryInteraction()
     {
         // 화면 중심에서 발사되는 레이 생성
+        if (!photonView.IsMine) return;
         Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
         RaycastHit hit;
 

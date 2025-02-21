@@ -1,6 +1,8 @@
+using System;
 using GameScene.Item;
 using Photon.Pun;
 using UnityEngine;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 public class HeldItem : MonoBehaviourPunCallbacks
 {
@@ -36,7 +38,7 @@ public class HeldItem : MonoBehaviourPunCallbacks
         {
             Debug.Log("HeldItem : EquipItem을 가져오지 못함.");
         }
-        InitItemInfo();
+        photonView.RPC("InitItemInfo", RpcTarget.All, photonView.ViewID);
     }
 
     private void SelectItem(int keyCode)
@@ -47,7 +49,7 @@ public class HeldItem : MonoBehaviourPunCallbacks
             if (keyCode == 1)
             {
                 equipItem.UnEquip(item, itemObject, true, true);
-                InitItemInfo();
+                photonView.RPC("InitItemInfo", RpcTarget.All, photonView.ViewID);
             }
             else
             {
@@ -58,6 +60,8 @@ public class HeldItem : MonoBehaviourPunCallbacks
                 slotIndex = keyCode - 2;
                 item = inventory.GetItem(slotIndex);
                 itemObject = equipItem.Equip(item);
+                int itemViewID = itemObject.GetPhotonView().ViewID;
+                photonView.RPC("SyncItemInfo", RpcTarget.Others, photonView.ViewID, itemViewID, keyCode);
                 
                 // '총'인지 판별
                 if (itemObject != null)
@@ -78,13 +82,54 @@ public class HeldItem : MonoBehaviourPunCallbacks
         }
     }
 
-    private void InitItemInfo()
+    [PunRPC]
+    private void SyncItemInfo(int playerViewID, int itemViewID, int keyCode)
     {
-        item = null;
-        itemObject = null;
-        slotIndex = -10;
-        
-        HeldGun = null;
+        try
+        {
+            PhotonView playerPV = PhotonView.Find(playerViewID);
+            GameObject playerObj = playerPV.gameObject;
+
+            if (playerPV.TryGetComponent(out HeldItem heldItem))
+            {
+                if (playerPV.TryGetComponent(out Inventory inventory))
+                {
+                    heldItem.slotIndex = keyCode - 2;
+                    heldItem.item = inventory.GetItem(slotIndex);
+                    heldItem.itemObject = PhotonNetwork.GetPhotonView(itemViewID).gameObject;
+                }
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            Debug.LogError($"HeldItem : {e.Message}");
+        }
+
+    }
+
+    [PunRPC]
+    private void InitItemInfo(int playerViewID)
+    {
+        try
+        {
+            PhotonView playerPV = PhotonView.Find(playerViewID);
+            GameObject playerObj = playerPV.gameObject;
+
+            if (playerPV.TryGetComponent(out HeldItem heldItem))
+            {
+                heldItem.item = null;
+                heldItem.itemObject = null;
+                heldItem.slotIndex = -10;
+                heldItem.HeldGun = null;
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            Debug.LogError($"HeldItem : {e.Message}");
+        }
+
+
+
     }
 
     public void ReplaceItem(Vector3 replacePosition, bool needCollider)
@@ -97,24 +142,30 @@ public class HeldItem : MonoBehaviourPunCallbacks
             int viewID = itemObject.GetPhotonView().ViewID;
             photonView.RPC("SyncReplaceItem", RpcTarget.All, replacePosition, viewID);
             EventManager_Game.Instance.InvokeRemoveItem(slotIndex);
-            InitItemInfo();
+            photonView.RPC("InitItemInfo", RpcTarget.All, photonView.ViewID);
         }
     }
 
     [PunRPC]
     private void SyncReplaceItem(Vector3 replacePosition, int itemViewID)
     {
-        PhotonView itemPhotonView = PhotonView.Find(itemViewID);
-        if (itemPhotonView == null) return;
+        try
+        {
+            PhotonView itemPhotonView = PhotonView.Find(itemViewID);
+            GameObject itemObj = itemPhotonView.gameObject;
 
-        GameObject itemObj = itemPhotonView.gameObject;
-        if (itemObj == null) return;
+            itemObj.transform.position = replacePosition;
+        }
+        catch (NullReferenceException e)
+        {
+            Debug.LogError($"HeldItem : {e.Message}");
+        }
 
-        itemObj.transform.position = replacePosition;
     }
 
     public void DropItem()
     {
+        if (!photonView.IsMine) return;
         ReplaceItem(GetDropPosition(), true);
     }
 
@@ -143,7 +194,12 @@ public class HeldItem : MonoBehaviourPunCallbacks
     public void UseItem()
     {
         if (!photonView.IsMine) return;
-        if (item == null) return;
+        if (item == null)
+        {
+            Debug.Log("HeldItem : 사용할 아이템이 없습니다.");
+            return;
+        }
+        Debug.Log($"HeldItem : {item.itemName} 아이템 사용");
         item.UseItem();
     }
 }
