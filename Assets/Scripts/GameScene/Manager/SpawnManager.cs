@@ -9,9 +9,13 @@ public class SpawnManager : MonoBehaviourPun
 	public Transform[] itemSpawnPoints;
 	private bool[] isSpawned;
 
-	void Start()
+    private void Awake()
+    {
+        isSpawned = new bool[playerSpawnPoints.Length];
+    }
+    void Start()
 	{
-		isSpawned = new bool[playerSpawnPoints.Length];
+
 		SpawnPlayers();
 		if (PhotonNetwork.IsMasterClient)
 		{
@@ -32,9 +36,9 @@ public class SpawnManager : MonoBehaviourPun
         photonView.RPC("UsedSpawnPointSync", RpcTarget.All, spawnIdx);
 		
 		// 아이템 임시 스폰 - 삭제 필요
-		PhotonNetwork.Instantiate("Item/Gun", spawnPosition - new Vector3(2, 2, 0), spawnRotation);
-		PhotonNetwork.Instantiate("Item/Key", spawnPosition - new Vector3(5, 2, 0), spawnRotation);
-		PhotonNetwork.Instantiate("Item/Battery", spawnPosition - new Vector3(4, 2, 0), spawnRotation);
+		PhotonNetwork.InstantiateRoomObject("Item/Battery", spawnPosition - new Vector3(2, 2, 0), spawnRotation);
+		PhotonNetwork.InstantiateRoomObject("Item/Battery", spawnPosition - new Vector3(5, 2, 0), spawnRotation);
+		PhotonNetwork.InstantiateRoomObject("Item/Battery", spawnPosition - new Vector3(4, 2, 0), spawnRotation);
 	}
 	
 	private int GetAvailableSpawnIndex(int playerIdx)
