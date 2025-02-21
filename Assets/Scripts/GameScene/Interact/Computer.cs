@@ -33,7 +33,6 @@ public class Computer : MonoBehaviourPun, IInteractableObject
         EventManager_Game.Instance.OnExitComputer += ForceExit;
         IsAllGeneratorsActivated = false;
         OnInteraction = false;
-        //moniterCamera.gameObject.SetActive(false);
     }
     public void Interact(int playerId)
     {
@@ -44,9 +43,6 @@ public class Computer : MonoBehaviourPun, IInteractableObject
         }
         if (!OnInteraction)
         {
-            //moniterCamera.gameObject.SetActive(true);
-            moniterCanvas.gameObject.SetActive(true);
-            //moniterCamera.Priority = 20;
             OnInteraction = true;
         }
 
@@ -61,9 +57,6 @@ public class Computer : MonoBehaviourPun, IInteractableObject
     {
         Debug.Log("컴퓨터 강제 종료");
 
-        //moniterCamera.Priority = 5;
-        //moniterCamera.gameObject.SetActive(false);
-        moniterCanvas.gameObject.SetActive(false);
         OnInteraction = false;
         if (EventManager_Game.Instance != null)
         {
@@ -75,6 +68,7 @@ public class Computer : MonoBehaviourPun, IInteractableObject
     private void HandleAllGeneratorsActivated()
     {
         IsAllGeneratorsActivated = true;
+        moniterCanvas.gameObject.SetActive(true);
         Debug.Log("컴퓨터 상호작용 활성화.");
     }
 }

@@ -1,6 +1,7 @@
 using Photon.Pun;
 using UnityEngine;
 using System;
+using System.Collections;
 
 public class Generator : MonoBehaviourPun, IInteractableObject
 {
@@ -10,9 +11,20 @@ public class Generator : MonoBehaviourPun, IInteractableObject
 	[SerializeField] private GameObject[] installedBattery;
 	private Vector3 batteryPositionOffset;
 
+    private IEnumerator WaitForEventManager()
+    {
+        while (EventManager_Game.Instance == null)
+        {
+            Debug.Log("Generator : EventManager_Game 초기화 대기 중");
+            yield return new WaitForSeconds(0.1f);
+        }
+        EventManager_Game.Instance.OnAllGeneratorsActivated += OnChangePhase;
+        Debug.Log("Generator : EventManager_Game 초기화 완료");
+    }
+
     private void OnEnable()
     {
-		EventManager_Game.Instance.OnAllGeneratorsActivated += OnChangePhase;
+        StartCoroutine(WaitForEventManager());
     }
 
     private void OnDisable()
