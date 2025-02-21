@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Battery", menuName = "ScriptableObjects/Battery")]
@@ -22,8 +23,8 @@ public class Battery : Item
                 if (generator != null)
                 {
                     Debug.Log("Battery : 발전기 레이 히트 성공");
-                    HeldItem heldItem = shooterTransform.gameObject.GetComponent<HeldItem>();
-                    generator.TryInstallBattery(heldItem);
+                    int playerID = shooterTransform.gameObject.GetPhotonView().ViewID;
+                    generator.TryInstallBattery(playerID);
                 }
             }
         }

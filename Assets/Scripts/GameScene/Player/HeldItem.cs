@@ -60,9 +60,17 @@ public class HeldItem : MonoBehaviourPunCallbacks
                 slotIndex = keyCode - 2;
                 item = inventory.GetItem(slotIndex);
                 itemObject = equipItem.Equip(item);
-                int itemViewID = itemObject.GetPhotonView().ViewID;
-                photonView.RPC("SyncItemInfo", RpcTarget.Others, photonView.ViewID, itemViewID, keyCode);
-                
+                if (item == null)
+                {
+                    Debug.Log("HeldItem : 해당 슬롯에는 아이템이 없습니다.");
+                    photonView.RPC("InitItemInfo", RpcTarget.All, photonView.ViewID);
+                    return;
+                }
+                else
+                {
+                    int itemViewID = itemObject.GetPhotonView().ViewID;
+                    photonView.RPC("SyncItemInfo", RpcTarget.Others, photonView.ViewID, itemViewID, keyCode);
+                }
                 // '총'인지 판별
                 if (itemObject != null)
                 {

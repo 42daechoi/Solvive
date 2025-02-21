@@ -4,31 +4,45 @@ using System;
 
 public class Generator : MonoBehaviourPun, IInteractableObject
 {
-	private int maxBatteryCount = 3;
+	private bool isComputerPhase;
+    private int maxBatteryCount = 3;
 	[SerializeField] private int installedBatteryCount;
 	[SerializeField] private GameObject[] installedBattery;
 	private Vector3 batteryPositionOffset;
 
-	void Start()
+    private void OnEnable()
+    {
+		EventManager_Game.Instance.OnAllGeneratorsActivated += OnChangePhase;
+    }
+
+    private void OnDisable()
+    {
+        EventManager_Game.Instance.OnAllGeneratorsActivated -= OnChangePhase;
+    }
+
+    void Start()
 	{
-		installedBatteryCount = 0;
+        isComputerPhase = false;
+        installedBatteryCount = 0;
 		installedBattery = new GameObject[3];
 		batteryPositionOffset = new Vector3(-0.4f, 0.5f, 0.3f);
 	}
 
-	public void Interact(int playerId)
+	public void Interact(int playerID)
 	{
-		if (installedBatteryCount != 0)
+		if (installedBatteryCount != 0 && !isComputerPhase)
 		{
-			UninstallBattery(playerId);
+			UninstallBattery(playerID);
 		}
 	}
 
-	public void TryInstallBattery(HeldItem heldItem)
+	public void TryInstallBattery(int playerID)
 	{
         if (!PhotonNetwork.IsMasterClient)
         {
-            photonView.RPC("RequestInstallBattery", RpcTarget.MasterClient, heldItem.gameObject.GetPhotonView().ViewID);
+			PhotonView playerPV = PhotonView.Find(playerID);
+			if (playerPV == null) return;
+            photonView.RPC("RequestInstallBattery", RpcTarget.MasterClient, playerPV.ViewID);
 			return;
         }
         if (IsAllBatteryInstalled())
@@ -36,10 +50,10 @@ public class Generator : MonoBehaviourPun, IInteractableObject
 			Debug.Log("Generator : 배터리가 이미 가득 찼습니다.");
 			return;
 		}
-		InstallBattery(heldItem);
+		InstallBattery(playerID);
 		if (IsAllBatteryInstalled())
 		{
-			ExecuteGenerator();
+			photonView.RPC("ExecuteGenerator", RpcTarget.All);
 		}
 	}
 
@@ -49,11 +63,7 @@ public class Generator : MonoBehaviourPun, IInteractableObject
         if (!PhotonNetwork.IsMasterClient) return;
 		try
 		{
-			PhotonView playerPV = PhotonView.Find(playerID);
-
-            HeldItem heldItem = playerPV.GetComponent<HeldItem>();
-
-            TryInstallBattery(heldItem);
+            TryInstallBattery(playerID);
 	}
 		catch (NullReferenceException e)
 		{
@@ -61,11 +71,15 @@ public class Generator : MonoBehaviourPun, IInteractableObject
 		}
 	}
 
-    private void InstallBattery(HeldItem heldItem)
+    private void InstallBattery(int playerID)
 	{
+        PhotonView playerPV = PhotonView.Find(playerID);
+        HeldItem heldItem = playerPV.GetComponent<HeldItem>();
+
         Vector3 worldPosition = transform.position + transform.right * batteryPositionOffset.x
-                         + transform.up * batteryPositionOffset.y
-                         + transform.forward * batteryPositionOffset.z;
+                 + transform.up * batteryPositionOffset.y
+                 + transform.forward * batteryPositionOffset.z;
+
         GameObject playerObject = heldItem.gameObject;
 		int viewID = playerObject.GetPhotonView().ViewID;
 		photonView.RPC("BatteryObjectSync", RpcTarget.All, true, viewID, worldPosition);
@@ -122,18 +136,24 @@ public class Generator : MonoBehaviourPun, IInteractableObject
 		Debug.Log($"Generator : 배터리 회수 성공. 현재 장착된 배터리 갯수 : {installedBatteryCount}");
 	}
 
+	[PunRPC]
 	private void ExecuteGenerator()
 	{
 		if (IsAllBatteryInstalled())
 		{
-			// 발전기 가동 애니메이션 또는 발전기 Light On
-			GameManager.Instance.AddActiveGenerator();
-			Debug.Log("Generator : 발전기 가동 완료.");
+            // 발전기 가동 애니메이션 또는 발전기 Light On
+            Debug.Log("Generator : 발전기 가동 완료.");
+            GameManager.Instance.AddActiveGenerator();
 		}
 	}
 
 	private bool IsAllBatteryInstalled()
 	{
 		return installedBatteryCount >= maxBatteryCount;
+	}
+
+	public void OnChangePhase()
+	{
+		isComputerPhase = true;
 	}
 }
