@@ -5,23 +5,35 @@ using System;
 
 public class EventManager_Game : MonoBehaviour
 {
+    // Player Movement
     public event Action<float, float> OnPlayerMove;
     public event Action<bool> OnPlayerSprint;
-    public event Action<bool> OnCameraActive;
     public event Action OnPlayerJump;
-    public event Action OnInteraction;
-    public event Action<int> OnHeldItem;
+
+
+    // Player Active
     public event Action OnDropItem;
-    public event Action<int> OnRemoveItem;
+    public event Action<int> OnHeldItem;
+    public event Action OnUseItem;
+    public event Action OnInteraction;
+
+    // Player Animation
     public event Action<string> OnAnimationStateChanged;
 
-    public event Action OnUseItem;
-    
+    // Interaction
     public event Action<Item> OnOpenDoor;
     public event Action<bool> OnUseComputer;
     public event Action<int, Vector3, Quaternion> OnMoveToComputer;
     public event Action OnExitComputer;
     public event Action OnAllGeneratorsActivated;
+    public event Action<char> OnTypeNumberAtComputer;
+    public event Action OnTypeBackspaceAtComputer;
+
+    // Game Logic
+    public event Action<bool> OnCameraActive;
+    public event Action<int> OnRemoveItem;
+
+
 
     public static EventManager_Game Instance { get; private set; }
 
@@ -112,6 +124,17 @@ public class EventManager_Game : MonoBehaviour
     public void InvokeAnimationStateChange(string animationState)
     {
         OnAnimationStateChanged?.Invoke(animationState);
+    }
+
+    public void InvokeTypeNumberAtComputer(char keyCode)
+    {
+        Debug.Log("EventManager_Game : 컴퓨터 숫자 입력 이벤트 발생");
+        OnTypeNumberAtComputer?.Invoke(keyCode);
+    }
+
+    public void InvokeTypeBackspaceAtComputer()
+    {
+        OnTypeBackspaceAtComputer?.Invoke();
     }
 }
 
