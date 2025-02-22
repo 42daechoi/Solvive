@@ -15,7 +15,7 @@ public class JumpState : IState
 
     public void UpdateState(PlayerController player, Vector3 inputDirection, float offset)
     {
-        
+        player.UpdateAnimator();
     }
 
     public void FixedUpdateState(PlayerController player, Vector3 inputDirection, float offset)
