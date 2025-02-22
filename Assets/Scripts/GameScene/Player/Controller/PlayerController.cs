@@ -285,4 +285,9 @@ public class PlayerController : MonoBehaviourPun
     {
         return _previousState;
     }
+
+    public PhotonView GetPhotonView()
+    {
+        return _photonView;
+    }
 }
