@@ -73,8 +73,8 @@ public class SpawnManager : MonoBehaviourPun
 
 	void SpawnComputer()
 	{
-        PhotonNetwork.InstantiateRoomObject("InteractableObject/Computer", new Vector3(-29.77029f, 20.269f, 20.269f), Quaternion.Euler(Vector3.zero));
-        PhotonNetwork.InstantiateRoomObject("InteractableObject/Computer", new Vector3(-28.795f, 20.269f, 21.33452f), Quaternion.Euler(Vector3.zero));
+        PhotonNetwork.InstantiateRoomObject("InteractableObject/Computer", new Vector3(-29.77029f, 20.5f, 20.269f), Quaternion.Euler(Vector3.zero));
+        PhotonNetwork.InstantiateRoomObject("InteractableObject/Computer", new Vector3(-28.795f, 20.5f, 21.33452f), Quaternion.Euler(Vector3.zero));
     }
 
 	private void SpawnPasswordPapers()
