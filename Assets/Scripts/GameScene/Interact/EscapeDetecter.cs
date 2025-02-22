@@ -7,7 +7,7 @@ public class playerDetecter : MonoBehaviour
 {
     private bool playerInside = false;
 
-    void OnPlayerInside(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
@@ -31,7 +31,7 @@ public class playerDetecter : MonoBehaviour
         }
     }
 
-    void OnPlayerOutside(Collider other)
+    void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
