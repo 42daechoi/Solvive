@@ -6,10 +6,12 @@ using UnityEngine.InputSystem;
 public class InputManager_Computer : MonoBehaviour
 {
     private PlayerController _playerController;
+    private int playerViewID;
 
     void Start()
     {
         StartCoroutine(WaitForPlayerController());
+        playerViewID = _playerController.GetPhotonView().ViewID;
     }
 
     private IEnumerator WaitForPlayerController()
@@ -32,35 +34,35 @@ public class InputManager_Computer : MonoBehaviour
         {
             EventManager_Game.Instance.InvokeUseComputer(false);
         }
-        if (Input.GetKeyDown (KeyCode.Backspace))
-        {
-            EventManager_Game.Instance.InvokeTypeBackspaceAtComputer();
-        }
-        NumberInput();
+
+        ComputerInput();
     }
 
-    private void NumberInput()
+    private void ComputerInput()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha0)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('0');
-        if (Input.GetKeyDown(KeyCode.Alpha1)) { EventManager_Game.Instance.InvokeTypeNumberAtComputer('1');}
-        if (Input.GetKeyDown(KeyCode.Alpha2)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('2');
-        if (Input.GetKeyDown(KeyCode.Alpha3)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('3');
-        if (Input.GetKeyDown(KeyCode.Alpha4)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('4');
-        if (Input.GetKeyDown(KeyCode.Alpha5)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('5');
-        if (Input.GetKeyDown(KeyCode.Alpha6)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('6');
-        if (Input.GetKeyDown(KeyCode.Alpha7)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('7');
-        if (Input.GetKeyDown(KeyCode.Alpha8)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('8');
-        if (Input.GetKeyDown(KeyCode.Alpha9)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('9');
+        if (Input.GetKeyDown(KeyCode.Alpha0)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('0', playerViewID);
+        if (Input.GetKeyDown(KeyCode.Alpha1)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('1', playerViewID);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('2', playerViewID);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('3', playerViewID);
+        if (Input.GetKeyDown(KeyCode.Alpha4)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('4', playerViewID);
+        if (Input.GetKeyDown(KeyCode.Alpha5)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('5', playerViewID);
+        if (Input.GetKeyDown(KeyCode.Alpha6)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('6', playerViewID);
+        if (Input.GetKeyDown(KeyCode.Alpha7)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('7', playerViewID);
+        if (Input.GetKeyDown(KeyCode.Alpha8)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('8', playerViewID);
+        if (Input.GetKeyDown(KeyCode.Alpha9)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('9', playerViewID);
 
-        if (Input.GetKeyDown(KeyCode.Keypad0)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('0');
-        if (Input.GetKeyDown(KeyCode.Keypad1)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('1');
-        if (Input.GetKeyDown(KeyCode.Keypad2)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('2');
-        if (Input.GetKeyDown(KeyCode.Keypad3)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('3');
-        if (Input.GetKeyDown(KeyCode.Keypad4)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('4');
-        if (Input.GetKeyDown(KeyCode.Keypad5)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('5');
-        if (Input.GetKeyDown(KeyCode.Keypad6)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('6');
-        if (Input.GetKeyDown(KeyCode.Keypad7)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('7');
-        if (Input.GetKeyDown(KeyCode.Keypad8)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('8');
-        if (Input.GetKeyDown(KeyCode.Keypad9)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('9');
+        if (Input.GetKeyDown(KeyCode.Keypad0)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('0', playerViewID);
+        if (Input.GetKeyDown(KeyCode.Keypad1)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('1', playerViewID);
+        if (Input.GetKeyDown(KeyCode.Keypad2)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('2', playerViewID);
+        if (Input.GetKeyDown(KeyCode.Keypad3)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('3', playerViewID);
+        if (Input.GetKeyDown(KeyCode.Keypad4)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('4', playerViewID);
+        if (Input.GetKeyDown(KeyCode.Keypad5)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('5', playerViewID);
+        if (Input.GetKeyDown(KeyCode.Keypad6)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('6', playerViewID);
+        if (Input.GetKeyDown(KeyCode.Keypad7)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('7', playerViewID);
+        if (Input.GetKeyDown(KeyCode.Keypad8)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('8', playerViewID);
+        if (Input.GetKeyDown(KeyCode.Keypad9)) EventManager_Game.Instance.InvokeTypeNumberAtComputer('9', playerViewID);
+
+        if (Input.GetKeyDown(KeyCode.Backspace)) EventManager_Game.Instance.InvokeTypeBackspaceAtComputer(playerViewID);
     }
+
 }
