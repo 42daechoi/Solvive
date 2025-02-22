@@ -124,11 +124,11 @@ public class PlayerController : MonoBehaviourPun
         _currentState = newState;
         _currentState.EnterState(this);
         
-        if (_previousState is UseComputerState && _currentState is IdleState)
+        /*if (_previousState is UseComputerState && _currentState is IdleState)
         {
             Debug.Log("컴퓨터종료 아이들로전환 컴퓨터강제종료이벤트발행");
             EventManager_Game.Instance.InvokeExitComputer();
-        }
+        }*/
     }
     
     public bool WasInSprintState()

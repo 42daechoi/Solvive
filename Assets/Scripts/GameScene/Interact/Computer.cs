@@ -62,11 +62,7 @@ public class Computer : MonoBehaviourPun, IInteractableObject
 
         OnInteraction = false;
         usingPlayerID = -1;
-        if (EventManager_Game.Instance != null)
-        {
-            Debug.Log("이벤트 매니저 호출 성공");
-            EventManager_Game.Instance.InvokeUseComputer(OnInteraction);
-        }
+        
     }
 
     [PunRPC]

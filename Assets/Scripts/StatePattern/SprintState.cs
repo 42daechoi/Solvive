@@ -40,6 +40,6 @@ public class SprintState : IState
     
     public bool CanInteraction()
     {
-        return true;
+        return false;
     }
 }

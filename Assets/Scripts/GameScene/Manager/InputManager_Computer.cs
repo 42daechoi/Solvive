@@ -10,8 +10,8 @@ public class InputManager_Computer : MonoBehaviour
 
     void Start()
     {
+        StopAllCoroutines();
         StartCoroutine(WaitForPlayerController());
-        playerViewID = _playerController.GetPhotonView().ViewID;
     }
 
     private IEnumerator WaitForPlayerController()
@@ -25,6 +25,7 @@ public class InputManager_Computer : MonoBehaviour
                 yield return new WaitForSeconds(0.1f);
             }
         }
+        playerViewID = _playerController.GetPhotonView().ViewID;
         Debug.Log("PlayerController 초기화 완료!");
     }
 
