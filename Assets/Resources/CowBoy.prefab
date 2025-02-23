@@ -253,6 +253,15 @@ MonoBehaviour:
   - Type: 1
     SynchronizeType: 2
     Name: Vertical
+  - Type: 4
+    SynchronizeType: 2
+    Name: IsIdle
+  - Type: 4
+    SynchronizeType: 2
+    Name: IsJumping
+  - Type: 4
+    SynchronizeType: 2
+    Name: IsFalling
   m_SynchronizeLayers:
   - SynchronizeType: 2
     LayerIndex: 0
