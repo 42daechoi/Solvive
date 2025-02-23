@@ -124,11 +124,11 @@ public class PlayerController : MonoBehaviourPun
         _currentState = newState;
         _currentState.EnterState(this);
         
-        /*if (_previousState is UseComputerState && _currentState is IdleState)
+        if (_previousState is UseComputerState && _currentState is IdleState)
         {
             Debug.Log("컴퓨터종료 아이들로전환 컴퓨터강제종료이벤트발행");
             EventManager_Game.Instance.InvokeExitComputer();
-        }*/
+        }
     }
     
     public bool WasInSprintState()
@@ -242,12 +242,13 @@ public class PlayerController : MonoBehaviourPun
     }
     
     #endregion
-    public void UpdateAnimator()    
+    public void UpdateAnimator()    //Idle 및 이동애니메이션제어
     {
         if (!_photonView.IsMine) return;
         
         if (_currentState is JumpState)
         {
+            // 점프/낙하 상태일 때는 점프 애니메이션 우선
             bool isJumping = VerticalVelocity > 0.1f;  // 약간의 여유를 둠
             bool isFalling = VerticalVelocity <= 0.1f;  // 최고점이나 하강 중
             _playerAnimator.SetJumpAnim(isJumping, isFalling);
@@ -296,10 +297,5 @@ public class PlayerController : MonoBehaviourPun
     public IState GetPreviousState()
     {
         return _previousState;
-    }
-
-    public PhotonView GetPhotonView()
-    {
-        return _photonView;
     }
 }

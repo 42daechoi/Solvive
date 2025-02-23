@@ -8,8 +8,7 @@ public class Computer : MonoBehaviourPun, IInteractableObject
     //[SerializeField] private CinemachineVirtualCamera moniterCamera;
     [SerializeField] private Canvas moniterCanvas;
     [SerializeField] private Transform interactionPoint;
-
-    private int usingPlayerID;
+    
     private bool IsAllGeneratorsActivated;
     private bool OnInteraction;
 
@@ -34,9 +33,7 @@ public class Computer : MonoBehaviourPun, IInteractableObject
         EventManager_Game.Instance.OnExitComputer += ForceExit;
         IsAllGeneratorsActivated = false;
         OnInteraction = false;
-        usingPlayerID = -1;
     }
-
     public void Interact(int playerId)
     {
         Debug.Log($"Computer : {IsAllGeneratorsActivated}");
@@ -51,7 +48,7 @@ public class Computer : MonoBehaviourPun, IInteractableObject
 
         Vector3 worldPosition = transform.TransformPoint(interactionPoint.localPosition);
         Quaternion worldRotation = interactionPoint.rotation;
-        photonView.RPC("SetUsingPlayerID", RpcTarget.All, playerId);
+        
         EventManager_Game.Instance.InvokeMoveToComputer(playerId, worldPosition, worldRotation);
         EventManager_Game.Instance.InvokeUseComputer(OnInteraction);
     }
@@ -61,14 +58,11 @@ public class Computer : MonoBehaviourPun, IInteractableObject
         Debug.Log("컴퓨터 강제 종료");
 
         OnInteraction = false;
-        usingPlayerID = -1;
-        
-    }
-
-    [PunRPC]
-    private void SetUsingPlayerID(int playerID)
-    {
-        usingPlayerID = playerID;
+        if (EventManager_Game.Instance != null)
+        {
+            Debug.Log("이벤트 매니저 호출 성공");
+            EventManager_Game.Instance.InvokeUseComputer(OnInteraction);
+        }
     }
 
     private void HandleAllGeneratorsActivated()
@@ -76,10 +70,5 @@ public class Computer : MonoBehaviourPun, IInteractableObject
         IsAllGeneratorsActivated = true;
         moniterCanvas.gameObject.SetActive(true);
         Debug.Log("컴퓨터 상호작용 활성화.");
-    }
-
-    public int GetUsingPlayerID()
-    {
-        return usingPlayerID;
     }
 }

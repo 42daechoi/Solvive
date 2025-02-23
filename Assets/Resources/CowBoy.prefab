@@ -20,6 +20,8 @@ GameObject:
   - component: {fileID: 8722861565424413613}
   - component: {fileID: 5581043835264047607}
   - component: {fileID: 1386508099115150098}
+  - component: {fileID: 4034976945309865009}
+  - component: {fileID: -8136545014339601944}
   m_Layer: 3
   m_Name: CowBoy
   m_TagString: Player
@@ -254,13 +256,13 @@ MonoBehaviour:
     SynchronizeType: 2
     Name: Vertical
   - Type: 4
-    SynchronizeType: 2
+    SynchronizeType: 0
     Name: IsIdle
   - Type: 4
-    SynchronizeType: 2
+    SynchronizeType: 0
     Name: IsJumping
   - Type: 4
-    SynchronizeType: 2
+    SynchronizeType: 0
     Name: IsFalling
   m_SynchronizeLayers:
   - SynchronizeType: 2
@@ -291,6 +293,35 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &4034976945309865009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561389139830730110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fc2ebb16496a9b4b96e3896aaf86088, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemSlot_Canvas: {fileID: 0}
+  CrosshairCanvas: {fileID: 0}
+  moveSpeed: 10
+  rotationSpeed: 100
+--- !u!114 &-8136545014339601944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561389139830730110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d63c49ec41d10c949af33574a21a92f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  role: 0
 --- !u!1 &1656115688673201943
 GameObject:
   m_ObjectHideFlags: 0

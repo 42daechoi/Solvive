@@ -26,8 +26,8 @@ public class EventManager_Game : MonoBehaviour
     public event Action<int, Vector3, Quaternion> OnMoveToComputer;
     public event Action OnExitComputer;
     public event Action OnAllGeneratorsActivated;
-    public event Action<char, int> OnTypeNumberAtComputer;
-    public event Action<int> OnTypeBackspaceAtComputer;
+    public event Action<char> OnTypeNumberAtComputer;
+    public event Action OnTypeBackspaceAtComputer;
 
     // Game Logic
     public event Action<bool> OnCameraActive;
@@ -126,15 +126,15 @@ public class EventManager_Game : MonoBehaviour
         OnAnimationStateChanged?.Invoke(animationState);
     }
 
-    public void InvokeTypeNumberAtComputer(char keyCode, int playerViewID)
+    public void InvokeTypeNumberAtComputer(char keyCode)
     {
         Debug.Log("EventManager_Game : 컴퓨터 숫자 입력 이벤트 발생");
-        OnTypeNumberAtComputer?.Invoke(keyCode, playerViewID);
+        OnTypeNumberAtComputer?.Invoke(keyCode);
     }
 
-    public void InvokeTypeBackspaceAtComputer(int playerViewID)
+    public void InvokeTypeBackspaceAtComputer()
     {
-        OnTypeBackspaceAtComputer?.Invoke(playerViewID);
+        OnTypeBackspaceAtComputer?.Invoke();
     }
 }
 

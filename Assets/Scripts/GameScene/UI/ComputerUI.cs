@@ -27,28 +27,22 @@ public class ComputerUI : MonoBehaviourPun
         EventManager_Game.Instance.OnTypeNumberAtComputer -= HandleTypeNumber;
     }
 
-    public void HandleTypeNumber(char keyCode, int playerID)
+    public void HandleTypeNumber(char keyCode)
     {
-        if (TryGetComponent(out Computer computer))
+        if (tmp.text.Length < 6)
         {
-            if (computer.GetUsingPlayerID() == playerID)
-            {
-                if (tmp.text.Length < 6)
-                {
-                    tmp.text += keyCode;
-                }
-                photonView.RPC("UpdateText", RpcTarget.All, tmp.text);
-                if (tmp.text.Length == 6)
-                {
-                    ComparePassword(tmp.text);
-                }
-            }
+            tmp.text += keyCode;
+        }
+        photonView.RPC("UpdateText", RpcTarget.All, tmp.text);
+        if (tmp.text.Length == 6)
+        {
+            ComparePassword(tmp.text);
         }
     }
 
     private void ComparePassword(string password)
     {
-        photonView.RPC("UpdateText", RpcTarget.All, "");
+        password = "";
     }
 
     [PunRPC]
@@ -57,19 +51,13 @@ public class ComputerUI : MonoBehaviourPun
         tmp.text = newText;
     }
 
-    public void HandleTypeBackspace(int playerID)
+    public void HandleTypeBackspace()
     {
-        if (TryGetComponent(out Computer computer))
+        if (tmp.text.Length > 0)
         {
-            if (computer.GetUsingPlayerID() == playerID)
-            {
-                if (tmp.text.Length > 0)
-                {
-                    tmp.text = tmp.text.Substring(0, tmp.text.Length - 1);
-                }
-
-                photonView.RPC("UpdateText", RpcTarget.All, tmp.text);
-            }
+            tmp.text = tmp.text.Substring(0, tmp.text.Length - 1);
         }
+
+        photonView.RPC("UpdateText", RpcTarget.All, tmp.text);
     }
 }
