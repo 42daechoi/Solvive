@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int activeGeneratorCount;
     [SerializeField] private int maxGeneratorCount;
     private PasswordGenerator passwordGenerator;
+
+    [SerializeField] private GameObject InputManager;
 
     private void Awake()
     {
@@ -27,6 +29,19 @@ public class GameManager : MonoBehaviour
         activeGeneratorCount = 0;
         maxGeneratorCount = 1;
         passwordGenerator = new PasswordGenerator();
+        StartCoroutine(WaitForAllPlayersSpawned());
+    }
+
+    private IEnumerator WaitForAllPlayersSpawned()
+    {
+        int SpawnedPlayerCount = GameObject.FindGameObjectsWithTag("Player").Length;
+        while (PhotonNetwork.CurrentRoom.PlayerCount != SpawnedPlayerCount)
+        {
+            yield return new WaitForSeconds(0.1f);
+            SpawnedPlayerCount = GameObject.FindGameObjectsWithTag("Player").Length;
+        }
+        EventManager_Game.Instance.InvokeAllPlayerSpawned();
+        // InputManager GameObject 활성화 필요
     }
 
     public PasswordGenerator GetPasswordGenerator()
