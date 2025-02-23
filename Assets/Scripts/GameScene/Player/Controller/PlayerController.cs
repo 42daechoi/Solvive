@@ -242,13 +242,12 @@ public class PlayerController : MonoBehaviourPun
     }
     
     #endregion
-    public void UpdateAnimator()    //Idle 및 이동애니메이션제어
+    public void UpdateAnimator()    
     {
         if (!_photonView.IsMine) return;
         
         if (_currentState is JumpState)
         {
-            // 점프/낙하 상태일 때는 점프 애니메이션 우선
             bool isJumping = VerticalVelocity > 0.1f;  // 약간의 여유를 둠
             bool isFalling = VerticalVelocity <= 0.1f;  // 최고점이나 하강 중
             _playerAnimator.SetJumpAnim(isJumping, isFalling);
