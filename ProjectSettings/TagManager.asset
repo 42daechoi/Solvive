@@ -10,6 +10,7 @@ TagManager:
   - Audio
   - Button
   - door
+  - IngameUI
   layers:
   - Default
   - TransparentFX

@@ -19,8 +19,16 @@ public class playerDetecter : MonoBehaviour
                 if (pre.role == PlayerRole.Citizen)
                 {
                     Debug.Log("시민");
-                    //ui끄고 움직이는 거 끄고 시점만 넘길 수 있게
-                    //옵저버 날아다니는거
+                    // PlayerObserver 컴포넌트를 찾고, 캐릭터랑 UI 제거
+                    PlayerObserver observer = other.GetComponent<PlayerObserver>();
+                    if (observer != null)
+                    {
+                        observer.HideCowboy(other.gameObject);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("PlayerObserver 컴포넌트를 찾을 수 없습니다.");
+                    }
                 }
                 else if (pre.role == PlayerRole.Mannequin)
                 {
