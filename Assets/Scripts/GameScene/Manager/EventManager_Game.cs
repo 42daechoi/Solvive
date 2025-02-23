@@ -32,6 +32,7 @@ public class EventManager_Game : MonoBehaviour
     // Game Logic
     public event Action<bool> OnCameraActive;
     public event Action<int> OnRemoveItem;
+    public event Action OnAllPlayerSpawned;
 
 
 
@@ -49,7 +50,7 @@ public class EventManager_Game : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
     public void InvokePlayerMove(float horizontal, float vertical)
     {
         OnPlayerMove?.Invoke(horizontal, vertical);
@@ -60,7 +61,7 @@ public class EventManager_Game : MonoBehaviour
     {
         OnPlayerSprint?.Invoke(isSprint);
     }
-    
+
     public void InvokeCameraActive(bool isActive)
     {
         OnCameraActive?.Invoke(isActive);
@@ -88,13 +89,13 @@ public class EventManager_Game : MonoBehaviour
     {
         OnUseItem?.Invoke();
     }
-    
+
 
     public void InvokeRemoveItem(int slotIndex)
     {
         OnRemoveItem?.Invoke(slotIndex);
     }
-    
+
     public void InvokeOpenDoor(Item usedItem)
     {
         OnOpenDoor?.Invoke(usedItem);
@@ -104,12 +105,12 @@ public class EventManager_Game : MonoBehaviour
     {
         OnUseComputer?.Invoke(isActComputer);
     }
-    
+
     public void InvokeMoveToComputer(int playerId, Vector3 targetPosition, Quaternion targetRotation)
     {
         OnMoveToComputer?.Invoke(playerId, targetPosition, targetRotation);
     }
-    
+
     public void InvokeExitComputer()
     {
         Debug.Log("이벤트매니저 컴퓨터강제종료 발행");
@@ -120,7 +121,7 @@ public class EventManager_Game : MonoBehaviour
     {
         OnAllGeneratorsActivated?.Invoke();
     }
-    
+
     public void InvokeAnimationStateChange(string animationState)
     {
         OnAnimationStateChanged?.Invoke(animationState);
@@ -136,5 +137,9 @@ public class EventManager_Game : MonoBehaviour
     {
         OnTypeBackspaceAtComputer?.Invoke();
     }
-}
 
+    public void InvokeAllPlayerSpawned()
+    {
+        OnAllPlayerSpawned?.Invoke();
+    }
+}
