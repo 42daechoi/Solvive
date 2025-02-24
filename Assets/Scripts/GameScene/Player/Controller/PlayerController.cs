@@ -12,10 +12,13 @@ public class PlayerController : MonoBehaviourPun
     
     private IState _previousState;
     private IState _currentState;
+    
+    private RaycastHit[] _groundHits = new RaycastHit[1];
 
     private PlayerMovement _playerMovement;
     private PlayerAnimator _playerAnimator;
     private CharacterController _controller;
+    
     [Header("Speed Settings")]
     [SerializeField] private MovementSettings _speedSettings;
     
@@ -248,21 +251,14 @@ public class PlayerController : MonoBehaviourPun
         
         if (_currentState is JumpState)
         {
-            // 점프/낙하 상태일 때는 점프 애니메이션 우선
-            bool isJumping = VerticalVelocity > 0.1f;  // 약간의 여유를 둠
-            bool isFalling = VerticalVelocity <= 0.1f;  // 최고점이나 하강 중
+            bool isJumping = VerticalVelocity > 0.1f;
+            bool isFalling = VerticalVelocity <= 0.1f;
             _playerAnimator.SetJumpAnim(isJumping, isFalling);
         }
         else
         {
-            // 다른 상태일 때는 이동 애니메이션
             _playerAnimator.SetMoveAnim(_playerMovement.InputDirection.x, _playerMovement.InputDirection.z, _playerMovement.Offset);
         }
-    }
-
-    public void UpdateJumpAnim()
-    {
-        
     }
     
     private void HandlePlayerJump()
@@ -275,12 +271,20 @@ public class PlayerController : MonoBehaviourPun
     
     public bool IsGrounded()
     {
-        return _controller.isGrounded;
+        float characterHeight = _controller.height;
+        Vector3 rayStart = transform.position + Vector3.up * (characterHeight * 0.5f);
+        float rayLength = characterHeight * 0.55f;
+        Vector3 boxSize = new Vector3(_controller.radius, 0.1f, _controller.radius);
+    
+        int layerMask = ~(LayerMask.GetMask("Player", "Hitbox"));
+
+        RaycastHit hit;
+        return Physics.BoxCast(rayStart, boxSize * 0.5f, Vector3.down, out hit, transform.rotation, rayLength, layerMask);
     }
     
     public void ApplyGravity()
     {
-        if (IsGrounded())
+        if (IsGrounded() && VerticalVelocity < 0)
         {
             VerticalVelocity = _speedSettings.groundedGravity;
         }

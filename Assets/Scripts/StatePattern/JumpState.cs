@@ -2,15 +2,12 @@ using UnityEngine;
 
 public class JumpState : IState
 {
-    private bool hasJumped = false;
     private bool shouldMove = false;
+
     public void EnterState(PlayerController player)
     {
-        Debug.Log("Jump 상태 진입");
         shouldMove = player.GetPreviousState() is MoveState || player.GetPreviousState() is SprintState;
         player.VerticalVelocity = player.SpeedSettings.jumpForce;
-        hasJumped = true;
-        
     }
 
     public void UpdateState(PlayerController player, Vector3 inputDirection, float offset)
@@ -21,6 +18,8 @@ public class JumpState : IState
     public void FixedUpdateState(PlayerController player, Vector3 inputDirection, float offset)
     {
         Vector3 movement = Vector3.zero;
+        
+        // 공중에서의 수평 이동 처리
         if (shouldMove)
         {
             movement = new Vector3(inputDirection.x, 0, inputDirection.z).normalized;
@@ -28,20 +27,15 @@ public class JumpState : IState
             float currentSpeed = player.WasInSprintState() ? player.SpeedSettings.sprintSpeed : player.SpeedSettings.walkSpeed;
             movement *= currentSpeed;
         }
-        
-        if (hasJumped)
-        {
-            movement.y = player.VerticalVelocity;
-            player.Controller.Move(movement * Time.fixedDeltaTime);
-            hasJumped = false;
-        }
-        else
-        {
-            player.ApplyGravity();
-            movement.y = player.VerticalVelocity;
-            player.Controller.Move(movement * Time.fixedDeltaTime);
-        }
 
+        // 수직 이동 처리
+        player.ApplyGravity();
+        movement.y = player.VerticalVelocity;
+        
+        // 최종 이동 적용
+        player.Controller.Move(movement * Time.fixedDeltaTime);
+
+        // 착지 체크
         if (player.IsGrounded() && player.VerticalVelocity <= 0)
         {
             player.TransitionToState(player.WasInSprintState() ? new SprintState() : new IdleState());
@@ -50,13 +44,11 @@ public class JumpState : IState
 
     public void ExitState(PlayerController player)
     {
-        Debug.Log("Jump 상태 종료");
+        
     }
 
     public bool CanInteraction()
     {
         return false;
     }
-    
-    
 }
