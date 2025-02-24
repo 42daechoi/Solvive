@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 262.3616, g: 325.0784, b: 430.26373, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -132,29 +132,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 51382875}
-  - component: {fileID: 51382874}
   - component: {fileID: 51382876}
   - component: {fileID: 51382877}
   m_Layer: 0
-  m_Name: LoadingScreen
+  m_Name: LoadingManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &51382874
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 51382873}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e4f70bf074ed7b47bc49617b68f5884, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  loadingSlider: {fileID: 157611010}
 --- !u!4 &51382875
 Transform:
   m_ObjectHideFlags: 0
@@ -185,10 +171,11 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  observableSearch: 2
-  Synchronization: 3
+  observableSearch: 0
+  Synchronization: 0
   OwnershipTransfer: 0
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
   viewIdField: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -204,7 +191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b4317c286423ce48956a31e34035b8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadingSlider: {fileID: 157611010}
+  progressSlider: {fileID: 157611010}
 --- !u!1 &139965300
 GameObject:
   m_ObjectHideFlags: 0
