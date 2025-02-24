@@ -68,8 +68,7 @@ public class PlayerController : MonoBehaviourPun
 
         IdleState = new IdleState();
         JumpState = new JumpState();
-        
-        _defaultInputManager = FindObjectOfType<InputManager_Game>();
+
         _computerInputManager = gameObject.AddComponent<InputManager_Computer>();
         _computerInputManager.enabled = false;
         
@@ -81,9 +80,23 @@ public class PlayerController : MonoBehaviourPun
         {
             Debug.LogError("IdleState가 초기화되지 않았습니다!");
         }
-        
+        StartCoroutine(WaitForInputManager());
     }
-    
+
+    private IEnumerator WaitForInputManager()
+    {
+        while (_defaultInputManager == null)
+        {
+            GameObject inputManagerObj = GameObject.Find("InputManager");
+            if (inputManagerObj != null)
+            {
+                _defaultInputManager = inputManagerObj.GetComponent<InputManager_Game>();
+            }
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+
     private void OnEnable()
     {
         EventManager_Game.Instance.OnPlayerJump += HandlePlayerJump;
@@ -296,5 +309,10 @@ public class PlayerController : MonoBehaviourPun
     public IState GetPreviousState()
     {
         return _previousState;
+    }
+
+    public PhotonView GetPhotonView()
+    {
+        return _photonView;
     }
 }

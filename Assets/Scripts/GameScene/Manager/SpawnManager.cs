@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using Photon.Pun;
 using UnityEngine;
 
@@ -20,6 +21,7 @@ public class SpawnManager : MonoBehaviourPun
 		if (PhotonNetwork.IsMasterClient)
 		{
             SpawnItems();
+			SpawnInteractableObjects();
         }
 	}
 
@@ -36,9 +38,9 @@ public class SpawnManager : MonoBehaviourPun
         photonView.RPC("UsedSpawnPointSync", RpcTarget.All, spawnIdx);
 		
 		// 아이템 임시 스폰 - 삭제 필요
-		PhotonNetwork.InstantiateRoomObject("Item/Battery", spawnPosition - new Vector3(2, 2, 0), spawnRotation);
-		PhotonNetwork.InstantiateRoomObject("Item/Battery", spawnPosition - new Vector3(5, 2, 0), spawnRotation);
-		PhotonNetwork.InstantiateRoomObject("Item/Battery", spawnPosition - new Vector3(4, 2, 0), spawnRotation);
+		PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(2, 2, 0), spawnRotation);
+		PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(5, 2, 0), spawnRotation);
+		PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(4, 2, 0), spawnRotation);
 	}
 	
 	private int GetAvailableSpawnIndex(int playerIdx)
@@ -67,21 +69,23 @@ public class SpawnManager : MonoBehaviourPun
 
 	void SpawnItems()
 	{
-		//SpawnPasswordPapers();
+		SpawnPasswordPapers();
 	}
 
 	private void SpawnPasswordPapers()
 	{
-		PasswordGenerator passwordGenerator = GameManager.Instance.GetPasswordGenerator();
-		List<string> passwords = passwordGenerator.GetAllPasswords();
+		float x = -33.289f;
 
-		for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 10; i++)
 		{
-			//GameObject go = PhotonNetwork.Instantiate("Item/PasswordPaper", Vector3.zero, Quaternion.Euler);
-		   // FarmingObject fo = go.GetComponent<FarmingObject>();
-			PasswordPaper paper = ScriptableObject.CreateInstance<PasswordPaper>();
-			paper.SetPassword(passwords[i]);
-			//fo.item = paper;
+			x += 0.3f;
+			PhotonNetwork.InstantiateRoomObject("Items/PasswordPaper", new Vector3(x, 19.07345f, 24.25907f), Quaternion.Euler(Vector3.zero));
 		}
 	}
+
+	private void SpawnInteractableObjects()
+	{
+        PhotonNetwork.InstantiateRoomObject("InteractableObjects/Computer", new Vector3(-29.77029f, 20.269f, 21.33452f), Quaternion.Euler(Vector3.zero));
+        PhotonNetwork.InstantiateRoomObject("InteractableObjects/Computer", new Vector3(-30.77f, 20.269f, 21.33452f), Quaternion.Euler(Vector3.zero));
+    }
 }
