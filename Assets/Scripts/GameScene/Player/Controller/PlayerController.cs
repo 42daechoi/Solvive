@@ -248,17 +248,12 @@ public class PlayerController : MonoBehaviourPun
     public void UpdateAnimator()    //Idle 및 이동애니메이션제어
     {
         if (!_photonView.IsMine) return;
-        
-        if (_currentState is JumpState)
-        {
+        bool isGrounded = IsGrounded();
             bool isJumping = VerticalVelocity > 0.1f;
             bool isFalling = VerticalVelocity <= 0.1f;
-            _playerAnimator.SetJumpAnim(isJumping, isFalling);
-        }
-        else
-        {
+            _playerAnimator.SetJumpAnim(isJumping, isGrounded); 
             _playerAnimator.SetMoveAnim(_playerMovement.InputDirection.x, _playerMovement.InputDirection.z, _playerMovement.Offset);
-        }
+        
     }
     
     private void HandlePlayerJump()
