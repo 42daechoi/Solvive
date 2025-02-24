@@ -3,14 +3,15 @@ using System.Collections.Generic;
 
 public class PasswordGenerator
 {
-    private List<string> passwords;
+    private string[] passwords;
     private HashSet<string> validPasswords;
     private Random random;
+    private int setterIdx = 0;
 
     public PasswordGenerator()
     {
         random = new Random();
-        passwords = new List<string>();
+        passwords = new string[10];
         validPasswords = new HashSet<string>();
 
         GeneratePasswords();
@@ -18,17 +19,20 @@ public class PasswordGenerator
 
     private void GeneratePasswords()
     {
-        while (passwords.Count < 10)
+        int count = 0;
+        while (count < passwords.Length)
         {
             string newPassword = GenerateRandomPassword();
-            if (!passwords.Contains(newPassword))
+            if (Array.IndexOf(passwords, newPassword) == -1)
             {
-                passwords.Add(newPassword);
+                passwords[count] = newPassword;
+                count++;
             }
         }
+
         while (validPasswords.Count < 2)
         {
-            int index = random.Next(0, passwords.Count);
+            int index = random.Next(0, passwords.Length);
             validPasswords.Add(passwords[index]);
         }
     }
@@ -36,18 +40,20 @@ public class PasswordGenerator
     private string GenerateRandomPassword()
     {
         char[] password = new char[6];
-
         for (int i = 0; i < 6; i++)
         {
             password[i] = (char)('0' + random.Next(0, 10));
         }
-
         return new string(password);
     }
 
-    public List<string> GetAllPasswords()
+    public string SetPasswordToPaper()
     {
-        return new List<string>(passwords);
+        if (setterIdx >= passwords.Length)
+        {
+            throw new InvalidOperationException("PasswordGenerator에서 더 이상 가져올 수 있는 패스워드가 없습니다.");
+        }
+        return passwords[setterIdx++];
     }
 
     public bool ValidatePassword(string inputPassword)

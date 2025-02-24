@@ -21,7 +21,7 @@ TagManager:
   - Ground
   - Hitbox
   - IgnoreFirstPerson
-  - Computer_UI
+  - WorldSpaceUI
   - 
   - 
   - 
