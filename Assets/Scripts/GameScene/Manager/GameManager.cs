@@ -8,9 +8,10 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private int activeGeneratorCount;
     [SerializeField] private int maxGeneratorCount;
+
     private PasswordGenerator passwordGenerator;
 
-    [SerializeField] private GameObject InputManager;
+    [SerializeField] private GameObject inputManager_Game;
 
     private void Awake()
     {
@@ -41,7 +42,7 @@ public class GameManager : MonoBehaviour
             SpawnedPlayerCount = GameObject.FindGameObjectsWithTag("Player").Length;
         }
         EventManager_Game.Instance.InvokeAllPlayerSpawned();
-        // InputManager GameObject 활성화 필요
+        inputManager_Game.SetActive(true);
     }
 
     public PasswordGenerator GetPasswordGenerator()
