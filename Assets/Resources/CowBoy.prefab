@@ -256,7 +256,7 @@ MonoBehaviour:
     SynchronizeType: 2
     Name: Vertical
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: IsIdle
   - Type: 4
     SynchronizeType: 0
@@ -300,7 +300,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 561389139830730110}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3fc2ebb16496a9b4b96e3896aaf86088, type: 3}
   m_Name: 
