@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using UnityEngine;
 
 
     public enum RayType
@@ -12,9 +13,6 @@ public class RayModule : ScriptableObject
 {
     [Header("레이 동작 타입")]
     public RayType rayType;
-
-    [Header("데미지")]
-    public float damage = 10f;
 
     [Header("사격 랜덤 범위"), Tooltip("Speed가 0이 아닐 때 사격 각도 무작위 범위를 조절")]
     public float randomRange = 2f;
@@ -62,13 +60,6 @@ public class RayModule : ScriptableObject
         {
             // 디버그 레이 (씬 뷰에서 빨간 선으로 확인)
             Debug.DrawRay(origin, direction * 100f, Color.red, 1f);
-
-            // 맞은 대상이 PlayerHealth를 가지고 있다면 데미지 적용
-            PlayerHealth targetHealth = hit.collider.GetComponent<PlayerHealth>();
-            if (targetHealth != null)
-            {
-                targetHealth.TakeDamage(damage);
-            }
             return hit;
         }
         return null;
