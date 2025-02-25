@@ -33,6 +33,7 @@ public class EventManager_Game : MonoBehaviour
     public event Action<bool> OnCameraActive;
     public event Action<int> OnRemoveItem;
     public event Action OnAllPlayerSpawned;
+    public event Action<int> OnChangeUnlockedComputerCount;
 
 
 
@@ -140,5 +141,10 @@ public class EventManager_Game : MonoBehaviour
     public void InvokeAllPlayerSpawned()
     {
         OnAllPlayerSpawned?.Invoke();
+    }
+
+    public void InvokeChangeUnlockedComputerCount(int count)
+    {
+        OnChangeUnlockedComputerCount?.Invoke(count);
     }
 }

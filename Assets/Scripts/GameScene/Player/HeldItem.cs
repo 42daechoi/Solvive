@@ -163,6 +163,7 @@ public class HeldItem : MonoBehaviourPunCallbacks
             GameObject itemObj = itemPhotonView.gameObject;
 
             itemObj.transform.position = replacePosition;
+            itemObj.transform.rotation = Quaternion.identity;
         }
         catch (NullReferenceException e)
         {
