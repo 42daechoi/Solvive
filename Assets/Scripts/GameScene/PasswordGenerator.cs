@@ -27,14 +27,18 @@ public class PasswordGenerator
             {
                 passwords[count] = newPassword;
                 count++;
+                if (validPasswords.Count < 2)
+                {
+                    validPasswords.Add(newPassword);
+                }
             }
         }
 
-        while (validPasswords.Count < 2)
-        {
-            int index = random.Next(0, passwords.Length);
-            validPasswords.Add(passwords[index]);
-        }
+        //while (validPasswords.Count < 2)
+        //{
+        //    int index = random.Next(0, passwords.Length);
+        //    validPasswords.Add(passwords[index]);
+        //}
     }
 
     private string GenerateRandomPassword()
