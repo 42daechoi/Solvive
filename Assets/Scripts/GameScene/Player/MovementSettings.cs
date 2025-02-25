@@ -4,8 +4,8 @@ using UnityEngine;
 public class MovementSettings : ScriptableObject
 {
     [Header("Basic Movement")]
-    public float walkSpeed = 5f;
-    public float sprintSpeed = 8f;
+    public float walkSpeed = 2f;
+    public float sprintSpeed = 4f;
     
     [Header("Jump Settings")]
     public float jumpForce = 15f;
