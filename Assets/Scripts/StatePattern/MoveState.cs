@@ -28,7 +28,7 @@ public class MoveState : IState
         player.ApplyGravity();
         Vector3 movement = new Vector3(inputDirection.x, 0, inputDirection.z).normalized;
         movement = player.transform.TransformDirection(movement);
-        movement *= player.SpeedSettings.sprintSpeed;
+        movement *= player.SpeedSettings.walkSpeed;
         movement.y = player.VerticalVelocity;
         player.Controller.Move(movement * Time.fixedDeltaTime);
     }

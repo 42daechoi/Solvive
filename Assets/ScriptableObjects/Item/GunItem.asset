@@ -14,13 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Gun
   icon: {fileID: 0}
-  equipPosition: {x: 0, y: 0, z: 0}
-  equipRotation: {x: 0, y: 0, z: 0}
-  rightHandPosition: {x: 0, y: 0, z: 0}
-  leftHandPosition: {x: 0, y: 0, z: 0}
-  rightHandRotation: {x: 0, y: 0, z: 0}
-  leftHandRotation: {x: 0, y: 0, z: 0}
-  useRightIK: 1
-  useLeftIK: 1
+  equipPosition: {x: -0.01, y: -0.015, z: 0}
+  equipRotation: {x: -90, y: -50, z: -15}
   rayModule: {fileID: 11400000, guid: b6412bd9f606da345a559db148507699, type: 2}
   currentSpeed: 0
