@@ -39,20 +39,20 @@ public class PlayerObserver : MonoBehaviour
     }
     void Update()
     {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
-        float moveUp = 0f;
-        if (Input.GetKey(KeyCode.E))
-            moveUp = 1f;
-        else if (Input.GetKey(KeyCode.Q))
-            moveUp = -1f;
-        
-        Vector3 movement = new Vector3(moveHorizontal, moveUp, moveVertical) * moveSpeed * Time.deltaTime;
-        transform.Translate(movement, Space.Self);
-        
-        float mouseX = Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime;
-        float mouseY = -Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime;
-        transform.Rotate(mouseY, mouseX, 0);
+        // float moveHorizontal = Input.GetAxis("Horizontal");
+        // float moveVertical = Input.GetAxis("Vertical");
+        // float moveUp = 0f;
+        // if (Input.GetKey(KeyCode.E))
+        //     moveUp = 1f;
+        // else if (Input.GetKey(KeyCode.Q))
+        //     moveUp = -1f;
+        //
+        // Vector3 movement = new Vector3(moveHorizontal, moveUp, moveVertical) * moveSpeed * Time.deltaTime;
+        // transform.Translate(movement, Space.Self);
+        //
+        // float mouseX = Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime;
+        // float mouseY = -Input.GetAxis("Mouse Y") * rotationSpeed * Time.deltaTime;
+        // transform.Rotate(mouseY, mouseX, 0);
     }
 
     void Start()

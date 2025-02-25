@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using UnityEngine;
 
 namespace GameScene.Item
 {
@@ -10,8 +11,13 @@ namespace GameScene.Item
 
         [Header("현재 이동 스피드 (예시용)")]
         public float currentSpeed;
+        
+        [Header("데미지")]
+        public float damage = 10f;
 
         private RaycastHit hit;
+        
+        
         public override void UseItem()
         {
             Transform shooterTransform = GetShooterTransform();
@@ -19,6 +25,21 @@ namespace GameScene.Item
             if (rayModule != null && shooterTransform != null)
             {
                 RaycastHit? raycastHit = rayModule.ExecuteRayAction(shooterTransform, currentSpeed);
+                // 2) 맞은 대상이 있으면 처리
+                if (raycastHit.HasValue)
+                {
+                    RaycastHit hit = raycastHit.Value;
+                    
+                    // 맞은 대상 PhotonView 찾기
+                    PhotonView targetView = hit.collider.GetComponent<PhotonView>();
+                    if (targetView != null)
+                    {
+                        Debug.Log("총 맞음");
+                        Debug.Log($"Raycast hit object: {hit.collider.gameObject.name}");
+                        // 3) TakeDamage RPC 호출
+                        targetView.RPC("TakeDamage", RpcTarget.All, damage);
+                    }
+                }
             }
             else
             {
