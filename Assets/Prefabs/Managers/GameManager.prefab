@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activeGeneratorCount: 0
   maxGeneratorCount: 0
-  UnlockedComputerCount: 0
+  unlockedComputerCount: 0
   inputManager_Game: {fileID: 0}
 --- !u!114 &1881725739730286384
 MonoBehaviour:

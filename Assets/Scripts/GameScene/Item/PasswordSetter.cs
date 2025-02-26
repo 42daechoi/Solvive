@@ -11,13 +11,13 @@ public class PasswordSetter : MonoBehaviour
     {
         if (GameManager.Instance == null)
         {
-            Debug.LogError("PasswordSetter : GameManager ½Ì±ÛÅæÀÌ nullÀÔ´Ï´Ù.");
+            Debug.LogError("PasswordSetter : GameManager ì‹±ê¸€í†¤ì´ nullì…ë‹ˆë‹¤.");
             return;
         }
         PasswordGenerator passwordGenerator = GameManager.Instance.GetPasswordGenerator();
         if (passwordGenerator == null)
         {
-            Debug.LogError("PasswordSetter : PasswordGenerator°¡ nullÀÔ´Ï´Ù.");
+            Debug.LogError("PasswordSetter : PasswordGeneratorê°€ nullì…ë‹ˆë‹¤.");
             return;
         }
 
