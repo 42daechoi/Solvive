@@ -1,38 +1,32 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using Photon.Pun;
+using Random = UnityEngine.Random;
 
 public enum PlayerRole
 {
     Citizen,
     Mannequin
 }
-public class PlayerRoleDistribution : MonoBehaviour
+
+public class PlayerRoleDistribution : MonoBehaviourPunCallbacks
 {
     public PlayerRole role;
 
-    void Start()
+    [PunRPC]
+    public void SetRoleRPC(int roleInt)
     {
-        PlayerRoleDistribution[] players = FindObjectsOfType<PlayerRoleDistribution>();
-        if (players.Length == 0)
-        {
-            Debug.LogWarning("플레이어가 없는데요.");
-            return;
-        }
-        int mannequinIndex = Random.Range(0, players.Length);
+        role = (PlayerRole)roleInt;
+        Debug.Log("플레이어의 역할: " + role + photonView.ViewID);
+    }
 
-        for (int i = 0; i < players.Length; i++)
-        {
-            if (i == mannequinIndex)
-            {
-                players[i].role = PlayerRole.Mannequin;
-            }
-            else
-            {
-                players[i].role = PlayerRole.Citizen;
-            }
-            Debug.Log("나의 역할: "+role);
-        }
+    // 로컬에서 호출할 수 있는 편의 메서드
+    public void SetRole(PlayerRole newRole)
+    {
+        // 모든 클라이언트에 변경 사항을 전파
+        photonView.RPC("SetRoleRPC", RpcTarget.All, (int)newRole);
     }
 }

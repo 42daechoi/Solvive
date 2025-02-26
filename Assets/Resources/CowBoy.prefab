@@ -21,8 +21,8 @@ GameObject:
   - component: {fileID: 5581043835264047607}
   - component: {fileID: 1386508099115150098}
   - component: {fileID: 4034976945309865009}
-  - component: {fileID: -8136545014339601944}
   - component: {fileID: 2737502456076763649}
+  - component: {fileID: 3984789023996562868}
   m_Layer: 3
   m_Name: CowBoy
   m_TagString: Player
@@ -303,7 +303,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 561389139830730110}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3fc2ebb16496a9b4b96e3896aaf86088, type: 3}
   m_Name: 
@@ -312,19 +312,6 @@ MonoBehaviour:
   CrosshairCanvas: {fileID: 0}
   moveSpeed: 10
   rotationSpeed: 100
---- !u!114 &-8136545014339601944
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 561389139830730110}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d63c49ec41d10c949af33574a21a92f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  role: 0
 --- !u!114 &2737502456076763649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -340,6 +327,19 @@ MonoBehaviour:
   maxHealth: 100
   healthSlider: {fileID: 0}
   currentHealth: 0
+--- !u!114 &3984789023996562868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561389139830730110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d63c49ec41d10c949af33574a21a92f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  role: 0
 --- !u!1 &2387408867053321493
 GameObject:
   m_ObjectHideFlags: 0

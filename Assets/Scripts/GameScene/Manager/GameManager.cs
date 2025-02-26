@@ -1,8 +1,10 @@
 using System.Collections;
+using Photon.Realtime;
 using Photon.Pun;
 using UnityEngine;
 
-public class GameManager : MonoBehaviourPun
+
+public class GameManager : MonoBehaviourPunCallbacks
 {
     public static GameManager Instance { get; private set; }
 
@@ -43,6 +45,7 @@ public class GameManager : MonoBehaviourPun
             yield return new WaitForSeconds(0.1f);
             SpawnedPlayerCount = GameObject.FindGameObjectsWithTag("Player").Length;
         }
+
         EventManager_Game.Instance.InvokeAllPlayerSpawned();
         inputManager_Game.SetActive(true);
     }
@@ -58,6 +61,7 @@ public class GameManager : MonoBehaviourPun
         {
             yield return new WaitForSeconds(0.1f);
         }
+
         EventManager_Game.Instance.OnChangeUnlockedComputerCount += AddUnlockedComputerCount;
     }
 
@@ -96,5 +100,4 @@ public class GameManager : MonoBehaviourPun
     {
         return unlockedComputerCount;
     }
-
 }
