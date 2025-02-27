@@ -92,7 +92,15 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (unlockedComputerCount == 2)
         {
             Debug.Log("GameManger : 모든 컴퓨터 잠금해제 완료.");
-            EventManager_Game.Instance.InvokeAllComputerUnlocked();
+            if (PhotonNetwork.IsMasterClient)
+            {
+                EventManager_Game.Instance.InvokeAllComputerUnlocked();
+            }
+            else
+            {
+                PhotonView spawnManagerPhotonView = GameObject.Find("SpawnManager").GetComponent<PhotonView>();
+                spawnManagerPhotonView.RPC("RpcSpawnKeycard", RpcTarget.MasterClient);
+            }
         }
     }
 

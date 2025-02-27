@@ -96,7 +96,13 @@ public class SpawnManager : MonoBehaviourPun
         PhotonNetwork.InstantiateRoomObject("InteractableObjects/Computer", new Vector3(-30.77f, 20.269f, 21.33452f), Quaternion.identity);
     }
 
-	private void SpawnKeycard()
+    [PunRPC]
+    public void RpcSpawnKeycard()
+    {
+        SpawnKeycard();
+    }
+
+    private void SpawnKeycard()
 	{
         List<Transform> spawnPoints = GetKeycardSpawnPoints();
         foreach (Transform spawnPoint in spawnPoints)
