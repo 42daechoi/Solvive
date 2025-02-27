@@ -17,11 +17,19 @@ public class SprintState : IState
         player.UpdateAnimator();
     }
 
-    public void FixedUpdateState(PlayerController player, Vector3 inputDirection, float offset)
+    public void FixedUpdateState(PlayerController player, Vector3 inputDirection, float offset, bool escape)
     {
         Vector3 movement = new Vector3(inputDirection.x, 0, inputDirection.z).normalized;
         movement = player.transform.TransformDirection(movement);
-        movement *= player.SpeedSettings.sprintSpeed;
+        if (!escape)
+        {
+            movement *= player.SpeedSettings.sprintSpeed;
+        }
+        else
+        {
+            movement *= player.localSpeedSettings.sprintSpeed;
+        }
+        
         
         player.ApplyGravity();
         movement.y = player.VerticalVelocity;

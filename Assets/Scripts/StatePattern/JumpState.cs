@@ -15,7 +15,7 @@ public class JumpState : IState
         player.UpdateAnimator();
     }
 
-    public void FixedUpdateState(PlayerController player, Vector3 inputDirection, float offset)
+    public void FixedUpdateState(PlayerController player, Vector3 inputDirection, float offset, bool escape)
     {
         player.UpdateAnimator();
         Vector3 movement = Vector3.zero;

@@ -32,10 +32,12 @@ public class PlayerController : MonoBehaviourPun
     private InputManager_Game _defaultInputManager;
     private InputManager_Computer _computerInputManager;
     
-    
     public MovementSettings SpeedSettings => _speedSettings;
     public CharacterController Controller => _controller;
 
+    public MovementSettings localSpeedSettings;
+    private bool _mannequinEscape = false;
+    
     private void Awake()
     {
         _photonView = GetComponent<PhotonView>();
@@ -71,6 +73,7 @@ public class PlayerController : MonoBehaviourPun
 
         _computerInputManager = gameObject.AddComponent<InputManager_Computer>();
         _computerInputManager.enabled = false;
+        localSpeedSettings = Instantiate(SpeedSettings);
         
         if (IdleState != null)
         {
@@ -125,7 +128,7 @@ public class PlayerController : MonoBehaviourPun
     {
         if (_photonView.IsMine)
         {
-            _currentState.FixedUpdateState(this, _playerMovement.InputDirection, _playerMovement.Offset);
+            _currentState.FixedUpdateState(this, _playerMovement.InputDirection, _playerMovement.Offset, _mannequinEscape);
         }
     }
 
@@ -314,5 +317,15 @@ public class PlayerController : MonoBehaviourPun
     public PhotonView GetPhotonView()
     {
         return _photonView;
+    }
+    
+    public void MannequinEscapeTrigger()
+    {
+        Debug.Log("MannequinEscapeTrigger");
+        if(!_photonView.IsMine)
+            return;
+        localSpeedSettings.walkSpeed += 1f;
+        localSpeedSettings.sprintSpeed += 1f;
+        _mannequinEscape = true;
     }
 }
