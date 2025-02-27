@@ -34,6 +34,7 @@ public class EventManager_Game : MonoBehaviour
     public event Action<int> OnRemoveItem;
     public event Action OnAllPlayerSpawned;
     public event Action<int> OnChangeUnlockedComputerCount;
+    public event Action OnAllComputerUnlocked;
 
 
 
@@ -146,5 +147,10 @@ public class EventManager_Game : MonoBehaviour
     public void InvokeChangeUnlockedComputerCount(int count)
     {
         OnChangeUnlockedComputerCount?.Invoke(count);
+    }
+
+    public void InvokeAllComputerUnlocked()
+    {
+        OnAllComputerUnlocked?.Invoke();
     }
 }

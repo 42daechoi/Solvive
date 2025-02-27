@@ -23,7 +23,7 @@ public class Inventory : MonoBehaviourPun
         {
             if (itemSlots[i] == null)
             {
-                Debug.Log($"{item.itemName}을 획득하였습니다.");
+                Debug.Log($"Inventory : {item.itemName}을 획득하였습니다.");
                 int playerID = photonView.ViewID;
                 photonView.RPC("SyncInventory", RpcTarget.All, playerID, i, item.itemName);
                 InventoryUI.Instance.UpdateUI(this);

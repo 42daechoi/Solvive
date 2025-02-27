@@ -11,6 +11,7 @@ TagManager:
   - Button
   - door
   - IngameUI
+  - Computer
   layers:
   - Default
   - TransparentFX

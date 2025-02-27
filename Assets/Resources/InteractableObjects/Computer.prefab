@@ -253,7 +253,7 @@ GameObject:
   - component: {fileID: 5799512099730342988}
   m_Layer: 0
   m_Name: Computer
-  m_TagString: Untagged
+  m_TagString: Computer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -274,6 +274,7 @@ Transform:
   - {fileID: 8664324791250929042}
   - {fileID: 3865298624687854785}
   - {fileID: 4287862800557185062}
+  - {fileID: 540657557229436031}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &342944504530066799
@@ -331,8 +332,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.5438938, y: 3.9618392, z: 0.592823}
-  m_Center: {x: -0.0450325, y: 0.11793968, z: -0.04190825}
+  m_Size: {x: 1.5438938, y: 2.681397, z: 0.592823}
+  m_Center: {x: -0.0450325, y: 0.7581603, z: -0.04190825}
 --- !u!114 &5799512099730342988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -346,6 +347,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tmp: {fileID: 647238272935672121}
+--- !u!1 &4604137305985416794
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 540657557229436031}
+  m_Layer: 0
+  m_Name: KeycardSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &540657557229436031
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4604137305985416794}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.435, y: -1.85, z: -0.039}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7644886108342244027}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4700568003108474407
 GameObject:
   m_ObjectHideFlags: 0
@@ -661,7 +693,7 @@ Transform:
   m_GameObject: {fileID: 8865530069454225991}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: -6.22, z: 1.374}
+  m_LocalPosition: {x: 0, y: -6.22, z: 2.67}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
