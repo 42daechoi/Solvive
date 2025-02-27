@@ -90,7 +90,7 @@ MonoBehaviour:
   - {fileID: 5581043835264047607}
   - {fileID: 3333734713192954944}
   - {fileID: 692470598299041037}
-  viewIdField: 1
+  viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &1724497594437183218
@@ -168,6 +168,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _equipTransform: {fileID: 1212831580733379114}
+  _rightHandTarget: {fileID: 5021517089698025449}
+  _leftHandTarget: {fileID: 1147907259582715841}
 --- !u!95 &3950928292007483792
 Animator:
   serializedVersion: 5
@@ -568,7 +570,7 @@ GameObject:
   m_Component:
   - component: {fileID: 747918938156009059}
   m_Layer: 3
-  m_Name: RightHandTarget
+  m_Name: Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

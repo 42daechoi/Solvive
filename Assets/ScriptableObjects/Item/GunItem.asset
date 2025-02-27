@@ -16,5 +16,10 @@ MonoBehaviour:
   icon: {fileID: 0}
   equipPosition: {x: -0.01, y: -0.015, z: 0}
   equipRotation: {x: -90, y: -50, z: -15}
+  rightHandIKPosition: {x: 0.04, y: -0.017, z: 0.143}
+  rightHandIKRotation: {x: 116.15, y: -98.8, z: 82}
+  leftHandIKPosition: {x: -0.14, y: -0.04, z: 0.22}
+  leftHandIKRotation: {x: 120.5, y: 95.3, z: 0}
   rayModule: {fileID: 11400000, guid: b6412bd9f606da345a559db148507699, type: 2}
   currentSpeed: 0
+  damage: 10

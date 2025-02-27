@@ -5,6 +5,8 @@ public class EquipItem : MonoBehaviourPunCallbacks
 {
 
     [SerializeField] private Transform _equipTransform;
+    [SerializeField] private Transform _rightHandTarget;
+    [SerializeField] private Transform _leftHandTarget;
 
     public GameObject Equip(Item item)
     {
@@ -21,7 +23,9 @@ public class EquipItem : MonoBehaviourPunCallbacks
         int viewID = equipItem.GetPhotonView().ViewID;
         if (equipItem)
         {
-            photonView.RPC("SyncEquipItem", RpcTarget.All, viewID, item.equipPosition, item.equipRotation, photonView.ViewID);
+            photonView.RPC("SyncEquipItem", RpcTarget.All, viewID, item.equipPosition, item.equipRotation,
+                item.rightHandIKPosition, item.rightHandIKRotation, 
+                item.leftHandIKPosition, item.leftHandIKRotation, photonView.ViewID);
             string animationState = item.itemName == "Battery" ? "Carry" : "Default";
             EventManager_Game.Instance.InvokeAnimationStateChange(animationState);
         }
@@ -34,7 +38,8 @@ public class EquipItem : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    private void SyncEquipItem(int viewID, Vector3 equipPosition, Vector3 equipRotation, int playerViewID)
+    private void SyncEquipItem(int viewID, Vector3 equipPosition, Vector3 equipRotation, Vector3 rightHandIKPos, 
+        Vector3 rightHandIKRot, Vector3 leftHandIKPos, Vector3 leftHandIKRot,int playerViewID)
     {
         GameObject equipItem = PhotonView.Find(viewID).gameObject;
 
@@ -48,6 +53,18 @@ public class EquipItem : MonoBehaviourPunCallbacks
         equipItem.GetComponent<Collider>().enabled = false;
         equipItem.transform.localPosition = equipPosition;
         equipItem.transform.localRotation = Quaternion.Euler(equipRotation);
+        
+        if (localEquipItem._rightHandTarget != null)
+        {
+            localEquipItem._rightHandTarget.localPosition = rightHandIKPos;
+            localEquipItem._rightHandTarget.localRotation = Quaternion.Euler(rightHandIKRot);
+        }
+    
+        if (localEquipItem._leftHandTarget != null)
+        {
+            localEquipItem._leftHandTarget.localPosition = leftHandIKPos;
+            localEquipItem._leftHandTarget.localRotation = Quaternion.Euler(leftHandIKRot);
+        }
     }
 
     public void UnEquip(Item item, GameObject itemObject, bool isReturnPool, bool needCollider)
