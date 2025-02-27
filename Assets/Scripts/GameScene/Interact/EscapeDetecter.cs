@@ -33,7 +33,16 @@ public class playerDetecter : MonoBehaviour
                 else if (pre.role == PlayerRole.Mannequin)
                 {
                     Debug.Log("마네킹");
-                    //마네킹 => 강화해서 리스폰 수치 딸깍
+                    PlayerController pc = other.GetComponent<PlayerController>(); 
+                    if (pc != null)
+                    {
+                        Debug.Log("1111111111111111111111111");
+                        pc.MannequinEscapeTrigger();
+                    }
+                    else
+                    {
+                        Debug.Log("MovementSettings 컴포넌트를 찾을 수 없음");
+                    }
                 }
             }
         }
