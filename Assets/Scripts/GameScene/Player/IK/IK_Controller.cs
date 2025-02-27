@@ -1,54 +1,43 @@
-/*
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
+using DitzelGames.FastIK;
 public class IK_Controller : MonoBehaviour
 {
-    [Header("IK Components")]
-    [SerializeField] private IK_Foot _footIK;
+    private FastIKFabric[] _ikComponents;
     
-    public IK_Foot FootIK => _footIK;
-    
-    private bool _initialized = false;
-    private int _layerMask;
+    [SerializeField] private Transform _rightHandTarget;
+    [SerializeField] private Transform _leftHandTarget;
     private void Awake()
     {
-        // PlayerController와 동일한 레이어 마스크 사용
-        _layerMask = ~(LayerMask.GetMask("Player", "Hitbox"));
+        _ikComponents = GetComponentsInChildren<FastIKFabric>();
+        
+        EnableIK(false);
     }
     
-    private void Start()
+    public void EnableIK(bool enable)
     {
-        InitializeIK();
-    }
-    
-    public void InitializeIK()
-    {
-        if (_initialized) return;
-        
-        // 발 IK 컴포넌트 가져오기 또는 생성
-        if (_footIK == null)
+        foreach (var ik in _ikComponents)
         {
-            _footIK = GetComponent<IK_Foot>();
-            if (_footIK == null) _footIK = gameObject.AddComponent<IK_Foot>();
+            ik.enabled = enable;
         }
-        
-        // 각 컴포넌트 초기화
-        _footIK.Initialize(_layerMask);
-        
-        _initialized = true;
     }
 
-    public void UpdateAllIK(Camera playerCamera = null)
+    public void SetIKTarget(Vector3 rightHandPos, Vector3 rightHandRot, Vector3 leftHandPos, Vector3 leftHandRot)
     {
-        if (!_initialized) InitializeIK();
+        _rightHandTarget.localPosition = rightHandPos;
+        _rightHandTarget.localRotation = Quaternion.Euler(rightHandRot);
+        
+        _leftHandTarget.localPosition = leftHandPos;
+        _leftHandTarget.localRotation = Quaternion.Euler(leftHandRot);
+    }
 
-        // 발 IK 업데이트
-        if (_footIK != null)
-        {
-            _footIK.UpdateFootIK();
-        }
+    public void SetEnableIK(Vector3 rightHandPos, Vector3 rightHandRot, Vector3 leftHandPos, Vector3 leftHandRot)
+    {
+        SetIKTarget(rightHandPos, rightHandRot, leftHandPos, leftHandRot);
+        EnableIK(true);
+    }
+
+    public void DisableIK()
+    {
+        EnableIK(false);
     }
 }
-*/

@@ -5,9 +5,13 @@ public class EquipItem : MonoBehaviourPunCallbacks
 {
 
     [SerializeField] private Transform _equipTransform;
-    [SerializeField] private Transform _rightHandTarget;
-    [SerializeField] private Transform _leftHandTarget;
+    private IK_Controller _ikController;
 
+    private void Awake()
+    {
+        _ikController = GetComponent<IK_Controller>();
+    }
+    
     public GameObject Equip(Item item)
     {
         if (item == null)
@@ -23,6 +27,9 @@ public class EquipItem : MonoBehaviourPunCallbacks
         int viewID = equipItem.GetPhotonView().ViewID;
         if (equipItem)
         {
+            _ikController.SetEnableIK(item.rightHandIKPosition, item.rightHandIKRotation, 
+                item.leftHandIKPosition, item.leftHandIKRotation);
+            
             photonView.RPC("SyncEquipItem", RpcTarget.All, viewID, item.equipPosition, item.equipRotation,
                 item.rightHandIKPosition, item.rightHandIKRotation, 
                 item.leftHandIKPosition, item.leftHandIKRotation, photonView.ViewID);
@@ -53,24 +60,16 @@ public class EquipItem : MonoBehaviourPunCallbacks
         equipItem.GetComponent<Collider>().enabled = false;
         equipItem.transform.localPosition = equipPosition;
         equipItem.transform.localRotation = Quaternion.Euler(equipRotation);
-        
-        if (localEquipItem._rightHandTarget != null)
-        {
-            localEquipItem._rightHandTarget.localPosition = rightHandIKPos;
-            localEquipItem._rightHandTarget.localRotation = Quaternion.Euler(rightHandIKRot);
-        }
-    
-        if (localEquipItem._leftHandTarget != null)
-        {
-            localEquipItem._leftHandTarget.localPosition = leftHandIKPos;
-            localEquipItem._leftHandTarget.localRotation = Quaternion.Euler(leftHandIKRot);
-        }
+
+        IK_Controller ikController = playerPhotonView.GetComponent<IK_Controller>();
+        ikController.SetEnableIK(rightHandIKPos, rightHandIKRot, leftHandIKPos, leftHandIKRot);
     }
 
     public void UnEquip(Item item, GameObject itemObject, bool isReturnPool, bool needCollider)
     {
         if (itemObject)
         {
+            _ikController.DisableIK();
             if (isReturnPool)
             {
                 ObjectPool.instance.ReturnObject(itemObject, item.itemName);
