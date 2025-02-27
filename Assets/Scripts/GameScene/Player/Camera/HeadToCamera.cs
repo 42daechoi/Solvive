@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class HeadToCamera : MonoBehaviourPun
 {
-    [SerializeField] private Transform headBone;            // neck.x를 할당
-    [SerializeField] private Transform targetLook;          // 기존에 있는 TargetLook 할당
-    [SerializeField] private float lookDistance = 1f;       // 시선이 향할 거리
+    [SerializeField] private Transform headBone;
+    [SerializeField] private Transform targetLook;
+    [SerializeField] private float lookDistance = 1f;
     
     [Tooltip("카메라의 방향을 가져올 PlayerCamera 컴포넌트")]
     [SerializeField] private PlayerCamera playerCamera;
@@ -50,7 +50,6 @@ public class HeadToCamera : MonoBehaviourPun
     {
         if (targetLook == null || playerCamera == null || !_isHeadLookActive) return;
         
-        // 카메라의 상하 회전 각도 가져오기
         float pitchAngle = playerCamera.yAxis.Value;
         
         // 캐릭터의 전방 벡터와 오른쪽 벡터

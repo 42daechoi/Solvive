@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: -8136545014339601944}
   - component: {fileID: 2737502456076763649}
   - component: {fileID: 7236740004909386062}
+  - component: {fileID: 8032736674533211523}
   m_Layer: 3
   m_Name: CowBoy
   m_TagString: Player
@@ -89,7 +90,7 @@ MonoBehaviour:
   - {fileID: 5581043835264047607}
   - {fileID: 3333734713192954944}
   - {fileID: 692470598299041037}
-  viewIdField: 0
+  viewIdField: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &1724497594437183218
@@ -227,7 +228,7 @@ MonoBehaviour:
     m_InputAxisName: Mouse Y
     m_InputAxisValue: 0
     m_InvertInput: 1
-    m_MinValue: -60
+    m_MinValue: -30
     m_MaxValue: 60
     m_Wrap: 0
     m_Recentering:
@@ -360,6 +361,21 @@ MonoBehaviour:
   targetLook: {fileID: 1108139487743723254}
   lookDistance: 1
   playerCamera: {fileID: 8722861565424413613}
+--- !u!114 &8032736674533211523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561389139830730110}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e951386eb0072a488f947ea0d17a333, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rightHandTarget: {fileID: 5021517089698025449}
+  leftHandTarget: {fileID: 1147907259582715841}
+  playerCamera: {fileID: 8722861565424413613}
 --- !u!1 &2240033614528506241
 GameObject:
   m_ObjectHideFlags: 0
@@ -479,6 +495,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2046537264843831335}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3250497185053285489
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1147907259582715841}
+  m_Layer: 3
+  m_Name: LeftHandTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1147907259582715841
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3250497185053285489}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1108139487743723254}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4578978498605532004
 GameObject:
@@ -653,6 +700,37 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 230012018441462456}
+--- !u!1 &6885410140558190016
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5021517089698025449}
+  m_Layer: 3
+  m_Name: RightHandTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5021517089698025449
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6885410140558190016}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.0000000074505797, y: -0.0000000018626449, z: 0.71196723, w: 0.70221275}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1108139487743723254}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90.79}
 --- !u!1 &7330384803846831389
 GameObject:
   m_ObjectHideFlags: 0
@@ -713,7 +791,9 @@ Transform:
   m_LocalPosition: {x: -0.037, y: 1.608, z: 0.566}
   m_LocalScale: {x: 0.9999999, y: 0.99999964, z: 0.9999996}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5021517089698025449}
+  - {fileID: 1147907259582715841}
   m_Father: {fileID: 1332784042215467423}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &3333734713192954944
@@ -1417,7 +1497,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ChainLength: 2
-  Target: {fileID: 1108139487743723254}
+  Target: {fileID: 5021517089698025449}
   Pole: {fileID: 8317600088864588186}
   Iterations: 10
   Delta: 0.001
@@ -1499,7 +1579,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ChainLength: 2
-  Target: {fileID: 1108139487743723254}
+  Target: {fileID: 1147907259582715841}
   Pole: {fileID: 6188666959061177692}
   Iterations: 10
   Delta: 0.001

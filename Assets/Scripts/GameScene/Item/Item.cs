@@ -10,5 +10,11 @@ public abstract class Item : ScriptableObject
     [Header("Equip Settings")]
     public Vector3 equipPosition;
     public Vector3 equipRotation;
+    
+    [Header("IK Settings")]
+    public Vector3 rightHandIKPosition;
+    public Vector3 rightHandIKRotation;
+    public Vector3 leftHandIKPosition;
+    public Vector3 leftHandIKRotation;
     public abstract void UseItem();
 }
