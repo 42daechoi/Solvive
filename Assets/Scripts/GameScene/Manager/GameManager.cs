@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (unlockedComputerCount == 2)
         {
             Debug.Log("GameManger : 모든 컴퓨터 잠금해제 완료.");
-            // 카드키 제공하는 작업 필요
+            EventManager_Game.Instance.InvokeAllComputerUnlocked();
         }
     }
 
