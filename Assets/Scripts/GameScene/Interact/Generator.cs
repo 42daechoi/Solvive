@@ -45,7 +45,8 @@ public class Generator : MonoBehaviourPun, IInteractableObject
 		if (installedBatteryCount != 0 && !isComputerPhase)
 		{
 			UninstallBattery(playerID);
-		}
+            photonView.RPC("GeneratorStateChange", RpcTarget.All);
+        }
 	}
 
 	public void TryInstallBattery(int playerID)
@@ -63,10 +64,7 @@ public class Generator : MonoBehaviourPun, IInteractableObject
 			return;
 		}
 		InstallBattery(playerID);
-		if (IsAllBatteryInstalled())
-		{
-			photonView.RPC("ExecuteGenerator", RpcTarget.All);
-		}
+		photonView.RPC("GeneratorStateChange", RpcTarget.All);
 	}
 
     [PunRPC]
@@ -120,6 +118,7 @@ public class Generator : MonoBehaviourPun, IInteractableObject
                 installedBattery[installedBatteryCount] = heldItem.GetItemObject();
 
                 heldItem.ReplaceItem(worldPosition, false);
+                photonView.RPC("SyncParent", RpcTarget.All, installedBattery[installedBatteryCount].GetComponent<PhotonView>().ViewID);
             }
             else
             {
@@ -132,7 +131,16 @@ public class Generator : MonoBehaviourPun, IInteractableObject
         }
     }
 
-	[PunRPC]
+    [PunRPC]
+    private void SyncParent(int itemPhotonViewID)
+    {
+        PhotonView itemPhotonView = PhotonView.Find(itemPhotonViewID);
+        if (itemPhotonView != null)
+        {
+            itemPhotonView.transform.SetParent(this.gameObject.transform);
+        }
+    }
+    [PunRPC]
 	private void IncreaseBatteryCount()
 	{
 		installedBatteryCount++;
@@ -149,14 +157,25 @@ public class Generator : MonoBehaviourPun, IInteractableObject
 	}
 
 	[PunRPC]
-	private void ExecuteGenerator()
+	private void GeneratorStateChange()
 	{
 		if (IsAllBatteryInstalled())
 		{
-            // 발전기 가동 애니메이션 또는 발전기 Light On
+            if (TryGetComponent(out GeneratorVibration generatorVibration))
+			{
+				generatorVibration.SetIsGeneratorActive(true);
+			}
             Debug.Log("Generator : 발전기 가동 완료.");
             GameManager.Instance.AddActiveGenerator();
 		}
+		else
+		{
+            if (TryGetComponent(out GeneratorVibration generatorVibration))
+            {
+                generatorVibration.SetIsGeneratorActive(false);
+            }
+            GameManager.Instance.SubActiveGenerator();
+        }
 	}
 
 	private bool IsAllBatteryInstalled()
