@@ -2,6 +2,7 @@ using System.Collections;
 using Photon.Realtime;
 using Photon.Pun;
 using UnityEngine;
+using System.Collections.Generic;
 
 
 public class GameManager : MonoBehaviourPunCallbacks
@@ -34,7 +35,18 @@ public class GameManager : MonoBehaviourPunCallbacks
         activeGeneratorCount = 0;
         maxGeneratorCount = 1;
         passwordGenerator = new PasswordGenerator();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("SyncPasswordGenerator", RpcTarget.All, passwordGenerator.GetPasswords(), passwordGenerator.GetValidPasswords());
+        }
         StartCoroutine(WaitForAllPlayersSpawned());
+    }
+
+    [PunRPC]
+    private void SyncPasswordGenerator(string[] passwords, string[] validPasswords)
+    {
+        passwordGenerator.SetPasswords(passwords);
+        passwordGenerator.SetValidPasswords(new List<string>(validPasswords));
     }
 
     private IEnumerator WaitForAllPlayersSpawned()
@@ -50,7 +62,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         inputManager_Game.SetActive(true);
     }
 
-    private void OnEnable()
+    public override void OnEnable()
     {
         StartCoroutine(WaitForEventManager());
     }
@@ -65,7 +77,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         EventManager_Game.Instance.OnChangeUnlockedComputerCount += AddUnlockedComputerCount;
     }
 
-    private void OnDisable()
+    public override void OnDisable()
     {
         EventManager_Game.Instance.OnChangeUnlockedComputerCount -= AddUnlockedComputerCount;
     }
@@ -87,8 +99,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void AddUnlockedComputerCount(int n)
     {
-        unlockedComputerCount += n;
-        Debug.Log("GameManager : 잠금 해제된 컴퓨터 개수" + unlockedComputerCount);
+        photonView.RPC("SyncUnlockedComputerCount", RpcTarget.All, n);
         if (unlockedComputerCount == 2)
         {
             Debug.Log("GameManger : 모든 컴퓨터 잠금해제 완료.");
@@ -102,6 +113,12 @@ public class GameManager : MonoBehaviourPunCallbacks
                 spawnManagerPhotonView.RPC("RpcSpawnKeycard", RpcTarget.MasterClient);
             }
         }
+    }
+
+    [PunRPC]
+    private void SyncUnlockedComputerCount(int n)
+    {
+        unlockedComputerCount += n;
     }
 
     public int GetUnlockedComputerCount()
