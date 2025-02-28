@@ -46,19 +46,6 @@ public class ObjectPool : MonoBehaviourPunCallbacks
 		}
 	}
 
-	//public GameObject GetObject(string itemName, Vector3 position)
-	//{
-	//	if (pool.ContainsKey(itemName) && pool[itemName].Count > 0)
-	//	{
-	//		GameObject obj = pool[itemName].Dequeue();
-	//		obj.transform.position = position;
-	//		obj.SetActive(true);
-	//		return obj;
-	//	}
-	//	Debug.Log("오브젝트 풀에 해당 아이템이 없습니다.");
-	//	return null;
-	//}
-
 	public void ReturnObject(GameObject obj, string itemName)
 	{
 		photonView.RPC("SyncReturnObject", RpcTarget.All, obj.GetPhotonView().ViewID, itemName);

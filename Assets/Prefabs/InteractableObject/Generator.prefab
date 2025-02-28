@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2949579398942353072}
   - component: {fileID: 6883409937818272547}
   - component: {fileID: 802796583895997839}
+  - component: {fileID: 6584300784632382813}
   m_Layer: 0
   m_Name: Generator
   m_TagString: Untagged
@@ -64,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b7707481cce39a1449be986323cc1bae, type: 2}
+  - {fileID: -876546973899608171, guid: fefb263158df3f54b89345d9b543c5c3, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -141,4 +142,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71219e674047f8e4dab804596b8f214e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentBatteryCount: 0
+  installedBatteryCount: 0
+  installedBattery: []
+--- !u!114 &6584300784632382813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2759788103863344102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1778da6324688440a4168509220c617, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vibrationIntensity: 0.05
+  vibrationSpeed: 10

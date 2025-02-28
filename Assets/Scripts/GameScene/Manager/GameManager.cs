@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         unlockedComputerCount = 0;
         activeGeneratorCount = 0;
-        maxGeneratorCount = 1;
+        maxGeneratorCount = 2;
         passwordGenerator = new PasswordGenerator();
         if (PhotonNetwork.IsMasterClient)
         {
@@ -95,6 +95,11 @@ public class GameManager : MonoBehaviourPunCallbacks
             EventManager_Game.Instance.InvokeAllGeneratorsActivated();
             Debug.Log("모든 발전기 가동 완료.");
         }
+    }
+
+    public void SubActiveGenerator()
+    {
+        activeGeneratorCount--;
     }
 
     public void AddUnlockedComputerCount(int n)
