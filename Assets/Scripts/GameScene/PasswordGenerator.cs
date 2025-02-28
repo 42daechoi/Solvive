@@ -3,16 +3,30 @@ using System.Collections.Generic;
 
 public class PasswordGenerator
 {
-    private string[] passwords;
-    private HashSet<string> validPasswords;
+    private string[] passwords { get; set; }
+    private List<string> validPasswords { get; set; }
     private Random random;
     private int setterIdx = 0;
+    public string[] GetPasswords() => passwords;
+    public string[] GetValidPasswords()
+    {
+        return validPasswords.ToArray();
+    }
 
+    public void SetPasswords(string[] newPasswords)
+    {
+        passwords = newPasswords;
+    }
+
+    public void SetValidPasswords(List<string> newValidPasswords)
+    {
+        validPasswords = newValidPasswords;
+    }
     public PasswordGenerator()
     {
         random = new Random();
         passwords = new string[10];
-        validPasswords = new HashSet<string>();
+        validPasswords = new List<string>();
 
         GeneratePasswords();
     }
@@ -64,4 +78,5 @@ public class PasswordGenerator
     {
         return validPasswords.Contains(inputPassword);
     }
+
 }
