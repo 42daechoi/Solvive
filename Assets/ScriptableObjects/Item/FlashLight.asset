@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf8d1b5380d73194e8195ebe0f10d5a9, type: 3}
-  m_Name: FlashLight
+  m_Name: Flashlight
   m_EditorClassIdentifier: 
   itemName: Flashlight
   icon: {fileID: 21300000, guid: 76dcbacaea1a68e43b96ba13c450eb8a, type: 3}

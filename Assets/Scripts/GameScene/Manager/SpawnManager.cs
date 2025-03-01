@@ -46,7 +46,7 @@ public class SpawnManager : MonoBehaviourPun
 		// 아이템 임시 스폰 - 삭제 필요
 		PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(2, 2, 0), spawnRotation);
 		PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(5, 2, 0), spawnRotation);
-		PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(4, 2, 0), spawnRotation);
+		PhotonNetwork.InstantiateRoomObject("Items/Flashlight", spawnPosition - new Vector3(4, 2, 0), spawnRotation);
 		PhotonNetwork.InstantiateRoomObject("Items/Gun", spawnPosition - new Vector3(0, 2, 0), spawnRotation);
 	}
 	
