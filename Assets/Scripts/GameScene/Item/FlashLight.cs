@@ -3,14 +3,25 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Flashlight", menuName = "ScriptableObjects/Flashlight")]
 public class Flashlight : Item
 {
-    public GameObject spotLight;
     public override void UseItem()
     {
-        if (spotLight == null)
+        FlashLightControl flashLightControl = GetFlashLightControl();
+        if (flashLightControl != null)
         {
-            Debug.Log("Flashlight.cs : spot light missing.");
+            flashLightControl.ToggleFlashlight();
         }
-        bool isActive = spotLight.activeSelf;
-        spotLight.SetActive(!isActive);
+        else
+        {
+            Debug.LogWarning("내 플레이어의 플래시라이트를 찾을 수 없습니다.");
+        }
+    }
+
+    private FlashLightControl GetFlashLightControl()
+    {
+        if (PlayerController.Instance != null)
+        {
+            return PlayerController.Instance.GetComponentInChildren<FlashLightControl>();
+        }
+        return null;
     }
 }
