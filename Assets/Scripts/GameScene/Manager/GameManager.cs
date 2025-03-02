@@ -13,8 +13,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] private int maxGeneratorCount;
     [SerializeField] private int unlockedComputerCount;
 
-    private PasswordGenerator passwordGenerator;
-
     [SerializeField] private GameObject inputManager_Game;
 
     private void Awake()
@@ -33,20 +31,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         unlockedComputerCount = 0;
         activeGeneratorCount = 0;
-        maxGeneratorCount = 2;
-        passwordGenerator = new PasswordGenerator();
-        if (PhotonNetwork.IsMasterClient)
-        {
-            photonView.RPC("SyncPasswordGenerator", RpcTarget.All, passwordGenerator.GetPasswords(), passwordGenerator.GetValidPasswords());
-        }
+        maxGeneratorCount = 1;
         StartCoroutine(WaitForAllPlayersSpawned());
-    }
-
-    [PunRPC]
-    private void SyncPasswordGenerator(string[] passwords, string[] validPasswords)
-    {
-        passwordGenerator.SetPasswords(passwords);
-        passwordGenerator.SetValidPasswords(new List<string>(validPasswords));
     }
 
     private IEnumerator WaitForAllPlayersSpawned()
@@ -82,11 +68,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         EventManager_Game.Instance.OnChangeUnlockedComputerCount -= AddUnlockedComputerCount;
     }
 
-    public PasswordGenerator GetPasswordGenerator()
-    {
-        return passwordGenerator;
-    }
-
     public void AddActiveGenerator()
     {
         activeGeneratorCount++;
@@ -105,7 +86,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void AddUnlockedComputerCount(int n)
     {
         photonView.RPC("SyncUnlockedComputerCount", RpcTarget.All, n);
-        if (unlockedComputerCount == 2)
+        if (unlockedComputerCount % 2 == 0)
         {
             Debug.Log("GameManger : 모든 컴퓨터 잠금해제 완료.");
             if (PhotonNetwork.IsMasterClient)

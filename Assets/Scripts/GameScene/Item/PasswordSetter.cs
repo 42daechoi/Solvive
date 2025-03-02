@@ -14,8 +14,8 @@ public class PasswordSetter : MonoBehaviour
             Debug.LogError("PasswordSetter : GameManager 싱글톤이 null입니다.");
             return;
         }
-        PasswordGenerator passwordGenerator = GameManager.Instance.GetPasswordGenerator();
-        if (passwordGenerator == null)
+        PasswordManager passwordManager = PasswordManager.Instance;
+        if (passwordManager == null)
         {
             Debug.LogError("PasswordSetter : PasswordGenerator가 null입니다.");
             return;
@@ -23,7 +23,7 @@ public class PasswordSetter : MonoBehaviour
 
         try
         {
-            password = passwordGenerator.SetPasswordToPaper();
+            password = passwordManager.SetPasswordToPaper();
         }
         catch (InvalidOperatorException e)
         {
