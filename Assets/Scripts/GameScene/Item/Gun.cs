@@ -49,7 +49,7 @@ namespace GameScene.Item
 
         private Transform GetShooterTransform()
         {
-            GameObject playerObj = GameObject.FindWithTag("Player");
+            GameObject playerObj = PlayerController.Instance.gameObject;
             if (playerObj != null)
                 return playerObj.transform;
             return null;
