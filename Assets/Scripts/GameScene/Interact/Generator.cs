@@ -64,7 +64,10 @@ public class Generator : MonoBehaviourPun, IInteractableObject
 			return;
 		}
 		InstallBattery(playerID);
-		photonView.RPC("GeneratorStateChange", RpcTarget.All);
+		if (IsAllBatteryInstalled())
+		{
+			photonView.RPC("GeneratorStateChange", RpcTarget.All);
+		}
 	}
 
     [PunRPC]

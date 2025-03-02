@@ -46,7 +46,6 @@ public class RoomList : MonoBehaviourPunCallbacks
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        Debug.Log(roomList.Count);
         foreach (RoomInfo roomInfo in roomList)
         {
             if (roomInfo.RemovedFromList)
