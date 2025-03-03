@@ -24,7 +24,7 @@ public class EventManager_Game : MonoBehaviour
     public event Action<Item> OnOpenDoor;
     public event Action<bool> OnUseComputer;
     public event Action<int, Vector3, Quaternion> OnMoveToComputer;
-    public event Action OnExitComputer;
+    public event Action<int> OnExitComputer;
     public event Action OnAllGeneratorsActivated;
     public event Action<char, int> OnTypeNumberAtComputer;
     public event Action<int> OnTypeBackspaceAtComputer;
@@ -113,10 +113,9 @@ public class EventManager_Game : MonoBehaviour
         OnMoveToComputer?.Invoke(playerId, targetPosition, targetRotation);
     }
 
-    public void InvokeExitComputer()
+    public void InvokeExitComputer(int viewID)
     {
-        Debug.Log("이벤트매니저 컴퓨터강제종료 발행");
-        OnExitComputer?.Invoke();
+        OnExitComputer?.Invoke(viewID);
     }
 
     public void InvokeAllGeneratorsActivated()

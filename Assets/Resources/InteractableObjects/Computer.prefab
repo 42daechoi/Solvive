@@ -313,6 +313,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moniterCanvas: {fileID: 1102772893928133799}
   interactionPoint: {fileID: 4287862800557185062}
+  usingPlayerID: 0
+  onInteraction: 0
 --- !u!65 &3876394246395907956
 BoxCollider:
   m_ObjectHideFlags: 0
