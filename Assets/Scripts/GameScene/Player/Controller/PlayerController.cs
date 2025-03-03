@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviourPun
         if (_previousState is UseComputerState && _currentState is IdleState)
         {
             Debug.Log("컴퓨터종료 아이들로전환 컴퓨터강제종료이벤트발행");
-            EventManager_Game.Instance.InvokeExitComputer();
+            EventManager_Game.Instance.InvokeExitComputer(photonView.ViewID);
         }
     }
     
