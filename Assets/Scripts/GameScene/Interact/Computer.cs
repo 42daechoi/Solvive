@@ -32,7 +32,6 @@ public class Computer : MonoBehaviourPun, IInteractableObject
     }
     public void Interact(int playerId)
     {
-        Debug.Log("Computer : onInteraction = " +  onInteraction);
         if (isAllGeneratorsActivated == false || onInteraction == true)
         {
             return;
@@ -47,11 +46,13 @@ public class Computer : MonoBehaviourPun, IInteractableObject
         EventManager_Game.Instance.InvokeUseComputer(onInteraction);
     }
 
-    private void ForceExit(int viewID)
+    private void ForceExit(int playerID)
     {
-        Debug.Log("컴퓨터 강제 종료");
+        if (usingPlayerID != playerID) return;
 
-        photonView.RPC("SyncEndInteraction", RpcTarget.All, viewID);
+        Debug.Log("컴퓨터 강제 종료");
+        photonView.RPC("SyncEndInteraction", RpcTarget.All, playerID);
+
         if (EventManager_Game.Instance != null)
         {
             Debug.Log("이벤트 매니저 호출 성공");
@@ -69,11 +70,8 @@ public class Computer : MonoBehaviourPun, IInteractableObject
     [PunRPC]
     private void SyncEndInteraction(int eventInvokeViewID)
     {
-        if (usingPlayerID == eventInvokeViewID)
-        {
-            usingPlayerID = -1;
-            onInteraction = false;
-        }
+         usingPlayerID = -1;
+         onInteraction = false;
     }
 
     private void HandleAllGeneratorsActivated()
