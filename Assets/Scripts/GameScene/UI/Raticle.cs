@@ -72,7 +72,7 @@ public class Raticle : MonoBehaviour
         lastPosition = currentPlayerPos;
 
 // (2) 총 장착 여부
-        bool isAiming = (heldItem != null && heldItem.HeldGun != null);
+        bool isAiming = heldItem.GetItem().itemName == "Gun";
 
 // (3) 조준점 업데이트
         if (isAiming)
