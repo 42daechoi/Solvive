@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 262.3616, g: 325.0784, b: 430.26373, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -681,7 +681,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.01
+  near clip plane: 0.1
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -710,7 +710,7 @@ Transform:
   m_GameObject: {fileID: 738495574}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.99950194, z: 0, w: 0.031559147}
-  m_LocalPosition: {x: 0.31598, y: 1.6489999, z: -1.1032231}
+  m_LocalPosition: {x: 0.3163109, y: 1.6489886, z: -1.2763696}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -778,9 +778,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df449b2fe50ea22439bfed6e8a3f6ef6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoints:
-  - {fileID: 713598629}
-  - {fileID: 1984299907}
+  playerSpawnPoints: []
+  itemSpawnPoints: []
 --- !u!4 &1722135171
 Transform:
   m_ObjectHideFlags: 0
