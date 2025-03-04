@@ -171,6 +171,11 @@ public class GameLobbyManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("방 나가기");
         PhotonNetwork.LeaveRoom();
+    }
+
+    public override void OnLeftRoom()
+    {
+        Debug.Log("onleftroom확인");
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
     }
 
