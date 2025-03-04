@@ -54,8 +54,8 @@ public class UIManager : MonoBehaviourPun
         // 새 게임 찾기 로직 구현 필요
         if (GameModeSelect != null)
             {
-        GameModeSelect.SetActive(true);
-        Debug.Log("있음");
+                GameModeSelect.SetActive(true);
+                Debug.Log("있음");
             }
         else 
         {
