@@ -5,6 +5,10 @@ using UnityEngine;
 public class PlayerController : MonoBehaviourPun
 {
     public static PlayerController Instance { get; private set; }
+    
+    [SerializeField] private GameObject thirdPersonModel; // 3인칭 전체 캐릭터 모델
+    [SerializeField] private GameObject firstPersonArms; // 1인칭 팔 모델
+    
     private IState IdleState { get; set; }
     private IState JumpState { get; set; }
     private IState UseComputerState { get; set; }
@@ -84,6 +88,17 @@ public class PlayerController : MonoBehaviourPun
             Debug.LogError("IdleState가 초기화되지 않았습니다!");
         }
         StartCoroutine(WaitForInputManager());
+
+        if (_photonView.IsMine)
+        {
+            thirdPersonModel.SetActive(false);
+            firstPersonArms.SetActive(true);
+        }
+        else
+        {
+            thirdPersonModel.SetActive(true);
+            firstPersonArms.SetActive(false);
+        }
     }
 
     private IEnumerator WaitForInputManager()
