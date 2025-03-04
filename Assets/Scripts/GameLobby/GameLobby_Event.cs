@@ -13,6 +13,7 @@ public class GameLobbyManager : MonoBehaviourPunCallbacks
     public Button actionButton;
     public TMP_Text actionButtonText;
     public Button backButton;
+    public Canvas LoadingCanvas;
 
     private Dictionary<string, GameObject> playerItems = new Dictionary<string, GameObject>();
 
@@ -184,7 +185,7 @@ public class GameLobbyManager : MonoBehaviourPunCallbacks
                 return;
             }
         }
-
+        photonView.RPC("Loading", RpcTarget.All);
         Debug.Log("게임 시작");
         //PhotonNetwork.LoadLevel("LoadingScene");
         PhotonNetwork.LoadLevel("GameScene");
@@ -244,4 +245,11 @@ public class GameLobbyManager : MonoBehaviourPunCallbacks
             Debug.Log($"연결이 끊겼습니다: {cause}");
         }
     }
+
+    [PunRPC]
+    public void Loading()
+    {
+        LoadingCanvas.gameObject.SetActive(true);
+    }
+    
 }
