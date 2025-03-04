@@ -11,6 +11,8 @@ public class HeldItem : MonoBehaviourPunCallbacks
     [SerializeField] private int slotIndex;
     [SerializeField] private EquipItem equipItem;
     private float dropOffset = 1f;
+    public SlotHighlight slotHighlight;
+
 
 
     public override void OnEnable()
@@ -29,6 +31,9 @@ public class HeldItem : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        GameObject UI = GameObject.Find("UI");
+        slotHighlight = UI.GetComponent<SlotHighlight>();
+        slotHighlight.UpdateSlotHighlight(0);
         if (TryGetComponent(out EquipItem _equipItem))
         {
             equipItem = _equipItem;
@@ -42,7 +47,6 @@ public class HeldItem : MonoBehaviourPunCallbacks
 
     private void SelectItem(int keyCode)
     {
-        SlotHighlight slotHighlight = GetComponent<SlotHighlight>();
         if (!photonView.IsMine) return;
         if (TryGetComponent(out Inventory inventory))
         {
@@ -53,7 +57,7 @@ public class HeldItem : MonoBehaviourPunCallbacks
                 if (slotHighlight != null)
                 {
                     slotIndex = keyCode - 2;
-                    slotHighlight.UpdateSlotHighlight(slotIndex + 1);
+                    slotHighlight.UpdateSlotHighlight(slotIndex+1);
                 }
             }
             else

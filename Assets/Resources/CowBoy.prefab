@@ -23,7 +23,6 @@ GameObject:
   - component: {fileID: 4034976945309865009}
   - component: {fileID: 2737502456076763649}
   - component: {fileID: 3984789023996562868}
-  - component: {fileID: 7660606238715531427}
   m_Layer: 3
   m_Name: CowBoy
   m_TagString: Player
@@ -147,6 +146,7 @@ MonoBehaviour:
   itemObject: {fileID: 0}
   slotIndex: 0
   equipItem: {fileID: 0}
+  slotHighlight: {fileID: 0}
 --- !u!114 &8103383532906522961
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,26 +337,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   role: 0
---- !u!114 &7660606238715531427
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 561389139830730110}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5209b2b206799643bb8f2769725821f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slotTransforms:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  defaultScale: {x: 1, y: 1, z: 1}
-  highlightScale: {x: 1.2, y: 1.2, z: 1.2}
 --- !u!1 &2387408867053321493
 GameObject:
   m_ObjectHideFlags: 0

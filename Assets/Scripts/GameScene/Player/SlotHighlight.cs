@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class SlotHighlight : MonoBehaviour
@@ -23,6 +24,11 @@ public class SlotHighlight : MonoBehaviour
         {
             Debug.LogError("SlotContainer가 업씀");
         }
+    }
+
+    private void Start()
+    {
+        
     }
 
     public void UpdateSlotHighlight(int selectedSlot)
