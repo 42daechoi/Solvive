@@ -113,16 +113,20 @@ public class EquipItem : MonoBehaviourPunCallbacks
 
         EquipItem localEquipItem = playerPhotonView.GetComponent<EquipItem>();
         if (localEquipItem == null) return;
-
-        if (playerPhotonView.IsMine)
-        {
-            equipItem.SetActive(false);
-            return;
-        }
+        
         equipItem.transform.SetParent(localEquipItem._equipTransform);
         equipItem.GetComponent<Collider>().enabled = false;
         equipItem.transform.localPosition = equipPosition;
         equipItem.transform.localRotation = Quaternion.Euler(equipRotation);
+        
+        if (playerPhotonView.IsMine)
+        {
+            Renderer[] renderers = equipItem.GetComponentsInChildren<Renderer>();
+            foreach (Renderer renderer in renderers)
+            {
+                renderer.enabled = false;
+            }
+        }
     }
 
     public void UnEquip(Item item, GameObject itemObject, bool isReturnPool, bool needCollider, bool isSwapping = false)
@@ -190,10 +194,16 @@ public class EquipItem : MonoBehaviourPunCallbacks
     private void SyncUnequip(int viewID, bool needCollider)
     {
         GameObject unequipItem = PhotonView.Find(viewID).gameObject;
+        
         if (photonView.IsMine)
         {
-            unequipItem.SetActive(true);
+            Renderer[] renderers = unequipItem.GetComponentsInChildren<Renderer>();
+            foreach (Renderer renderer in renderers)
+            {
+                renderer.enabled = true;
+            }
         }
+        
         unequipItem.transform.SetParent(null);
         if (needCollider)
         {

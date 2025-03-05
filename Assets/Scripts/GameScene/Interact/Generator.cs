@@ -5,7 +5,7 @@ using System.Collections;
 
 public class Generator : MonoBehaviourPun, IInteractableObject
 {
-	private bool isComputerPhase;
+	[SerializeField] private bool isComputerPhase;
     private int maxBatteryCount = 3;
 	[SerializeField] private int installedBatteryCount;
 	[SerializeField] private GameObject[] installedBattery;
@@ -44,6 +44,7 @@ public class Generator : MonoBehaviourPun, IInteractableObject
 	{
 		if (installedBatteryCount != 0 && !isComputerPhase)
 		{
+			Debug.Log("Generator : Interact실패");
 			UninstallBattery(playerID);
             photonView.RPC("GeneratorStateChange", RpcTarget.All);
         }
@@ -76,8 +77,8 @@ public class Generator : MonoBehaviourPun, IInteractableObject
         if (!PhotonNetwork.IsMasterClient) return;
 		try
 		{
-            TryInstallBattery(playerID);
-	}
+            TryInstallBattery(playerID); 
+		}
 		catch (NullReferenceException e)
 		{
 			Debug.LogError($"Generator : {e.Message}");
