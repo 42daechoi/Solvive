@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a7321210d36b55428b8174ce63f2ac4, type: 3}
+  m_Name: WeaponPoseDatabase
+  m_EditorClassIdentifier: 
+  weaponPoses:
+  - weaponName: Gun
+    r_ArmStrech: {x: -45.05, y: 15, z: -24.1}
+    r_ForearmRotation: {x: 55.15, y: -3.35, z: -84.3}
+    r_HandRotation: {x: -2.5, y: -89.7, z: -3.7}
+    l_ArmStrech: {x: 0, y: 0, z: 0}
+    l_ForearmRotation: {x: 0, y: 0, z: 0}
+    l_HandRotation: {x: 0, y: 0, z: 0}
+  - weaponName: Battery
+    r_ArmStrech: {x: -15.05, y: -5.25, z: -47.3}
+    r_ForearmRotation: {x: 0.53, y: 7.2, z: -123.65}
+    r_HandRotation: {x: -4.95, y: 18.6, z: -1.7}
+    l_ArmStrech: {x: -36.5, y: -80.4, z: 83.8}
+    l_ForearmRotation: {x: 3.9, y: 45.35, z: 106.45}
+    l_HandRotation: {x: -3.1, y: 14.3, z: 15}

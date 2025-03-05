@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 262.3616, g: 325.0784, b: 430.26373, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3449,6 +3449,63 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myMixer: {fileID: 24100000, guid: f26d42b8d6fff8f4db8136f133ef8c85, type: 2}
   MusicSlider: {fileID: 1258564171}
+--- !u!1001 &654472366
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 561389139830730110, guid: 79e8127878cc2af40b117c1fba97dbde, type: 3}
+      propertyPath: m_Name
+      value: CowBoy
+      objectReference: {fileID: 0}
+    - target: {fileID: 1332784042215467423, guid: 79e8127878cc2af40b117c1fba97dbde, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 1332784042215467423, guid: 79e8127878cc2af40b117c1fba97dbde, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.00000011920929
+      objectReference: {fileID: 0}
+    - target: {fileID: 1332784042215467423, guid: 79e8127878cc2af40b117c1fba97dbde, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.9762237
+      objectReference: {fileID: 0}
+    - target: {fileID: 1332784042215467423, guid: 79e8127878cc2af40b117c1fba97dbde, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.031559147
+      objectReference: {fileID: 0}
+    - target: {fileID: 1332784042215467423, guid: 79e8127878cc2af40b117c1fba97dbde, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1332784042215467423, guid: 79e8127878cc2af40b117c1fba97dbde, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.99950194
+      objectReference: {fileID: 0}
+    - target: {fileID: 1332784042215467423, guid: 79e8127878cc2af40b117c1fba97dbde, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1332784042215467423, guid: 79e8127878cc2af40b117c1fba97dbde, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1332784042215467423, guid: 79e8127878cc2af40b117c1fba97dbde, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -176.383
+      objectReference: {fileID: 0}
+    - target: {fileID: 1332784042215467423, guid: 79e8127878cc2af40b117c1fba97dbde, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 79e8127878cc2af40b117c1fba97dbde, type: 3}
 --- !u!1 &667360598
 GameObject:
   m_ObjectHideFlags: 0
@@ -9058,3 +9115,4 @@ SceneRoots:
   - {fileID: 1218134032}
   - {fileID: 142703104}
   - {fileID: 66215693}
+  - {fileID: 654472366}

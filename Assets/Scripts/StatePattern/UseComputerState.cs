@@ -21,7 +21,6 @@ public class UseComputerState : IState
 
     public void ExitState(PlayerController player)
     {
-        Debug.Log("UseComputerState에서 종료");
 
     }
 

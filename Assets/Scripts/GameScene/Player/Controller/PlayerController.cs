@@ -6,8 +6,8 @@ public class PlayerController : MonoBehaviourPun
 {
     public static PlayerController Instance { get; private set; }
     
-    [SerializeField] private GameObject thirdPersonModel; // 3인칭 전체 캐릭터 모델
-    [SerializeField] private GameObject firstPersonArms; // 1인칭 팔 모델
+    [SerializeField] private GameObject thirdPersonModel;
+    [SerializeField] private GameObject firstPersonArms;
     
     private IState IdleState { get; set; }
     private IState JumpState { get; set; }
@@ -160,7 +160,6 @@ public class PlayerController : MonoBehaviourPun
         
         if (_previousState is UseComputerState && _currentState is IdleState)
         {
-            Debug.Log("컴퓨터종료 아이들로전환 컴퓨터강제종료이벤트발행");
             EventManager_Game.Instance.InvokeExitComputer(photonView.ViewID);
         }
     }
@@ -174,7 +173,6 @@ public class PlayerController : MonoBehaviourPun
     {
         if (_currentState.CanInteraction())
         {
-            Debug.Log("인터렉션 실행");
             _interaction.RunInteraction();
         }
         else
@@ -276,14 +274,13 @@ public class PlayerController : MonoBehaviourPun
     }
     
     #endregion
-    public void UpdateAnimator()    //Idle 및 이동애니메이션제어
+    public void UpdateAnimator()
     {
         if (!_photonView.IsMine) return;
         bool isGrounded = IsGrounded();
-            bool isJumping = VerticalVelocity > 0.1f;
-            bool isFalling = VerticalVelocity <= 0.1f;
-            _playerAnimator.SetJumpAnim(isJumping, isGrounded); 
-            _playerAnimator.SetMoveAnim(_playerMovement.InputDirection.x, _playerMovement.InputDirection.z, _playerMovement.Offset);
+        bool isJumping = VerticalVelocity > 0.1f;
+        _playerAnimator.SetJumpAnim(isJumping, isGrounded); 
+        _playerAnimator.SetMoveAnim(_playerMovement.InputDirection.x, _playerMovement.InputDirection.z, _playerMovement.Offset);
         
     }
     
