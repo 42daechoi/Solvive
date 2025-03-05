@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
+using Unity.VisualScripting;
 using UnityEngine.UI;
 
 public class CreateGameRoom : MonoBehaviourPunCallbacks
@@ -12,6 +13,9 @@ public class CreateGameRoom : MonoBehaviourPunCallbacks
     public Toggle privateToggle;
     public TMP_InputField numberOfPeopleInput;
     public Button confirmButton;
+    public Canvas GameRobbyCanvas;
+    public const byte ROOM_INFO_EVENT = 1;
+
 
     public void Start()
     {
@@ -21,7 +25,6 @@ public class CreateGameRoom : MonoBehaviourPunCallbacks
             Debug.Log("Photon 서버에 연결 시도 중...");
         }
         confirmButton.onClick.AddListener(CreateRoom);
-        PhotonNetwork.AutomaticallySyncScene = true; // 씬 동기화 활성화
     }
     
     public override void OnJoinRoomFailed(short returnCode, string message)
@@ -48,28 +51,31 @@ public class CreateGameRoom : MonoBehaviourPunCallbacks
         {
             roomOptions.MaxPlayers = (byte)maxPlayers;
         }
-
-        // Custom Properties 설정
-        // Hashtable customProperties = new Hashtable();
-        // string selectedGameMode = soloModeToggle.isOn ? "SoloMode" : "MultiMode";
-        // customProperties.Add("GameMode", selectedGameMode);
-        // roomOptions.CustomRoomProperties = customProperties;
-        // roomOptions.CustomRoomPropertiesForLobby = new string[] { "GameMode" };
-
         // 방 이름 생성 및 방 생성
         string roomName = "Room_" + Random.Range(1000, 10000);
         PhotonNetwork.CreateRoom(roomName, roomOptions);
-
         Debug.Log($"방 생성 시도: {roomName}");
         
-        //PhotonNetwork.LoadLevel("GameLobby");
-        PhotonNetwork.LoadLevel("GameLobby"); // 방 생성 성공 시 GameLobby로 이동
+        GameRobbyCanvas.gameObject.SetActive(true);
     }
 
     public override void OnCreatedRoom()
     {
         Debug.Log($"방 생성 성공: {PhotonNetwork.CurrentRoom.Name}");
-        
+        object[] roomData = new object[]
+        {
+            PhotonNetwork.CurrentRoom.Name,
+            PhotonNetwork.CurrentRoom.MaxPlayers,
+            PhotonNetwork.CurrentRoom.PlayerCount,
+            PhotonNetwork.CurrentRoom.IsVisible
+        };
+
+        // 모든 클라이언트에게 전송할 옵션 설정 (모두에게)
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+        SendOptions sendOptions = new SendOptions { Reliability = true };
+
+        PhotonNetwork.RaiseEvent(ROOM_INFO_EVENT, roomData, raiseEventOptions, sendOptions);
+        Debug.Log("방 정보 업로드 이벤트 전송 완료");
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)

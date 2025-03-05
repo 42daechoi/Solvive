@@ -35,11 +35,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         // 방 생성 또는 입장에 필요한 준비 코드 필요
     }
 
-    public void CreateRoom()
-    {
-        RoomOptions roomOptions = new RoomOptions { MaxPlayers = 4 };
-        PhotonNetwork.CreateRoom("RoomName", roomOptions);
-    }
+    // public void CreateRoom()
+    // {
+    //     RoomOptions roomOptions = new RoomOptions { MaxPlayers = 4 };
+    //     PhotonNetwork.CreateRoom("RoomName", roomOptions);
+    // }
 
     public override void OnCreatedRoom()
     {
@@ -54,7 +54,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("방 입장 완료");
-        PhotonNetwork.LoadLevel("GameLobby");
+        //PhotonNetwork.LoadLevel("GameLobby");
     }
 
     //public override void OnPlayerLeftRoom(Player otherPlayer)
