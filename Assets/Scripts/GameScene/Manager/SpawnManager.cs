@@ -9,6 +9,7 @@ public class SpawnManager : MonoBehaviourPun
 {
 	public Transform[] playerSpawnPoints;
 	public Transform[] itemSpawnPoints;
+    public Transform[] hatchSpawnPoints;
 	private bool[] isSpawned;
 
     private void Awake()
@@ -23,6 +24,7 @@ public class SpawnManager : MonoBehaviourPun
 		{
             SpawnItems();
 			SpawnInteractableObjects();
+            SpawnHatch();
         }
 	}
 
@@ -149,5 +151,22 @@ public class SpawnManager : MonoBehaviourPun
         }
 
         keycard.position = endPosition;
+    }
+
+    private void SpawnHatch()
+    {
+        int randomNumber = Random.Range(0, 8);
+        Vector3 spawnPosition = GetGroundPosition(hatchSpawnPoints[randomNumber].position);
+        PhotonNetwork.InstantiateRoomObject("InteractableObjects/Hatch", spawnPosition, Quaternion.identity);
+    }
+
+    private Vector3 GetGroundPosition(Vector3 spawnPosition)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(spawnPosition, Vector3.down, out hit, Mathf.Infinity))
+        {
+            return hit.point;
+        }
+        return spawnPosition;
     }
 }
