@@ -44,8 +44,12 @@ public class Generator : MonoBehaviourPun, IInteractableObject
 	{
 		if (installedBatteryCount != 0 && !isComputerPhase)
 		{
-			UninstallBattery(playerID);
-            photonView.RPC("GeneratorStateChange", RpcTarget.All);
+			if (IsAllBatteryInstalled())
+			{
+                photonView.RPC("GeneratorStateChange", RpcTarget.All);
+            }
+            UninstallBattery(playerID);
+
         }
 	}
 
