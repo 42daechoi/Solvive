@@ -15,7 +15,7 @@ public class CustomUI_Event : MonoBehaviourPunCallbacks
     public int minValue = 2;  // 최소 인원
     public int maxValue = 16;  // 최대 인원
     private int currentValue = 0; // 방 인원
-    private RoomInfo selectedRoom;
+    private RoomList.CustomRoomInfo selectedRoom;
 
     public override void OnEnable()
     {
@@ -80,18 +80,18 @@ public class CustomUI_Event : MonoBehaviourPunCallbacks
         Debug.Log("create버튼");
     }
 
-    public void OnRoomButtonClicked(RoomInfo roomInfo)
+    public void OnRoomButtonClicked(RoomList.CustomRoomInfo roomInfo)
     {
         selectedRoom = roomInfo; // 선택된 방 정보 저장
-        Debug.Log("선택된 방: " + selectedRoom.Name);
+        Debug.Log("선택된 방: " + selectedRoom.RoomName);
     }
 
     void Join()
     {
         if (selectedRoom != null)
         {
-            PhotonNetwork.JoinRoom(selectedRoom.Name); // 선택된 방 입장
-            Debug.Log("방에 입장: " + selectedRoom.Name);
+            PhotonNetwork.JoinRoom(selectedRoom.RoomName); // 선택된 방 입장
+            Debug.Log("방에 입장: " + selectedRoom.RoomName);
         }
         else
         {
