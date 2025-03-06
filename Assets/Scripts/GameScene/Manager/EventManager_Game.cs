@@ -35,6 +35,8 @@ public class EventManager_Game : MonoBehaviour
     public event Action OnAllPlayerSpawned;
     public event Action<int> OnChangeUnlockedComputerCount;
     public event Action OnAllComputerUnlocked;
+    public event Action OnOneCitizenAlive;
+    public event Action<PlayerRole> OnEndGame;
 
 
 
@@ -151,5 +153,18 @@ public class EventManager_Game : MonoBehaviour
     public void InvokeAllComputerUnlocked()
     {
         OnAllComputerUnlocked?.Invoke();
+    }
+
+    public void InvokeOneCitizenAlive()
+    {
+        Debug.Log("EventManger_Game : 시민 혼자 남음 이벤트 발생");
+        OnOneCitizenAlive?.Invoke();
+    }
+
+    public void InvokeEndGame(PlayerRole playerRole)
+    {
+        Debug.Log("EventManger_Game : 게임 종료 이벤트 발생 [승자:" + playerRole + "]");
+
+        OnEndGame?.Invoke(playerRole);
     }
 }

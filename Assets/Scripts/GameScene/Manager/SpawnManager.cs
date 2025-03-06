@@ -19,6 +19,7 @@ public class SpawnManager : MonoBehaviourPun
     void Start()
 	{
 		EventManager_Game.Instance.OnAllComputerUnlocked += SpawnKeycard;
+        EventManager_Game.Instance.OnOneCitizenAlive += SpawnHatch;
 		SpawnPlayers();
 		if (PhotonNetwork.IsMasterClient)
 		{
@@ -31,6 +32,7 @@ public class SpawnManager : MonoBehaviourPun
     private void OnDisable()
     {
         EventManager_Game.Instance.OnAllComputerUnlocked -= SpawnKeycard;
+        EventManager_Game.Instance.OnOneCitizenAlive -= SpawnHatch;
     }
 
     void SpawnPlayers()
@@ -155,6 +157,7 @@ public class SpawnManager : MonoBehaviourPun
 
     private void SpawnHatch()
     {
+        if (!PhotonNetwork.IsMasterClient) return;
         int randomNumber = Random.Range(0, 8);
         Vector3 spawnPosition = GetGroundPosition(hatchSpawnPoints[randomNumber].position);
         PhotonNetwork.InstantiateRoomObject("InteractableObjects/Hatch", spawnPosition, Quaternion.identity);

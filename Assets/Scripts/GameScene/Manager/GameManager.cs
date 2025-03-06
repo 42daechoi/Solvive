@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] private int activeGeneratorCount;
     [SerializeField] private int maxGeneratorCount;
     [SerializeField] private int unlockedComputerCount;
+    [SerializeField] private int citizenCount;
 
     [SerializeField] private GameObject inputManager_Game;
 
@@ -29,11 +30,63 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+
+        if (EventManager_Game.Instance != null)
+        {
+            EventManager_Game.Instance.OnAllPlayerSpawned += InitCitizenCount;
+        }
         unlockedComputerCount = 0;
         activeGeneratorCount = 0;
         maxGeneratorCount = 1;
         StartCoroutine(WaitForAllPlayersSpawned());
     }
+
+    private void InitCitizenCount()
+    {
+        citizenCount = GetRoleCount(PlayerRole.Citizen);
+    }
+
+    private int GetRoleCount(PlayerRole playerRole)
+    {
+        int count = 0;
+        PlayerRoleDistribution[] players = FindObjectsOfType<PlayerRoleDistribution>();
+
+        foreach (PlayerRoleDistribution prd in players)
+        {
+            if (prd.role == playerRole)
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public void EliminateOrEscapeCitizen()
+    {
+        if (citizenCount > 0)
+        {
+            photonView.RPC("SyncEliminateOrEscapeCitizen", RpcTarget.All);
+        }
+    }
+
+    [PunRPC]
+    private void SyncEliminateOrEscapeCitizen()
+    {
+        citizenCount--;
+        if (citizenCount == 0)
+        {
+            if (GetRoleCount(PlayerRole.Mannequin) > 0)
+            {
+                EventManager_Game.Instance.InvokeEndGame(PlayerRole.Mannequin);
+            }
+            else
+            {
+                EventManager_Game.Instance.InvokeEndGame(PlayerRole.Citizen);
+            }
+        }
+        if (citizenCount == 1) EventManager_Game.Instance.InvokeOneCitizenAlive();
+    }
+
 
     private IEnumerator WaitForAllPlayersSpawned()
     {
