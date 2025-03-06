@@ -9,7 +9,8 @@ using Random = UnityEngine.Random;
 public enum PlayerRole
 {
     Citizen,
-    Mannequin
+    Mannequin,
+    Observer
 }
 
 public class PlayerRoleDistribution : MonoBehaviourPunCallbacks

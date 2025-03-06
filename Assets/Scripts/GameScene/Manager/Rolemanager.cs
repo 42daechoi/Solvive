@@ -27,7 +27,6 @@ public class Rolemanager : MonoBehaviour
             Debug.LogWarning("플레이어가 없는데요.");
             return;
         }
-
         // 랜덤으로 한 명을 마네킹으로 선택합니다.
         int mannequinIndex = Random.Range(0, players.Length);
 

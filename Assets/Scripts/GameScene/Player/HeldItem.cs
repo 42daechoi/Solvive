@@ -132,9 +132,6 @@ public class HeldItem : MonoBehaviourPunCallbacks
         {
             Debug.LogError($"HeldItem : {e.Message}");
         }
-
-
-
     }
 
     public void ReplaceItem(Vector3 replacePosition, bool needCollider)
