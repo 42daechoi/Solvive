@@ -24,6 +24,7 @@ public class playerDetecter : MonoBehaviour
                     if (observer != null)
                     {
                         observer.HideCowboy(other.gameObject);
+                        pre.SetRole(PlayerRole.Observer);
                     }
                     else
                     {
