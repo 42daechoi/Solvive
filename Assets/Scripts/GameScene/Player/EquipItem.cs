@@ -23,6 +23,8 @@ public class EquipItem : MonoBehaviourPunCallbacks
     {
         if (item == null)
         {
+            Debug.Log("EquipItem : item == null Unequip들어오긴함");
+            StartCoroutine(UnequipArmRotation());
             return null;
         }
         GameObject equipItem = ObjectPool.instance.GetObject(item.itemName, Vector3.zero, Quaternion.identity);
@@ -164,7 +166,7 @@ public class EquipItem : MonoBehaviourPunCallbacks
         Quaternion targetLeftArmRotation = Quaternion.Euler(25.05f, -84.53f, 63.9f);
         Quaternion targetRightArmRotation = Quaternion.Euler(-8.2f, 48.5f, -35.3f);
         
-        float duration = 0.4f;
+        float duration = 0.2f;
         float elapsedTime = 0f;
         
         while (elapsedTime < duration)
@@ -211,3 +213,8 @@ public class EquipItem : MonoBehaviourPunCallbacks
         }
     }
 }
+
+
+// waitforsecond해서 ~~~
+// Equip -> Unequip -> Equip ~~
+// isswapping 없애지고
