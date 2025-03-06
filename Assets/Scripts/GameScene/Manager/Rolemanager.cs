@@ -6,18 +6,32 @@ using Photon.Realtime;
 
 public class Rolemanager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    private IEnumerator Start()
+
+    private IEnumerator WaitForEventManager()
     {
-        yield return new WaitForSeconds(5.0f); // 플레이어 스폰 대기 시간
-        if (PhotonNetwork.IsMasterClient)
+        while (EventManager_Game.Instance == null)
         {
-            DistributeRoles();
+            yield return new WaitForSeconds(0.1f);
+        }
+        EventManager_Game.Instance.OnAllPlayerSpawned += DistributeRoles;
+    }
+
+    private void OnEnable()
+    {
+        StartCoroutine(WaitForEventManager());
+    }
+
+    private void OnDisable()
+    {
+        if (EventManager_Game.Instance != null)
+        {
+            EventManager_Game.Instance.OnAllPlayerSpawned -= DistributeRoles;
         }
     }
 
     private void DistributeRoles()
     {
+        if (!PhotonNetwork.IsMasterClient) return;
         Debug.Log("역할 분배" );
         // 씬에 있는 모든 플레이어 객체(플레이어 프리팹에 붙은 PlayerRoleDistribution 스크립트)를 찾습니다.
         PlayerRoleDistribution[] players = FindObjectsOfType<PlayerRoleDistribution>();
@@ -29,6 +43,7 @@ public class Rolemanager : MonoBehaviour
         }
         // 랜덤으로 한 명을 마네킹으로 선택합니다.
         int mannequinIndex = Random.Range(0, players.Length);
+
 
         for (int i = 0; i < players.Length; i++)
         {

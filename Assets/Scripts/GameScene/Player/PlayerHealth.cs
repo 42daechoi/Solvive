@@ -44,7 +44,7 @@ public class PlayerHealth : MonoBehaviourPun
             
             if (currentHealth <= 0f)
             {
-                Debug.Log($"{photonView.Owner.NickName} 사망");
+                Die();
             }
             
             UpdateHPbar();
@@ -61,6 +61,9 @@ public class PlayerHealth : MonoBehaviourPun
         private void Die()
         {
             Debug.Log($"{gameObject.name} 사망");
-            // 사망 처리 부분 넣어야 함
+            if (TryGetComponent(out PlayerRoleDistribution prd))
+            {
+                if (prd.role == PlayerRole.Citizen) GameManager.Instance.EliminateOrEscapeCitizen();
+            }
         }
     }
