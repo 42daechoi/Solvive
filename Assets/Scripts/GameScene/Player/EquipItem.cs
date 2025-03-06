@@ -4,7 +4,6 @@ using Photon.Pun;
 
 public class EquipItem : MonoBehaviourPunCallbacks
 {
-
     [SerializeField] private Transform _equipTransform;
     
     //1인칭 무기전용 오브젝트들임
@@ -18,21 +17,28 @@ public class EquipItem : MonoBehaviourPunCallbacks
     [SerializeField] private WeaponPoseDatabase weaponPoseDB;
     [SerializeField] private GameObject[] firstPersonWeapons;
     private GameObject currentFPSWeapon;
+    
+    private bool isProcessing = false;
 
     public GameObject Equip(Item item)
     {
+        if (photonView.IsMine)
+        {
+            StartCoroutine(FirstPersonEquipProcess(item));
+        }
+        
         if (item == null)
         {
-            Debug.Log("EquipItem : item == null Unequip들어오긴함");
-            StartCoroutine(UnequipArmRotation());
             return null;
         }
+        
         GameObject equipItem = ObjectPool.instance.GetObject(item.itemName, Vector3.zero, Quaternion.identity);
         if (equipItem == null)
         {
             Debug.Log("EquipItem : 오브젝트 풀에서 장착할 아이템을 받아오지 못했습니다.");
             return null;
         }
+        
         int viewID = equipItem.GetPhotonView().ViewID;
         if (equipItem)
         {
@@ -40,11 +46,30 @@ public class EquipItem : MonoBehaviourPunCallbacks
             string animationState = item.itemName == "Battery" ? "Carry" : "Default";
             EventManager_Game.Instance.InvokeAnimationStateChange(animationState);
         }
-        if (photonView.IsMine)
-        {
-            StartCoroutine(EquipFromUnequipPose(item.itemName));
-        }
+        
         return equipItem;
+    }
+    
+    private IEnumerator FirstPersonEquipProcess(Item item)
+    {
+        if (isProcessing)
+        {
+            yield break;
+        }
+        
+        isProcessing = true;
+        
+        yield return StartCoroutine(UnequipArmRotation());
+        
+        if (item == null)
+        {
+            isProcessing = false;
+            yield break;
+        }
+        
+        yield return StartCoroutine(EquipFromUnequipPose(item.itemName));
+        
+        isProcessing = false;
     }
 
     #region Equip코루틴
@@ -121,6 +146,7 @@ public class EquipItem : MonoBehaviourPunCallbacks
         equipItem.transform.localPosition = equipPosition;
         equipItem.transform.localRotation = Quaternion.Euler(equipRotation);
         
+        // 1인칭에서는 렌더러 비활성화
         if (playerPhotonView.IsMine)
         {
             Renderer[] renderers = equipItem.GetComponentsInChildren<Renderer>();
@@ -131,7 +157,7 @@ public class EquipItem : MonoBehaviourPunCallbacks
         }
     }
 
-    public void UnEquip(Item item, GameObject itemObject, bool isReturnPool, bool needCollider, bool isSwapping = false)
+    public void UnEquip(Item item, GameObject itemObject, bool isReturnPool, bool needCollider)
     {
         if (itemObject)
         {
@@ -142,24 +168,19 @@ public class EquipItem : MonoBehaviourPunCallbacks
             int viewID = itemObject.GetPhotonView().ViewID;
             photonView.RPC("SyncUnequip", RpcTarget.All, viewID, needCollider);
         }
-
+        
+        // 1인칭 처리
         if (photonView.IsMine && currentFPSWeapon != null)
         {
-            if (isSwapping)
-            {
-                currentFPSWeapon.SetActive(false);
-                currentFPSWeapon = null;
-            }
-            else
-            {
-                StartCoroutine(UnequipArmRotation());
-            }
+            StartCoroutine(UnequipArmRotation());
         }
     }
 
     #region Unequip코루틴 애니메이션
     private IEnumerator UnequipArmRotation()
     {
+        GameObject weaponToDisable = currentFPSWeapon;
+        
         Quaternion startRightArmRotation = r_ArmStrech.localRotation;
         Quaternion startLeftArmRotation = l_ArmStrech.localRotation;
         
@@ -178,17 +199,27 @@ public class EquipItem : MonoBehaviourPunCallbacks
             float smoothT = t * t * (3f - 2f * t);
         
             // 왼쪽 팔과 오른쪽 팔의 회전값 보간
-            l_ArmStrech.localRotation = Quaternion.Slerp(startLeftArmRotation, targetLeftArmRotation, smoothT);
-            r_ArmStrech.localRotation = Quaternion.Slerp(startRightArmRotation, targetRightArmRotation, smoothT);
-        
-            // 시간 업데이트
+            if (l_ArmStrech != null && r_ArmStrech != null)
+            {
+                l_ArmStrech.localRotation = Quaternion.Slerp(startLeftArmRotation, targetLeftArmRotation, smoothT);
+                r_ArmStrech.localRotation = Quaternion.Slerp(startRightArmRotation, targetRightArmRotation, smoothT);
+            }
+            
             elapsedTime += Time.deltaTime;
         
-            yield return null; // 다음 프레임까지 대기
+            yield return null;
         }
-    
-        currentFPSWeapon.SetActive(false);
-        currentFPSWeapon = null;
+        
+        if (weaponToDisable != null)
+        {
+            weaponToDisable.SetActive(false);
+            if (currentFPSWeapon == weaponToDisable)
+            {
+                currentFPSWeapon = null;
+            }
+        }
+        
+        isProcessing = false;
     }
     #endregion
 
@@ -213,8 +244,3 @@ public class EquipItem : MonoBehaviourPunCallbacks
         }
     }
 }
-
-
-// waitforsecond해서 ~~~
-// Equip -> Unequip -> Equip ~~
-// isswapping 없애지고

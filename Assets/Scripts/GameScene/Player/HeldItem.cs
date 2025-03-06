@@ -52,7 +52,7 @@ public class HeldItem : MonoBehaviourPunCallbacks
         {
             if (keyCode == 1)
             {
-                equipItem.UnEquip(item, itemObject, true, true, false);
+                equipItem.UnEquip(item, itemObject, true, true);
                 photonView.RPC("InitItemInfo", RpcTarget.All, photonView.ViewID);
                 if (slotHighlight != null)
                 {
@@ -64,7 +64,7 @@ public class HeldItem : MonoBehaviourPunCallbacks
             {
                 if (item != null)
                 {
-                    equipItem.UnEquip(item, itemObject, true, true, true);
+                    equipItem.UnEquip(item, itemObject, true, true);
                 }
                 slotIndex = keyCode - 2;
                 if (slotHighlight != null)
