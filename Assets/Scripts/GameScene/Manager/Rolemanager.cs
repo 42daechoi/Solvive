@@ -4,8 +4,9 @@ using Photon.Pun;
 using UnityEngine;
 using Photon.Realtime;
 
-public class Rolemanager : MonoBehaviour
+public class RoleManager : MonoBehaviour
 {
+    private int citizenCount = 0;
 
     private IEnumerator WaitForEventManager()
     {
@@ -32,13 +33,11 @@ public class Rolemanager : MonoBehaviour
     private void DistributeRoles()
     {
         if (!PhotonNetwork.IsMasterClient) return;
-        Debug.Log("역할 분배" );
         // 씬에 있는 모든 플레이어 객체(플레이어 프리팹에 붙은 PlayerRoleDistribution 스크립트)를 찾습니다.
         PlayerRoleDistribution[] players = FindObjectsOfType<PlayerRoleDistribution>();
 
         if (players.Length == 0)
         {
-            Debug.LogWarning("플레이어가 없는데요.");
             return;
         }
         // 랜덤으로 한 명을 마네킹으로 선택합니다.
@@ -53,8 +52,10 @@ public class Rolemanager : MonoBehaviour
             }
             else
             {
+                citizenCount++;
                 players[i].SetRole(PlayerRole.Citizen);
             }
         }
+        GameManager.Instance.InitCitizenCount(citizenCount);
     }
 }
