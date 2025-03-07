@@ -229,10 +229,10 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 668.5651
+  m_Intensity: 10.204178
   m_Range: 10
-  m_SpotAngle: 62
-  m_InnerSpotAngle: 46.715996
+  m_SpotAngle: 80
+  m_InnerSpotAngle: 8
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0
@@ -270,7 +270,7 @@ Light:
   m_RenderingLayerMask: 1
   m_Lightmapping: 1
   m_LightShadowCasterMode: 2
-  m_AreaSize: {x: 1, y: 1}
+  m_AreaSize: {x: 0.5, y: 0.5}
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 1
@@ -291,16 +291,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Intensity: 600
+  m_Intensity: 15
   m_EnableSpotReflector: 1
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
   m_SpotIESCutoffPercent: 100
-  m_LightDimmer: 1
+  m_LightDimmer: 10
   m_VolumetricDimmer: 1
   m_LightUnit: 0
   m_FadeDistance: 10000
-  m_VolumetricFadeDistance: 10000
+  m_VolumetricFadeDistance: 50
   m_AffectDiffuse: 1
   m_AffectSpecular: 1
   m_NonLightmappedOnly: 0
@@ -310,7 +310,7 @@ MonoBehaviour:
   m_ShapeRadius: 0.025
   m_SoftnessScale: 1
   m_UseCustomSpotLightShadowCone: 0
-  m_CustomSpotLightShadowCone: 30
+  m_CustomSpotLightShadowCone: 8
   m_MaxSmoothness: 0.99
   m_ApplyRangeAttenuation: 1
   m_DisplayAreaLightEmissiveMesh: 0
