@@ -30,20 +30,22 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-
-        if (EventManager_Game.Instance != null)
-        {
-            EventManager_Game.Instance.OnAllPlayerSpawned += InitCitizenCount;
-        }
+        citizenCount = 0;
         unlockedComputerCount = 0;
         activeGeneratorCount = 0;
         maxGeneratorCount = 1;
         StartCoroutine(WaitForAllPlayersSpawned());
     }
 
-    private void InitCitizenCount()
+    public void InitCitizenCount(int count)
     {
-        citizenCount = GetRoleCount(PlayerRole.Citizen);
+        photonView.RPC("SyncInitCitizenCount", RpcTarget.All, count);
+    }
+
+    [PunRPC]
+    private void SyncInitCitizenCount(int count)
+    {
+        citizenCount = count;
     }
 
     private int GetRoleCount(PlayerRole playerRole)
@@ -63,7 +65,12 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void EliminateOrEscapeCitizen()
     {
-        if (citizenCount > 0)
+        if (citizenCount < 1)
+        {
+            Debug.Log("GameManager : citizenCount가 초기화 되지 않았습니다.");
+            return;
+        }
+        else
         {
             photonView.RPC("SyncEliminateOrEscapeCitizen", RpcTarget.All);
         }
