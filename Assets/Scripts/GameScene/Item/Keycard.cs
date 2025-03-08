@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "Keycard", menuName = "ScriptableObjects/Keycard")]
-public class Keycard : Item
+public class Keycard : ItemData
 {
     public RayModule rayModule;
     public float useDistance = 2f;

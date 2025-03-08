@@ -31,7 +31,7 @@ public class RotationDoor : MonoBehaviour
         isFocused = focus;
     }
 
-    private void HandleOpenDoor(Item heldItem)
+    private void HandleOpenDoor(ItemData heldItem)
     {
         OpenBothDoors();
     }

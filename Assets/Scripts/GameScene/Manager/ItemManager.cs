@@ -5,7 +5,7 @@ public class ItemManager : MonoBehaviour
 {
     public static ItemManager Instance { get; private set; }
 
-    [SerializeField] private Item[] items;
+    [SerializeField] private ItemData[] items;
 
     private void Awake()
     {
@@ -19,9 +19,9 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-    public Item GetItemByName(string itemName)
+    public ItemData GetItemByName(string itemName)
     {
-        foreach (Item item in items)
+        foreach (ItemData item in items)
         {
             if (item.itemName == itemName)
             {

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PasswordPaper", menuName = "ScriptableObjects/PasswordPaper")]
-public class PasswordPaper : Item
+public class PasswordPaper : ItemData
 {
     public override void UseItem()
     {

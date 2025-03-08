@@ -4,7 +4,7 @@ using UnityEngine;
 namespace GameScene.Item
 {
     [CreateAssetMenu(fileName = "Gun", menuName = "ScriptableObjects/Gun")]
-    public class Gun : global::Item
+    public class Gun : global::ItemData
     {
         [Header("총 레이 모듈")]
         public RayModule rayModule;

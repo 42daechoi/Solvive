@@ -97,13 +97,13 @@ public class Raticle : MonoBehaviour
         
     }
     
-    public void UpdateCrosshairByItemDelayed(Item currentItem)
+    public void UpdateCrosshairByItemDelayed(ItemData currentItem)
     {
         StartCoroutine(UpdateCrosshairByItem(currentItem));
     }
 
 
-    private IEnumerator UpdateCrosshairByItem(Item currentItem)
+    private IEnumerator UpdateCrosshairByItem(ItemData currentItem)
     {
         yield return new WaitForSeconds(0.1f);
         

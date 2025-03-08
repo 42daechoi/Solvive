@@ -6,7 +6,7 @@ using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 public class HeldItem : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private Item item;
+    [SerializeField] private FarmingObject item;
     [SerializeField] private GameObject itemObject;
     [SerializeField] private int slotIndex;
     [SerializeField] private EquipItem equipItem;
@@ -52,50 +52,48 @@ public class HeldItem : MonoBehaviourPunCallbacks
         {
             if (keyCode == 1)
             {
-                equipItem.UnEquip(item, itemObject, true, true);
+                equipItem.UnEquip(itemObject, true, true);
                 photonView.RPC("InitItemInfo", RpcTarget.All, photonView.ViewID);
                 if (slotHighlight != null)
                 {
                     slotIndex = keyCode - 2;
-                    slotHighlight.UpdateSlotHighlight(slotIndex+1);
+                    slotHighlight.UpdateSlotHighlight(slotIndex + 1);
                 }
                 if (Raticle.Instance != null)
                 {
-                    Raticle.Instance.UpdateCrosshairByItemDelayed(this.GetItem());
+                    Raticle.Instance.UpdateCrosshairByItemDelayed(item.GetItemData());
                 }
             }
             else
             {
                 if (item != null)
                 {
-                    equipItem.UnEquip(item, itemObject, true, true);
+                    equipItem.UnEquip(itemObject, true, true);
                 }
                 slotIndex = keyCode - 2;
                 if (slotHighlight != null)
                 {
-                    slotHighlight.UpdateSlotHighlight(slotIndex+1);
+                    slotHighlight.UpdateSlotHighlight(slotIndex + 1);
                 }
                 item = inventory.GetItem(slotIndex);
                 itemObject = equipItem.Equip(item);
-                Debug.Log("SelectItem 후 장착 아이템: " + (GetItem() != null ? GetItem().itemName : "null"));
                 if (item == null)
                 {
                     Debug.Log("HeldItem : 해당 슬롯에는 아이템이 없습니다.");
                     photonView.RPC("InitItemInfo", RpcTarget.All, photonView.ViewID);
                     if (Raticle.Instance != null)
                     {
-                        Raticle.Instance.UpdateCrosshairByItemDelayed(this.GetItem());
+                        Raticle.Instance.UpdateCrosshairByItemDelayed(null);
                     }
                     return;
                 }
                 else
                 {
-                    int itemViewID = itemObject.GetPhotonView().ViewID;
-                    photonView.RPC("SyncItemInfo", RpcTarget.Others, photonView.ViewID, itemViewID, keyCode);
+                    photonView.RPC("SyncItemInfo", RpcTarget.Others, photonView.ViewID, item.GetViewID(), keyCode);
                 }
                 if (Raticle.Instance != null)
                 {
-                    Raticle.Instance.UpdateCrosshairByItemDelayed(this.GetItem());
+                    Raticle.Instance.UpdateCrosshairByItemDelayed(item.GetItemData());
                 }
             }
         }
@@ -152,7 +150,7 @@ public class HeldItem : MonoBehaviourPunCallbacks
         if (!photonView.IsMine) return;
         if (item != null)
         {
-            equipItem.UnEquip(item, itemObject, false, needCollider);
+            equipItem.UnEquip(itemObject, false, needCollider);
 
             int viewID = itemObject.GetPhotonView().ViewID;
             photonView.RPC("SyncReplaceItem", RpcTarget.All, replacePosition, viewID);
@@ -183,7 +181,9 @@ public class HeldItem : MonoBehaviourPunCallbacks
     {
         if (!photonView.IsMine) return;
         ReplaceItem(GetDropPosition(), true);
-        Raticle.Instance.UpdateCrosshairByItemDelayed(this.GetItem());
+        if (item == null) Raticle.Instance.UpdateCrosshairByItemDelayed(null);
+        else Raticle.Instance.UpdateCrosshairByItemDelayed(item.GetItemData());
+
     }
 
     private Vector3 GetDropPosition()
@@ -197,7 +197,7 @@ public class HeldItem : MonoBehaviourPunCallbacks
         return dropPosition;
     }
 
-    public Item GetItem()
+    public FarmingObject GetItem()
     {
         return item;
     }
@@ -216,7 +216,7 @@ public class HeldItem : MonoBehaviourPunCallbacks
             Debug.Log("HeldItem : 사용할 아이템이 없습니다.");
             return;
         }
-        Debug.Log($"HeldItem : {item.itemName} 아이템 사용");
-        item.UseItem();
+        Debug.Log($"HeldItem : {item.GetItemData().itemName} 아이템 사용");
+        item.GetItemData().UseItem();
     }
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Flashlight", menuName = "ScriptableObjects/Flashlight")]
-public class Flashlight : Item
+public class Flashlight : ItemData
 {
     public override void UseItem()
     {
