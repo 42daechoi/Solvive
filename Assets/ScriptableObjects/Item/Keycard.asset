@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Keycard
   icon: {fileID: 21300000, guid: 8186b4d01c1c77b43987bb8405b568f7, type: 3}
-  equipPosition: {x: 0, y: 0, z: 0}
+  equipPosition: {x: 0, y: 0.08, z: 0}
   equipRotation: {x: 0, y: 0, z: 0}
   rayModule: {fileID: 11400000, guid: 415e93ab7a3fb6c439873c8febaef11f, type: 2}
   useDistance: 2
