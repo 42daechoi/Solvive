@@ -59,6 +59,10 @@ public class HeldItem : MonoBehaviourPunCallbacks
                     slotIndex = keyCode - 2;
                     slotHighlight.UpdateSlotHighlight(slotIndex+1);
                 }
+                if (Raticle.Instance != null)
+                {
+                    Raticle.Instance.UpdateCrosshairByItemDelayed(this.GetItem());
+                }
             }
             else
             {
@@ -73,16 +77,25 @@ public class HeldItem : MonoBehaviourPunCallbacks
                 }
                 item = inventory.GetItem(slotIndex);
                 itemObject = equipItem.Equip(item);
+                Debug.Log("SelectItem 후 장착 아이템: " + (GetItem() != null ? GetItem().itemName : "null"));
                 if (item == null)
                 {
                     Debug.Log("HeldItem : 해당 슬롯에는 아이템이 없습니다.");
                     photonView.RPC("InitItemInfo", RpcTarget.All, photonView.ViewID);
+                    if (Raticle.Instance != null)
+                    {
+                        Raticle.Instance.UpdateCrosshairByItemDelayed(this.GetItem());
+                    }
                     return;
                 }
                 else
                 {
                     int itemViewID = itemObject.GetPhotonView().ViewID;
                     photonView.RPC("SyncItemInfo", RpcTarget.Others, photonView.ViewID, itemViewID, keyCode);
+                }
+                if (Raticle.Instance != null)
+                {
+                    Raticle.Instance.UpdateCrosshairByItemDelayed(this.GetItem());
                 }
             }
         }
@@ -170,6 +183,7 @@ public class HeldItem : MonoBehaviourPunCallbacks
     {
         if (!photonView.IsMine) return;
         ReplaceItem(GetDropPosition(), true);
+        Raticle.Instance.UpdateCrosshairByItemDelayed(this.GetItem());
     }
 
     private Vector3 GetDropPosition()
