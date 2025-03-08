@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Photon.Pun;
+using Unity.VisualScripting;
 
 public class EquipItem : MonoBehaviourPunCallbacks
 {
@@ -20,19 +21,27 @@ public class EquipItem : MonoBehaviourPunCallbacks
     
     private bool isProcessing = false;
 
-    public GameObject Equip(Item item)
+    public GameObject Equip(FarmingObject item)
     {
         if (photonView.IsMine)
         {
-            StartCoroutine(FirstPersonEquipProcess(item));
+            if (item == null)
+            {
+                StartCoroutine(FirstPersonEquipProcess(null));
+            }
+            else
+            {
+                StartCoroutine(FirstPersonEquipProcess(item.GetItemData()));
+            }
         }
         
         if (item == null)
         {
             return null;
         }
-        
-        GameObject equipItem = ObjectPool.instance.GetObject(item.itemName, Vector3.zero, Quaternion.identity);
+        ItemData itemData = item.GetItemData();
+
+        GameObject equipItem = ObjectPool.instance.GetObject(item.GetViewID(), Vector3.zero, Quaternion.identity);
         if (equipItem == null)
         {
             Debug.Log("EquipItem : 오브젝트 풀에서 장착할 아이템을 받아오지 못했습니다.");
@@ -42,15 +51,26 @@ public class EquipItem : MonoBehaviourPunCallbacks
         int viewID = equipItem.GetPhotonView().ViewID;
         if (equipItem)
         {
-            photonView.RPC("SyncEquipItem", RpcTarget.All, viewID, item.equipPosition, item.equipRotation, photonView.ViewID);
-            string animationState = item.itemName == "Battery" ? "Carry" : "Default";
+            photonView.RPC("SyncEquipItem", RpcTarget.All, viewID, itemData.equipPosition, itemData.equipRotation, photonView.ViewID);
+            string animationState = itemData.itemName == "Battery" ? "Carry" : "Default";
             EventManager_Game.Instance.InvokeAnimationStateChange(animationState);
         }
-        
+        StartCoroutine(CheckItemIsPasswordPaper(itemData.itemName, equipItem));
+
         return equipItem;
     }
+
+    private IEnumerator CheckItemIsPasswordPaper(string itemName, GameObject equipItem)
+    {
+        if (itemName == "PasswordPaper")
+        {
+            yield return new WaitForSeconds(0.2f);
+            SyncPassword syncPassword = GetComponentInChildren<SyncPassword>(true);
+            syncPassword.SetPasswordToFirstPersonPaper(equipItem);
+        }
+    }
     
-    private IEnumerator FirstPersonEquipProcess(Item item)
+    private IEnumerator FirstPersonEquipProcess(ItemData item)
     {
         if (isProcessing)
         {
@@ -166,13 +186,13 @@ public class EquipItem : MonoBehaviourPunCallbacks
         }
     }
 
-    public void UnEquip(Item item, GameObject itemObject, bool isReturnPool, bool needCollider)
+    public void UnEquip(GameObject itemObject, bool isReturnPool, bool needCollider)
     {
         if (itemObject)
         {
             if (isReturnPool)
             {
-                ObjectPool.instance.ReturnObject(itemObject, item.itemName);
+                ObjectPool.instance.ReturnObject(itemObject);
             }
             int viewID = itemObject.GetPhotonView().ViewID;
             photonView.RPC("SyncUnequip", RpcTarget.All, viewID, needCollider);

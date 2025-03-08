@@ -53,8 +53,8 @@ public class Hatch : MonoBehaviourPun, IInteractableObject
     [PunRPC]
     private void Escape(int playerID)
     {
-        Debug.Log($"Player {playerID} has escaped!");
-        // 탈출 처리 (씬 이동, UI 업데이트 등)
+        Debug.Log($"Hatch : Player {playerID} has escaped!");
+        GameManager.Instance.EliminateOrEscapeCitizen();
     }
 
     GameObject FindObjectByViewID(int viewID)

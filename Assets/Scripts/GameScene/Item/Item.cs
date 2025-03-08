@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Farming/Item")]
-public abstract class Item : ScriptableObject
+public abstract class ItemData : ScriptableObject
 {
     [Header("아이템 기본 정보")]
     public string itemName;

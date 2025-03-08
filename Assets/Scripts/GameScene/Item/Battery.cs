@@ -2,7 +2,7 @@ using Photon.Pun;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Battery", menuName = "ScriptableObjects/Battery")]
-public class Battery : Item
+public class Battery : ItemData
 {
     [SerializeField] private RayModule rayModule;
     public override void UseItem()

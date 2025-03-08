@@ -31,4 +31,9 @@ public class PasswordSetter : MonoBehaviour
         }
         tmp.text = password;
     }
+
+    public string GetPassword()
+    {
+        return password;
+    }
 }

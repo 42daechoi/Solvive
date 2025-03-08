@@ -22,12 +22,12 @@ public class InventoryUI : MonoBehaviourPun
 
     public void UpdateUI(Inventory inventory)
     {
-        Item[] itemSlots = inventory.GetItemSlots();
+        FarmingObject[] itemSlots = inventory.GetItemSlots();
         for (int i = 1; i < slotUI.Length; i++)
         {
             if (i < itemSlots.Length && itemSlots[i - 1] != null)
             {
-                slotUI[i].sprite = itemSlots[i - 1].icon;
+                slotUI[i].sprite = itemSlots[i - 1].GetItemData().icon;
             }
             else
             {

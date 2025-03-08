@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviourPun
 {
-    [SerializeField]private Item[] itemSlots = new Item[4];
+    [SerializeField] private FarmingObject[] itemSlots = new FarmingObject[4];
 
     private void OnEnable()
     {
@@ -16,26 +16,32 @@ public class Inventory : MonoBehaviourPun
         EventManager_Game.Instance.OnRemoveItem -= RemoveItem;
     }
 
-    public bool AddItem(Item item)
+    public bool AddItem(FarmingObject farmingObject)
     {
         if (!photonView.IsMine) return false;
+
         for (int i = 0; i < itemSlots.Length; i++)
         {
             if (itemSlots[i] == null)
             {
-                Debug.Log($"Inventory : {item.itemName}을 획득하였습니다.");
-                int playerID = photonView.ViewID;
-                photonView.RPC("SyncInventory", RpcTarget.All, playerID, i, item.itemName);
+                ItemData itemData = farmingObject.GetItemData();
+                int itemViewID = farmingObject.GetViewID();
+
+                Debug.Log($"Inventory : {itemData.itemName}을 획득하였습니다.");
+                itemSlots[i] = farmingObject;
+
+                photonView.RPC("SyncInventory", RpcTarget.All, photonView.ViewID, i, itemViewID);
                 InventoryUI.Instance.UpdateUI(this);
                 return true;
             }
         }
+
         Debug.Log("인벤토리가 가득 찼습니다.");
         return false;
     }
 
     [PunRPC]
-    private void SyncInventory(int playerID, int idx, string itemName)
+    private void SyncInventory(int playerID, int idx, int farmingObjectViewID)
     {
         try
         {
@@ -44,28 +50,44 @@ public class Inventory : MonoBehaviourPun
 
             if (playerPV.TryGetComponent(out Inventory inventory))
             {
-                if (itemName == null)
+                if (farmingObjectViewID == 0)
                 {
                     inventory.SetItem(idx, null);
                     return;
                 }
-                inventory.SetItem(idx, ItemManager.Instance.GetItemByName(itemName));
+
+                PhotonView farmingObjectPV = PhotonView.Find(farmingObjectViewID);
+                if (farmingObjectPV != null && farmingObjectPV.TryGetComponent(out FarmingObject farmingObject))
+                {
+                    inventory.SetItem(idx, farmingObject);
+                }
+                else
+                {
+                    Debug.LogError($"FarmingObject not found with ViewID {farmingObjectViewID}");
+                }
             }
         }
         catch (NullReferenceException e)
         {
             Debug.LogError($"Inventory : {e.Message}");
         }
+    }
 
+
+    public void SetItem(int idx, FarmingObject fo)
+    {
+        itemSlots[idx] = fo;
     }
 
     public void RemoveItem(int slotIndex)
     {
         if (!photonView.IsMine) return;
+
         if (itemSlots[slotIndex] != null)
         {
             int playerID = photonView.ViewID;
-            photonView.RPC("SyncInventory", RpcTarget.All, playerID, slotIndex, null);
+            photonView.RPC("SyncInventory", RpcTarget.All, playerID, slotIndex, 0);
+            itemSlots[slotIndex] = null;
             InventoryUI.Instance.UpdateUI(this);
         }
         else
@@ -74,17 +96,12 @@ public class Inventory : MonoBehaviourPun
         }
     }
 
-    public Item GetItem(int slotIndex)
+    public FarmingObject GetItem(int slotIndex)
     {
         return itemSlots[slotIndex];
     }
 
-    public void SetItem(int slotIdx, Item item)
-    {
-        itemSlots[slotIdx] = item;
-    }
-
-    public Item[] GetItemSlots()
+    public FarmingObject[] GetItemSlots()
     {
         return itemSlots;
     }
