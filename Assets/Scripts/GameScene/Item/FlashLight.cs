@@ -12,7 +12,7 @@ public class Flashlight : Item
         }
         else
         {
-            Debug.LogWarning("³» ÇÃ·¹ÀÌ¾îÀÇ ÇÃ·¡½Ã¶óÀÌÆ®¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+            Debug.LogWarning("ë‚´ í”Œë ˆì´ì–´ì˜ í”Œë˜ì‹œë¼ì´íŠ¸ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
         }
     }
 
