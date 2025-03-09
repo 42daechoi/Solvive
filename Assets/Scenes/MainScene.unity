@@ -846,6 +846,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 495615150670910465, guid: 72baa7c576be51e41bbda70eca687837, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7770509971488538591, guid: 72baa7c576be51e41bbda70eca687837, type: 3}
+      propertyPath: playerLeftRoomText
+      value: 
+      objectReference: {fileID: 310622302}
     - target: {fileID: 8404671938900453127, guid: 72baa7c576be51e41bbda70eca687837, type: 3}
       propertyPath: m_LocalPosition.x
       value: 347.19443
@@ -1671,6 +1679,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 293576917}
   m_CullTransparentMesh: 1
+--- !u!114 &310622302 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 495615150670910465, guid: 72baa7c576be51e41bbda70eca687837, type: 3}
+  m_PrefabInstance: {fileID: 142703104}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &317786759
 GameObject:
   m_ObjectHideFlags: 0
