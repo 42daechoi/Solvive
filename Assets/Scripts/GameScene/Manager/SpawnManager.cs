@@ -175,4 +175,44 @@ public class SpawnManager : MonoBehaviourPun
         }
         return spawnPosition;
     }
+    
+    public void RespawnMannequin(GameObject mannequin)
+    {
+	    // 사용 가능한 스폰 포인트 목록 생성
+	    List<int> availableIndices = new List<int>();
+	    for (int i = 0; i < playerSpawnPoints.Length; i++)
+	    {
+		    if (!isSpawned[i])
+		    {
+			    availableIndices.Add(i);
+		    }
+	    }
+
+	    // 만약 사용 가능한 포인트가 없으면 임의의 인덱스를 추가
+	    if (availableIndices.Count == 0)
+	    {
+		    availableIndices.Add(Random.Range(0, playerSpawnPoints.Length));
+	    }
+
+	    // 랜덤하게 스폰 인덱스 선택
+	    int spawnIdx = availableIndices[Random.Range(0, availableIndices.Count)];
+	    Vector3 spawnPosition = playerSpawnPoints[spawnIdx].position;
+	    Quaternion spawnRotation = playerSpawnPoints[spawnIdx].rotation;
+
+	    // PhotonView가 자신의 오브젝트인지 확인 후 RPC 호출하여 위치 업데이트
+	    PhotonView pv = mannequin.GetComponent<PhotonView>();
+	    if (pv != null && pv.IsMine)
+	    {
+		    // 'UpdateMannequinPosition' RPC는 마네킹 오브젝트에 붙은 스크립트에 정의되어 있어야 합니다.
+		    pv.RPC("UpdateMannequinPosition", RpcTarget.All, spawnPosition, spawnRotation);
+		    Debug.Log("RPC 호출로 위치 이동: " + mannequin.name + " at spawn index " + spawnIdx);
+	    }
+	    else
+	    {
+		    Debug.Log("PhotonView가 없거나 소유자가 아님");
+	    }
+
+	    // 선택된 스폰 포인트를 사용중으로 표시 (모든 클라이언트에 동기화)
+	    photonView.RPC("UsedSpawnPointSync", RpcTarget.All, spawnIdx);
+    }
 }

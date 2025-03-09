@@ -340,4 +340,40 @@ public class PlayerController : MonoBehaviourPun
         localSpeedSettings.sprintSpeed += 1f;
         _mannequinEscape = true;
     }
+    
+    [PunRPC]
+    public void UpdateMannequinPosition(Vector3 newPosition, Quaternion newRotation)
+    {
+        // PhotonTransformView가 있으면 임시로 비활성화
+        PhotonTransformView ptv = GetComponent<PhotonTransformView>();
+        PlayerMovement pm = GetComponent<PlayerMovement>();
+        if (ptv != null)
+        {
+            ptv.enabled = false;
+            pm.enabled = false;
+        }
+        
+        Debug.Log("UpdateMannequinPosition RPC 실행: " + name + " 새 위치: " + newPosition + ", 새 회전: " + newRotation);
+        
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.MovePosition(newPosition);
+            rb.MoveRotation(newRotation);
+            Debug.Log("Rigidbody 사용하여 위치 이동");
+        }
+        else
+        {
+            transform.position = newPosition;
+            transform.rotation = newRotation;
+            Debug.Log("Transform 직접 업데이트하여 위치 이동");
+        }
+        
+        // 업데이트 후 PhotonTransformView를 다시 활성화
+        if (ptv != null)
+        {
+            ptv.enabled = true;
+            pm.enabled = true;
+        }
+    }
 }
