@@ -14,6 +14,7 @@ public class GameLobbyManager : MonoBehaviourPunCallbacks
     public TMP_Text actionButtonText;
     public Button backButton;
     public Canvas LoadingCanvas;
+    public RoomList roomList;
 
     private Dictionary<string, GameObject> playerItems = new Dictionary<string, GameObject>();
 
@@ -190,9 +191,16 @@ public class GameLobbyManager : MonoBehaviourPunCallbacks
                 return;
             }
         }
+
+        PhotonNetwork.CurrentRoom.IsOpen = false; //방 입장 기능 비활성화
+        PhotonNetwork.CurrentRoom.IsVisible = false;    //방 목록 비가시화
+        
+        ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();  //프롬포티 선언
+        props["GameStarted"] = true;    //프롬포티에 방 시작 true로 변경
+        PhotonNetwork.CurrentRoom.SetCustomProperties(props);   //방 설정 업데이트
+        
         photonView.RPC("Loading", RpcTarget.All);
         Debug.Log("게임 시작");
-        //PhotonNetwork.LoadLevel("LoadingScene");
         PhotonNetwork.LoadLevel("GameScene");
     }
     

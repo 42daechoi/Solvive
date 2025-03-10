@@ -340,4 +340,21 @@ public class PlayerController : MonoBehaviourPun
         localSpeedSettings.sprintSpeed += 1f;
         _mannequinEscape = true;
     }
+    
+    [PunRPC]
+    public void UpdateMannequinPosition(Vector3 newPosition, Quaternion newRotation)
+    {
+        CharacterController cc = GetComponent<CharacterController>();
+        if (cc != null)
+        {
+            cc.enabled = false;
+        }
+
+        transform.position = newPosition;
+        transform.rotation = newRotation;
+        if (cc != null)
+        {
+            cc.enabled = true;
+        }
+    }
 }

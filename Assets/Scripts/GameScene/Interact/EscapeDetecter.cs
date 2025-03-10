@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 
-public class playerDetecter : MonoBehaviour
+public class playerDetecter : MonoBehaviourPunCallbacks
 {
+    public SpawnManager spawnManager;
+    
     private bool playerInside = false;
+    
 
     void OnTriggerEnter(Collider other)
     {
@@ -37,8 +41,8 @@ public class playerDetecter : MonoBehaviour
                     PlayerController pc = other.GetComponent<PlayerController>(); 
                     if (pc != null)
                     {
-                        Debug.Log("1111111111111111111111111");
                         pc.MannequinEscapeTrigger();
+                        spawnManager.RespawnMannequin(other.gameObject);
                     }
                     else
                     {
