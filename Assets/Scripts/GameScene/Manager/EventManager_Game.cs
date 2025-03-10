@@ -15,6 +15,7 @@ public class EventManager_Game : MonoBehaviour
     public event Action OnDropItem;
     public event Action<int> OnHeldItem;
     public event Action OnUseItem;
+    public event Action<bool> OnFPSflashlightToggle;
     public event Action OnInteraction;
 
     // Player Animation
@@ -166,5 +167,10 @@ public class EventManager_Game : MonoBehaviour
         Debug.Log("EventManger_Game : 게임 종료 이벤트 발생 [승자:" + playerRole + "]");
 
         OnEndGame?.Invoke(playerRole);
+    }
+
+    public void InvokeFPSlightToggle(bool isOn)
+    {
+        OnFPSflashlightToggle?.Invoke(isOn);
     }
 }

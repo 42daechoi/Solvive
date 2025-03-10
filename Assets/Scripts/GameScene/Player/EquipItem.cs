@@ -177,8 +177,8 @@ public class EquipItem : MonoBehaviourPunCallbacks
             
             if (equipItem.name.Contains("Flashlight"))
             {
-                Light[] lights = equipItem.GetComponentsInChildren<Light>();
-                foreach (Light light in lights)
+                Light light = equipItem.GetComponentInChildren<Light>();
+                if (light != null)
                 {
                     light.enabled = false;
                 }
@@ -264,14 +264,14 @@ public class EquipItem : MonoBehaviourPunCallbacks
             {
                 renderer.enabled = true;
             }
-            
-            if (unequipItem.name.Contains("Flashlight"))
+        }
+        
+        if (unequipItem.name.Contains("Flashlight"))
+        {
+            Light light = unequipItem.GetComponentInChildren<Light>();
+            if (light != null)
             {
-                Light[] lights = unequipItem.GetComponentsInChildren<Light>();
-                foreach (Light light in lights)
-                {
-                    light.enabled = true;
-                }
+                light.enabled = false;
             }
         }
         

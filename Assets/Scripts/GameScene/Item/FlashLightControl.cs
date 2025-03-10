@@ -1,33 +1,32 @@
 using UnityEngine;
 using Photon.Pun;
+using UnityEditor;
 
 public class FlashLightControl : MonoBehaviourPun
 {
     [SerializeField] private GameObject whiteLight;
-    private string firstPersonLightName = "WhiteLight_First";
-    private GameObject firstPersonLight;
+    private bool isOn = false;
 
     public void ToggleFlashlight()
     {
-        photonView.RPC("SyncToggleFlashlight", RpcTarget.All);
+        isOn = !isOn;
+        photonView.RPC("SyncToggleFlashlight", RpcTarget.All, isOn);
     }
 
     [PunRPC]
-    private void SyncToggleFlashlight()
+    private void SyncToggleFlashlight(bool isOn)
     {
-        bool isActive = whiteLight.activeSelf;
-        whiteLight.SetActive(!isActive);
-
-        if (photonView.IsMine)
+        Light light = whiteLight.GetComponent<Light>();
+        if (light != null)
         {
-            if (firstPersonLight == null)
+            if (photonView.transform.root.GetComponent<PhotonView>().IsMine)
             {
-                firstPersonLight = GameObject.Find(firstPersonLightName);
+                light.enabled = false;
+                EventManager_Game.Instance.InvokeFPSlightToggle(isOn);
             }
-
-            if (firstPersonLight != null)
+            else
             {
-                firstPersonLight.SetActive(!isActive);
+                light.enabled = isOn;
             }
         }
     }
