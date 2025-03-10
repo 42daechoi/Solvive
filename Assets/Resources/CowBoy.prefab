@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1332784042215467423}
   - component: {fileID: 7470497530727782295}
   - component: {fileID: 1459528134989640662}
-  - component: {fileID: 1724497594437183218}
   - component: {fileID: -218576575918510177}
   - component: {fileID: -7020588551510213420}
   - component: {fileID: 687975531188347073}
@@ -23,6 +22,7 @@ GameObject:
   - component: {fileID: 4034976945309865009}
   - component: {fileID: 2737502456076763649}
   - component: {fileID: 3984789023996562868}
+  - component: {fileID: 7429352715517708346}
   m_Layer: 3
   m_Name: CowBoy
   m_TagString: Player
@@ -82,26 +82,11 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   ObservedComponents:
-  - {fileID: 1724497594437183218}
   - {fileID: 5581043835264047607}
+  - {fileID: 7429352715517708346}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &1724497594437183218
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 561389139830730110}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
 --- !u!114 &-218576575918510177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -353,6 +338,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   role: 0
+--- !u!114 &7429352715517708346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561389139830730110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
 --- !u!1 &776565091165452062
 GameObject:
   m_ObjectHideFlags: 0

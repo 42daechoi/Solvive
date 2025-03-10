@@ -175,4 +175,37 @@ public class SpawnManager : MonoBehaviourPun
         }
         return spawnPosition;
     }
+    
+    public void RespawnMannequin(GameObject mannequin)
+    {
+	    List<int> availableIndices = new List<int>();
+	    for (int i = 0; i < playerSpawnPoints.Length; i++)
+	    {
+		    if (!isSpawned[i])
+		    {
+			    availableIndices.Add(i);
+		    }
+	    }
+	    
+	    if (availableIndices.Count == 0)
+	    {
+		    availableIndices.Add(Random.Range(0, playerSpawnPoints.Length));
+	    }
+	    
+	    int spawnIdx = availableIndices[Random.Range(0, availableIndices.Count)];
+	    Vector3 spawnPosition = playerSpawnPoints[spawnIdx].position;
+	    Quaternion spawnRotation = playerSpawnPoints[spawnIdx].rotation;
+
+	    PhotonView pv = mannequin.GetComponent<PhotonView>();
+	    if (pv != null && pv.IsMine)
+	    {
+		    pv.RPC("UpdateMannequinPosition", RpcTarget.All, spawnPosition, spawnRotation);
+	    }
+	    else
+	    {
+		    Debug.Log("PhotonView가 없거나 소유자가 아님");
+	    }
+	    
+	    photonView.RPC("UsedSpawnPointSync", RpcTarget.All, spawnIdx);
+    }
 }
