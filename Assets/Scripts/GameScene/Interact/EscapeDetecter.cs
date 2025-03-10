@@ -41,10 +41,8 @@ public class playerDetecter : MonoBehaviourPunCallbacks
                     PlayerController pc = other.GetComponent<PlayerController>(); 
                     if (pc != null)
                     {
-                        Debug.Log("1111111111111111111111111");
                         pc.MannequinEscapeTrigger();
                         spawnManager.RespawnMannequin(other.gameObject);
-                        Debug.Log("111111111111111111111111");
                     }
                     else
                     {
