@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8969039428609777175}
   - component: {fileID: 8026176799020856400}
   - component: {fileID: 5632770793486802564}
+  - component: {fileID: 5265291194278513355}
   m_Layer: 0
   m_Name: UIManager
   m_TagString: Untagged
@@ -77,3 +78,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd57f254fb408d64e86117eecb688591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  endGameCanvasObject: {fileID: 0}
+  winnerText: {fileID: 0}
+  inventoryCanvasObject: {fileID: 0}
+  buttonImage: {fileID: 0}
+  backToLobby: {fileID: 0}
+  leaveGame: {fileID: 0}
+  waitForMasterText: {fileID: 0}
+--- !u!114 &5265291194278513355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8922031823815175291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dba36e9aa07782d47bb744eea18532ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  escCanvas: {fileID: 0}
+  backGameButton: {fileID: 0}
+  exitGameButton: {fileID: 0}
