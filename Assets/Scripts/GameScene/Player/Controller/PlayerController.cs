@@ -121,6 +121,7 @@ public class PlayerController : MonoBehaviourPun
         EventManager_Game.Instance.OnInteraction += HandleInteraction;
         EventManager_Game.Instance.OnUseComputer += HandleUseComputer;
         EventManager_Game.Instance.OnMoveToComputer += HandleMoveToComputer;
+        EventManager_Game.Instance.OnObserverState += HandleObserverState;
     }
 
     private void OnDisable()
@@ -129,6 +130,7 @@ public class PlayerController : MonoBehaviourPun
         EventManager_Game.Instance.OnInteraction -= HandleInteraction;
         EventManager_Game.Instance.OnUseComputer -= HandleUseComputer;
         EventManager_Game.Instance.OnMoveToComputer -= HandleMoveToComputer;
+        EventManager_Game.Instance.OnObserverState -= HandleObserverState;
     }
     
     private void Update()
@@ -281,6 +283,18 @@ public class PlayerController : MonoBehaviourPun
         bool isJumping = VerticalVelocity > 0.1f;
         _playerAnimator.SetJumpAnim(isJumping, isGrounded); 
         _playerAnimator.SetMoveAnim(_playerMovement.InputDirection.x, _playerMovement.InputDirection.z, _playerMovement.Offset);
+        
+    }
+
+    private void HandleObserverState()
+    {
+        Debug.Log("PlayerController : 옵저버이벤트 구독후 메소드호출");
+        TransitionToState(new ObserverState());
+        GetComponent<Inventory>().enabled = false;
+        GetComponent<HeldItem>().enabled = false;
+        GetComponent<EquipItem>().enabled = false;
+        GetComponent<PlayerCamera>().enabled = false;
+        GetComponent<PlayerHealth>().enabled = false;
         
     }
     

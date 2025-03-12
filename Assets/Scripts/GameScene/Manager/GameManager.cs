@@ -80,6 +80,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     private void SyncEliminateOrEscapeCitizen()
     {
         citizenCount--;
+        EventManager_Game.Instance.InvokeObserverState();
+        Debug.Log("GameManager: InvokeObserverState발행요청");
         if (citizenCount == 0)
         {
             if (GetRoleCount(PlayerRole.Mannequin) > 0)
