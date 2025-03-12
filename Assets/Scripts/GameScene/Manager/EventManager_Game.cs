@@ -38,6 +38,7 @@ public class EventManager_Game : MonoBehaviour
     public event Action OnAllComputerUnlocked;
     public event Action OnOneCitizenAlive;
     public event Action<PlayerRole> OnEndGame;
+    public static event Action OnEscButton;
 
 
 
@@ -172,5 +173,10 @@ public class EventManager_Game : MonoBehaviour
     public void InvokeFPSlightToggle(bool isOn)
     {
         OnFPSflashlightToggle?.Invoke(isOn);
+    }
+
+    public void InvokeEscUI()
+    {
+        OnEscButton?.Invoke();
     }
 }
