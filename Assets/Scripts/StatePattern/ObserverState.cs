@@ -28,7 +28,7 @@ public class ObserverState : IState
         Vector3 movement = new Vector3(inputDirection.x, 0, inputDirection.z).normalized;
         movement = player.transform.TransformDirection(movement);
         movement.y = 0;
-        movement *= player.SpeedSettings.walkSpeed;
+        movement *= player.SpeedSettings.obSpeed;
         player.Controller.Move(movement * Time.fixedDeltaTime);
         
     }
