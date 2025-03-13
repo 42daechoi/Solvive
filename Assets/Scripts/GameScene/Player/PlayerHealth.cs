@@ -63,7 +63,7 @@ public class PlayerHealth : MonoBehaviourPun
             Debug.Log($"{gameObject.name} 사망");
             if (TryGetComponent(out PlayerRoleDistribution prd))
             {
-                if (prd.role == PlayerRole.Citizen) GameManager.Instance.EliminateOrEscapeCitizen();
+                if (prd.role == PlayerRole.Citizen) GameManager.Instance.EliminateOrEscapeCitizen(photonView.ViewID);
             }
         }
     }
