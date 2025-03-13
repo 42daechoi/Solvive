@@ -88,6 +88,11 @@ public class InputManager_Game : MonoBehaviour
             EventManager_Game.Instance.InvokeUseItem();
         }
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            EventManager_Game.Instance.InvokeEscUI();
+        }
+
         // 아이템 버리기
         if (Input.GetKeyDown(KeyCode.G))
         {
