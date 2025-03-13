@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         return count;
     }
 
-    public void EliminateOrEscapeCitizen()
+    public void EliminateOrEscapeCitizen(int viewID)
     {
         if (citizenCount < 1)
         {
@@ -72,16 +72,16 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            photonView.RPC("SyncEliminateOrEscapeCitizen", RpcTarget.All);
+            photonView.RPC("SyncEliminateOrEscapeCitizen", RpcTarget.All, viewID);
         }
     }
 
     [PunRPC]
-    private void SyncEliminateOrEscapeCitizen()
+    private void SyncEliminateOrEscapeCitizen(int viewID)
     {
         citizenCount--;
-        EventManager_Game.Instance.InvokeObserverState();
-        Debug.Log("GameManager: InvokeObserverState발행요청");
+        EventManager_Game.Instance.InvokeObserverState(viewID);
+        Debug.Log($"GameManager: InvokeObserverState발행요청 - ViewID: {viewID}");
         if (citizenCount == 0)
         {
             if (GetRoleCount(PlayerRole.Mannequin) > 0)

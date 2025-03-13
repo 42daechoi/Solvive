@@ -85,4 +85,27 @@ public class PlayerCamera : MonoBehaviour
     {
         _isCameraActive = isActive;
     }
+    
+    public void SetVirtualCamera(CinemachineVirtualCamera newCamera)
+    {
+        virtualCamera = newCamera;
+    
+        if (_photonView.IsMine && virtualCamera != null)
+        {
+            virtualCamera.Follow = camFollowPos;
+            virtualCamera.LookAt = camFollowPos;
+            virtualCamera.gameObject.SetActive(true);
+        }
+    }
+
+    public void SetCamFollowPos(Transform newFollowPos)
+    {
+        camFollowPos = newFollowPos;
+
+        if (_photonView.IsMine && virtualCamera != null)
+        {
+            virtualCamera.Follow = camFollowPos;
+            virtualCamera.LookAt = camFollowPos;
+        }
+    }
 }

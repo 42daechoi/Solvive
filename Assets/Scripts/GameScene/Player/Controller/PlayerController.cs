@@ -1,46 +1,67 @@
 using Photon.Pun;
 using System.Collections;
+using Cinemachine;
+using RootMotion.FinalIK;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviourPun
 {
     public static PlayerController Instance { get; private set; }
     
-    [SerializeField] private GameObject thirdPersonModel;
-    [SerializeField] private GameObject firstPersonArms;
-    
-    private IState IdleState { get; set; }
-    private IState JumpState { get; set; }
-    private IState UseComputerState { get; set; }
-    public float VerticalVelocity { get; set; }
-    
-    private IState _previousState;
-    private IState _currentState;
-    
-    private RaycastHit[] _groundHits = new RaycastHit[1];
-
+    /* 참조 내역
+     * PlayerMovement, PlayerAnimator, CharacterController, PhotonView, Interaction
+     * InputManager_Game, InputManager_Computer, MovementSettings, PlayerCamera
+     */
+    #region Reference
+    private PhotonView _photonView;
+    private PlayerCamera _playerCamera;
     private PlayerMovement _playerMovement;
     private PlayerAnimator _playerAnimator;
     private CharacterController _controller;
+    private Interaction _interaction;
+    private InputManager_Game _defaultInputManager;
+    private InputManager_Computer _computerInputManager;
+    public MovementSettings localSpeedSettings;
     
     [Header("Speed Settings")]
     [SerializeField] private MovementSettings _speedSettings;
+    #endregion
     
-    private PhotonView _photonView;
-    private Interaction _interaction;
+    //상태 초기화 변수
+    #region State
+    private IState IdleState { get; set; }
+    private IState JumpState { get; set; }
+    private IState UseComputerState { get; set; }
+    private IState _previousState;
+    private IState _currentState;
+    #endregion
+    
+    [Header("Player Camera")] 
+    [SerializeField] private CinemachineVirtualCamera fpsCam;
+    [SerializeField] private CinemachineVirtualCamera obCam;
+    [SerializeField] private Transform obFollow;
+    
+    [Header("Model")]
+    [SerializeField] private GameObject thirdPersonModel;
+    [SerializeField] private GameObject firstPersonArms;
+    [SerializeField] private GameObject obRender;
+    
+    public float VerticalVelocity { get; set; }
+    private bool _mannequinEscape = false;
+    
+    //private RaycastHit[] _groundHits = new RaycastHit[1];
     
     private float _currentSpeed;
     private Vector3 _computerInteractionPoint;
     private Quaternion _computerInteractionRotation;
     
-    private InputManager_Game _defaultInputManager;
-    private InputManager_Computer _computerInputManager;
-    
+    // 호출부
     public MovementSettings SpeedSettings => _speedSettings;
     public CharacterController Controller => _controller;
-
-    public MovementSettings localSpeedSettings;
-    private bool _mannequinEscape = false;
+    public CinemachineVirtualCamera FPSCam => fpsCam;
+    public CinemachineVirtualCamera ObserverCam => obCam;
+    public Transform ObserverTarget => obFollow;
+    public PlayerCamera PlayerCamera => _playerCamera;
     
     private void Awake()
     {
@@ -67,6 +88,7 @@ public class PlayerController : MonoBehaviourPun
         _playerAnimator = GetComponent<PlayerAnimator>();
         _currentSpeed = _speedSettings.walkSpeed;
         _playerMovement = GetComponent<PlayerMovement>();
+        _playerCamera = GetComponent<PlayerCamera>();
         
         _playerMovement = gameObject.AddComponent<PlayerMovement>();
         _playerAnimator = gameObject.AddComponent<PlayerAnimator>();
@@ -286,16 +308,23 @@ public class PlayerController : MonoBehaviourPun
         
     }
 
-    private void HandleObserverState()
+    private void HandleObserverState(int viewID)
     {
-        Debug.Log("PlayerController : 옵저버이벤트 구독후 메소드호출");
-        TransitionToState(new ObserverState());
-        GetComponent<Inventory>().enabled = false;
-        GetComponent<HeldItem>().enabled = false;
-        GetComponent<EquipItem>().enabled = false;
-        GetComponent<PlayerCamera>().enabled = false;
-        GetComponent<PlayerHealth>().enabled = false;
-        
+        Debug.Log($"PlayerController: ObserverState 이벤트 수신 - 내 ViewID: {_photonView.ViewID}, 이벤트 ViewID: {viewID}");
+        if (_photonView.ViewID == viewID)
+        {
+            obRender.SetActive(false);
+            TransitionToState(new ObserverState());
+            GetComponent<Inventory>().enabled = false;
+            GetComponent<HeldItem>().enabled = false;
+            GetComponent<EquipItem>().enabled = false;
+            GetComponent<PlayerHealth>().enabled = false;
+            GetComponent<Animator>().enabled = false;
+            GetComponent<PlayerObserver>().enabled = false;
+            GetComponent<FullBodyBipedIK>().enabled = false;
+            GetComponent<PhotonAnimatorView>().enabled = false;
+            GetComponent<PhotonTransformView>().enabled = false;
+        }
     }
     
     private void HandlePlayerJump()
