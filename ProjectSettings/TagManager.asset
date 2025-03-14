@@ -12,6 +12,10 @@ TagManager:
   - door
   - IngameUI
   - Computer
+  - Arm
+  - Body
+  - Leg
+  - Head
   layers:
   - Default
   - TransparentFX

@@ -37,7 +37,7 @@ public class RayModule : ScriptableObject
         Ray centerRay = Camera.main.ScreenPointToRay(
             new Vector3(Screen.width / 2, Screen.height / 2, 0)
         );
-    
+
         // 레이 시작점(origin)과 기본 방향(direction)
         Vector3 origin = centerRay.origin;
         Vector3 direction = centerRay.direction;
@@ -47,7 +47,7 @@ public class RayModule : ScriptableObject
         {
             float randX = Random.Range(-randomRange, randomRange);
             float randY = Random.Range(-randomRange, randomRange);
-        
+    
             // direction에 랜덤 회전을 곱해줌
             direction = Quaternion.Euler(randX, randY, 0f) * direction;
         }
@@ -56,7 +56,10 @@ public class RayModule : ScriptableObject
         Ray finalRay = new Ray(origin, direction);
 
         // 4) 레이캐스트
-        if (Physics.Raycast(finalRay, out RaycastHit hit, 100f))
+        int playerLayer = LayerMask.NameToLayer("Player");
+        int layerMask = ~(1 << playerLayer);
+
+        if (Physics.Raycast(finalRay, out RaycastHit hit, 100f, layerMask))
         {
             // 디버그 레이 (씬 뷰에서 빨간 선으로 확인)
             Debug.DrawRay(origin, direction * 100f, Color.red, 1f);
@@ -85,13 +88,6 @@ public class RayModule : ScriptableObject
         {
             // 디버그 레이 (씬 뷰에서 파란 선으로 확인)
             Debug.DrawRay(origin, direction * knifeRange, Color.blue, 1f);
-
-            // 맞은 대상이 PlayerHealth를 가지고 있다면 데미지 적용 - 이건 없애는게 좋을 듯 여러군데에서 ray를 재사용하려면
-            // PlayerHealth targetHealth = hit.collider.GetComponent<PlayerHealth>();
-            // if (targetHealth != null)
-            // {
-            //     targetHealth.TakeDamage(damage);
-            // }
             return hit;
         }
         return null;

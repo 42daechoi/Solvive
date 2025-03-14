@@ -31,13 +31,40 @@ namespace GameScene.Item
                     RaycastHit hit = raycastHit.Value;
                     
                     // 맞은 대상 PhotonView 찾기
+                    string hitTag = hit.collider.gameObject.tag;
+                    
+                    // 각 부위별 데미지 배수 설정
+                    float damageMultiplier = 1f;
+                    switch (hitTag)
+                    {
+                        case "Head":
+                            damageMultiplier = 10f;
+                            break;
+                        case "Body":
+                            damageMultiplier = 6f;
+                            break;
+                        case "Arm":
+                            damageMultiplier = 2f;
+                            break;
+                        case "Leg":
+                            damageMultiplier = 2f;
+                            break;
+                    }
+                    
+                    // PhotonView는 부위 콜라이더가 없을 수 있으므로, 상위 오브젝트에서 찾아봄.
                     PhotonView targetView = hit.collider.GetComponent<PhotonView>();
+                    if (targetView == null)
+                    {
+                        // 일반적으로 캐릭터의 루트에 PhotonView가 있으므로.
+                        targetView = hit.collider.transform.root.GetComponent<PhotonView>();
+                    }
+                    
                     if (targetView != null)
                     {
-                        Debug.Log("총 맞음");
-                        Debug.Log($"Raycast hit object: {hit.collider.gameObject.name}");
-                        // 3) TakeDamage RPC 호출
-                        targetView.RPC("TakeDamage", RpcTarget.All, damage);
+                        float finalDamage = damage * damageMultiplier;
+                        Debug.Log($"맞은 부위: {hitTag}, 배수 적용 데미지: {finalDamage}");
+                        // RPC를 이용해 데미지 적용
+                        targetView.RPC("TakeDamage", RpcTarget.All, finalDamage);
                     }
                 }
             }
