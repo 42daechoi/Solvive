@@ -6,6 +6,7 @@ public class MovementSettings : ScriptableObject
     [Header("Basic Movement")]
     public float walkSpeed = 2f;
     public float sprintSpeed = 4f;
+    public float obSpeed = 5f;
     
     [Header("Jump Settings")]
     public float jumpForce = 15f;

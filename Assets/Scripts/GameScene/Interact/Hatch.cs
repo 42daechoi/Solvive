@@ -26,7 +26,7 @@ public class Hatch : MonoBehaviourPun, IInteractableObject
         if (isHolding)
         {
             holdTime += Time.deltaTime;
-            Debug.Log($"ÇØÄ¡ »óÈ£ ÀÛ¿ë ÁøÇàÁß [" + holdTime + "]");
+            Debug.Log($"ï¿½ï¿½Ä¡ ï¿½ï¿½È£ ï¿½Û¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ [" + holdTime + "]");
 
             if (holdTime >= holdDuration)
             {
@@ -54,7 +54,7 @@ public class Hatch : MonoBehaviourPun, IInteractableObject
     private void Escape(int playerID)
     {
         Debug.Log($"Hatch : Player {playerID} has escaped!");
-        GameManager.Instance.EliminateOrEscapeCitizen();
+        GameManager.Instance.EliminateOrEscapeCitizen(playerID);
     }
 
     GameObject FindObjectByViewID(int viewID)
