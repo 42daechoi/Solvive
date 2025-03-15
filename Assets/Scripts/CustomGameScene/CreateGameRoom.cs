@@ -55,8 +55,6 @@ public class CreateGameRoom : MonoBehaviourPunCallbacks
         string roomName = "Room_" + Random.Range(1000, 10000);
         PhotonNetwork.CreateRoom(roomName, roomOptions);
         Debug.Log($"방 생성 시도: {roomName}");
-        
-        GameRobbyCanvas.gameObject.SetActive(true);
     }
 
     public override void OnCreatedRoom()
