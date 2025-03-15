@@ -29,6 +29,5 @@ public class PlayerRoleDistribution : MonoBehaviourPunCallbacks
     {
         // 모든 클라이언트에 변경 사항을 전파
         photonView.RPC("SetRoleRPC", RpcTarget.All, (int)newRole);
-        RoleUI.Instance.UpdateRoleUI(newRole);
     }
 }

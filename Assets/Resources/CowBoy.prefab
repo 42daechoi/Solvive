@@ -263,7 +263,7 @@ MonoBehaviour:
     SynchronizeType: 2
     Name: IsIdle
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: IsJumping
   - Type: 4
     SynchronizeType: 0

@@ -46,20 +46,20 @@ public class FogColorChanger : MonoBehaviour
         if (fog == null) yield break;
 
         skyAndFogVolume.weight = 1f;
-        fog.albedo.overrideState = true;
+        fog.tint.overrideState = true;
 
-        Color startColor = fog.albedo.value;
+        Color startColor = fog.tint.value;
         float timeElapsed = 0f;
 
         while (timeElapsed < duration)
         {
             timeElapsed += Time.deltaTime;
             float t = Mathf.Clamp01(timeElapsed / duration);
-            fog.albedo.value = Color.Lerp(startColor, targetColor, t);
+            fog.tint.value = Color.Lerp(startColor, targetColor, t);
 
             yield return null;
         }
 
-        fog.albedo.value = targetColor;
+        fog.tint.value = targetColor;
     }
 }
