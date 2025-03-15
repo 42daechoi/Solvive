@@ -682,7 +682,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.01
-  far clip plane: 1000
+  far clip plane: 50
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -778,9 +778,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df449b2fe50ea22439bfed6e8a3f6ef6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoints:
-  - {fileID: 713598629}
-  - {fileID: 1984299907}
+  playerSpawnPoints: []
+  itemSpawnPoints: []
+  hatchSpawnPoints: []
 --- !u!4 &1722135171
 Transform:
   m_ObjectHideFlags: 0
