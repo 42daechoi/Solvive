@@ -41,8 +41,6 @@ public class EventManager_Game : MonoBehaviour
     public event Action<PlayerRole> OnEndGame;
     public static event Action OnEscButton;
 
-
-
     public static EventManager_Game Instance { get; private set; }
 
     private void Awake()
