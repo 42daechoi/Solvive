@@ -22,6 +22,7 @@ public class PlayerRoleDistribution : MonoBehaviourPunCallbacks
     {
         role = (PlayerRole)roleInt;
         Debug.Log("플레이어의 역할: " + role + photonView.ViewID);
+        if (photonView.IsMine) RoleUI.Instance.UpdateRoleUI(role);
     }
 
     // 로컬에서 호출할 수 있는 편의 메서드
