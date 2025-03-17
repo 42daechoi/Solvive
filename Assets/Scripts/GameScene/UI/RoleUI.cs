@@ -1,7 +1,8 @@
 using TMPro;
 using UnityEngine;
+using Photon.Pun;
 
-public class RoleUI : MonoBehaviour
+public class RoleUI : MonoBehaviourPun
 {
     public static RoleUI Instance { get; private set; }
 
