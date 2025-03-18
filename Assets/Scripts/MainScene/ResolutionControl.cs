@@ -6,48 +6,86 @@ using UnityEngine.UI;
 
 public class ResolutionControl : MonoBehaviour
 {
-    public TMP_Dropdown resolutionDropdown; // 드롭다운 컴포넌트 연결
+    public TMP_Dropdown resolutionDropdown;
+    public Toggle fullScreenToggle;
+    public Button applyButton;   // "확인" 혹은 "Apply" 버튼
 
-    private Resolution[] resolutions; // 사용 가능한 해상도 목록
+    private Resolution[] resolutions;
+
+    // 사용자가 드롭다운/토글로 선택한 값(실제 적용 전까지 저장만 함)
+    private int selectedResolutionIndex;
+    private bool isFullScreenSelected;
 
     void Start()
     {
-        // 사용 가능한 해상도 가져오기
-        resolutions = Screen.resolutions;
+        // 1. 해상도 목록 가져오기 (중복 제거)
+        Resolution[] allResolutions = Screen.resolutions;
+        List<Resolution> uniqueResolutions = new List<Resolution>();
+        List<string> options = new List<string>();
 
-        // 드롭다운 초기화
-        resolutionDropdown.ClearOptions();
-
-        // 해상도 옵션 문자열 리스트 생성
-        var options = new System.Collections.Generic.List<string>();
         int currentResolutionIndex = 0;
 
-        for (int i = 0; i < resolutions.Length; i++)
+        for (int i = 0; i < allResolutions.Length; i++)
         {
-            string option = $"{resolutions[i].width} x {resolutions[i].height}";
-            options.Add(option);
-
-            // 현재 해상도가 기본으로 설정되도록 인덱스 저장
-            if (resolutions[i].width == Screen.currentResolution.width &&
-                resolutions[i].height == Screen.currentResolution.height)
+            string option = $"{allResolutions[i].width} x {allResolutions[i].height}";
+            if (!options.Contains(option))
             {
-                currentResolutionIndex = i;
+                options.Add(option);
+                uniqueResolutions.Add(allResolutions[i]);
+
+                // 현재 해상도 위치 저장
+                if (allResolutions[i].width == Screen.currentResolution.width &&
+                    allResolutions[i].height == Screen.currentResolution.height)
+                {
+                    currentResolutionIndex = options.Count - 1;
+                }
             }
         }
 
-        // 드롭다운에 옵션 추가 및 기본 해상도 선택
+        // 2. 최종 해상도 배열로 정리
+        resolutions = uniqueResolutions.ToArray();
+
+        // 3. 드롭다운 초기화
+        resolutionDropdown.ClearOptions();
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
 
-        // 드롭다운의 선택 변경 시 SetResolution 함수 호출
-        resolutionDropdown.onValueChanged.AddListener(SetResolution);
+        // 4. 토글 초기값
+        fullScreenToggle.isOn = (Screen.fullScreenMode == FullScreenMode.FullScreenWindow);
+
+        // 5. 현재 UI에서 선택된 값을 내부 변수에 저장
+        selectedResolutionIndex = resolutionDropdown.value;
+        isFullScreenSelected = fullScreenToggle.isOn;
+
+        // 6. 리스너 등록
+        resolutionDropdown.onValueChanged.AddListener(OnResolutionChanged);
+        fullScreenToggle.onValueChanged.AddListener(OnFullScreenToggle);
+        applyButton.onClick.AddListener(OnClickApply);
     }
 
-    // 드롭다운 선택 시 호출될 해상도 변경 함수
-    public void SetResolution(int resolutionIndex)
+    // 드롭다운이 바뀔 때마다 내부 변수만 업데이트
+    private void OnResolutionChanged(int value)
     {
-        Resolution selectedResolution = resolutions[resolutionIndex];
-        Screen.SetResolution(selectedResolution.width, selectedResolution.height, FullScreenMode.Windowed);
+        selectedResolutionIndex = value;
+    }
+
+    // 토글이 바뀔 때마다 내부 변수만 업데이트
+    private void OnFullScreenToggle(bool isOn)
+    {
+        isFullScreenSelected = isOn;
+    }
+
+    // "확인(Apply)" 버튼을 눌렀을 때만 실제 적용
+    private void OnClickApply()
+    {
+        Resolution selectedResolution = resolutions[selectedResolutionIndex];
+        FullScreenMode mode = isFullScreenSelected
+            ? FullScreenMode.FullScreenWindow
+            : FullScreenMode.Windowed;
+
+        // 실제로 해상도, 전체화면 모드 변경
+        Screen.SetResolution(selectedResolution.width, selectedResolution.height, mode);
+        Debug.Log($"해상도 적용: {selectedResolution.width}x{selectedResolution.height}, 모드: {mode}");
     }
 }
