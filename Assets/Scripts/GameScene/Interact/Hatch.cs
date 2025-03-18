@@ -54,7 +54,7 @@ public class Hatch : MonoBehaviourPun, IInteractableObject
     private void Escape(int playerID)
     {
         Debug.Log($"Hatch : Player {playerID} has escaped!");
-        GameManager.Instance.EliminateOrEscapeCitizen(playerID);
+        GameManager.Instance.EliminateOrEscapeCitizen(playerID, "Escape");
     }
 
     GameObject FindObjectByViewID(int viewID)

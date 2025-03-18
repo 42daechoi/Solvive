@@ -22,6 +22,8 @@ public class playerDetecter : MonoBehaviourPunCallbacks
             {
                 if (pre.role == PlayerRole.Citizen)
                 {
+                    PhotonView pv = other.GetComponent<PhotonView>();
+                    GameManager.Instance.EliminateOrEscapeCitizen(pv.ViewID, "Escape");
                     Debug.Log("시민");
                     // PlayerObserver 컴포넌트를 찾고, 캐릭터랑 UI 제거
                     PlayerObserver observer = other.GetComponent<PlayerObserver>();

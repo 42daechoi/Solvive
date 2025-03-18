@@ -9,11 +9,13 @@ public class Inventory : MonoBehaviourPun
     private void OnEnable()
     {
         EventManager_Game.Instance.OnRemoveItem += RemoveItem;
+        EventManager_Game.Instance.OnEliminateOrEscape += DropAllItems;
     }
 
     private void OnDisable()
     {
         EventManager_Game.Instance.OnRemoveItem -= RemoveItem;
+        EventManager_Game.Instance.OnEliminateOrEscape -= DropAllItems;
     }
 
     public bool AddItem(FarmingObject farmingObject)
@@ -95,6 +97,34 @@ public class Inventory : MonoBehaviourPun
             Debug.Log("비어있는 슬롯으로 버리기를 시도할 수 없습니다.");
         }
     }
+
+    private void DropAllItems(string flag)
+    {
+        if (!photonView.IsMine) return;
+
+        if (flag == "Eliminate")
+        {
+            for (int i = 0; i < itemSlots.Length; i++)
+            {
+                if (itemSlots[i] != null)
+                {
+                    Vector3 randomDirection = new Vector3(UnityEngine.Random.Range(-1f, 1f), 0f, UnityEngine.Random.Range(-1f, 1f)).normalized;
+                    float randomDistance = UnityEngine.Random.Range(0.5f, 2f);
+                    Vector3 dropPosition = transform.position + randomDirection * randomDistance;
+                    dropPosition.y = transform.position.y;
+
+                    
+                    GameObject dropItem = ObjectPool.instance.GetObject(itemSlots[i].GetViewID(), dropPosition, Quaternion.identity);
+
+                    photonView.RPC("SyncInventory", RpcTarget.All, photonView.ViewID, i, 0);
+
+                    itemSlots[i] = null;
+                }
+            }
+            InventoryUI.Instance.UpdateUI(this);
+        }
+    }
+
 
     public FarmingObject GetItem(int slotIndex)
     {
