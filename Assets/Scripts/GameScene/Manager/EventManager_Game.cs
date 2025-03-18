@@ -40,6 +40,7 @@ public class EventManager_Game : MonoBehaviour
     public event Action<int> OnObserverState;
     public event Action<PlayerRole> OnEndGame;
     public static event Action OnEscButton;
+    public event Action<string> OnEliminateOrEscape;
 
     public static EventManager_Game Instance { get; private set; }
 
@@ -183,5 +184,10 @@ public class EventManager_Game : MonoBehaviour
     public void InvokeEscUI()
     {
         OnEscButton?.Invoke();
+    }
+
+    public void InvokeEliminateOrEscape(string flag)
+    {
+        OnEliminateOrEscape?.Invoke(flag);
     }
 }
