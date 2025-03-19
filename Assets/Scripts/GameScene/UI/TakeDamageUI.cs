@@ -7,11 +7,6 @@ public class TakeDamageUI : MonoBehaviour
     [SerializeField] private Image takeDamageImage;
     [SerializeField] private float fadeDuration = 2f;
 
-    private void OnEnable()
-    {
-        EventManager_Game.Instance.OnTakeDamage += ActiveTakeDamageUI;
-    }
-
     private void OnDisable()
     {
         EventManager_Game.Instance.OnTakeDamage -= ActiveTakeDamageUI;
@@ -23,10 +18,15 @@ public class TakeDamageUI : MonoBehaviour
 
     private void Start()
     {
+        if (EventManager_Game.Instance != null)
+        {
+            EventManager_Game.Instance.OnTakeDamage += ActiveTakeDamageUI;
+        }
         if (takeDamageImage != null)
         {
             takeDamageImage.color = new Color(1, 0, 0, 0);
         }
+
     }
 
     public void ActiveTakeDamageUI()

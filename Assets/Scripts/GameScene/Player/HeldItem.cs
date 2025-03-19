@@ -61,7 +61,7 @@ public class HeldItem : MonoBehaviourPunCallbacks
                 }
                 if (Raticle.Instance != null)
                 {
-                    Raticle.Instance.UpdateCrosshairByItemDelayed(item.GetItemData());
+                    Raticle.Instance.UpdateCrosshairByItemDelayed(null);
                 }
             }
             else

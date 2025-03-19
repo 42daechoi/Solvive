@@ -25,7 +25,7 @@ public class InventoryUI : MonoBehaviourPun
         FarmingObject[] itemSlots = inventory.GetItemSlots();
         for (int i = 1; i < slotUI.Length; i++)
         {
-            if (i < itemSlots.Length && itemSlots[i - 1] != null)
+            if (i - 1 < itemSlots.Length && itemSlots[i - 1] != null)
             {
                 slotUI[i].sprite = itemSlots[i - 1].GetItemData().icon;
             }
