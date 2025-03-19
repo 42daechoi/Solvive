@@ -14,8 +14,11 @@ public class Interaction : MonoBehaviourPun
         Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
         RaycastHit hit;
 
+        int layerMask = ~LayerMask.GetMask("Player", "Hitbox");
+        
         Debug.DrawRay(ray.origin, ray.direction * interactionRange, Color.red, 1.0f);
-        if (Physics.Raycast(ray, out hit, interactionRange))
+        
+        if (Physics.Raycast(ray, out hit, interactionRange, layerMask))
         {
             IInteractableObject interactableObject = hit.collider.GetComponent<IInteractableObject>();
             if (interactableObject != null)
