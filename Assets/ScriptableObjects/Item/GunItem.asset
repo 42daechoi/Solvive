@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Gun
   icon: {fileID: 21300000, guid: b670c525add8f7441977ac9e3d9f15c5, type: 3}
   equipPosition: {x: -0.01, y: -0.015, z: 0}
-  equipRotation: {x: -90, y: -50, z: -15}
+  equipRotation: {x: -114.6, y: -154.7, z: 62}
   rayModule: {fileID: 11400000, guid: b6412bd9f606da345a559db148507699, type: 2}
   currentSpeed: 0
   damage: 10

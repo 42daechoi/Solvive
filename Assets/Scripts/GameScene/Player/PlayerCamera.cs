@@ -13,6 +13,8 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField] Transform camFollowPos;
     [SerializeField] CinemachineVirtualCamera virtualCamera;
 
+    [SerializeField] Transform targetObject;
+    
     
     private void OnEnable()
     {
@@ -79,6 +81,16 @@ public class PlayerCamera : MonoBehaviour
         cameraRotation.x = yAxis.Value;
         virtualCamera.transform.localEulerAngles = cameraRotation;
         transform.eulerAngles = new Vector3(0f, xAxis.Value, 0f);
+
+        if (targetObject != null)
+        {
+            float xRotation = yAxis.Value;
+            if (xRotation > 180f) xRotation -= 360f;
+            
+            Vector3 pos = targetObject.position;
+            pos.y = -xRotation;
+            targetObject.position = pos;
+        }
     }
     
     private void HandleCameraActive(bool isActive)

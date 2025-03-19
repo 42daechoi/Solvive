@@ -11,6 +11,7 @@ public class PlayerAnimator : MonoBehaviour
     private int _isJumpingHash;
     private int _isFallingHash;
     private int _isGroundedHash;
+    
     // Start is called before the first frame update
     private void Awake()
     {
@@ -20,9 +21,9 @@ public class PlayerAnimator : MonoBehaviour
         _isIdleHash = Animator.StringToHash("IsIdle");
         _isJumpingHash = Animator.StringToHash("IsJumping");
         _isGroundedHash = Animator.StringToHash("IsGrounded");
+        
     }
-
-    // Update is called once per frame
+    
     public void SetMoveAnim(float horizontal, float vertical, float offset)
     {
         if (_animator == null) return;
@@ -44,11 +45,6 @@ public class PlayerAnimator : MonoBehaviour
 
         _animator.SetBool(_isJumpingHash, isJumping);
         _animator.SetBool(_isGroundedHash, isGrounded);
-    
-        // 점프 중에는 Idle 상태 해제
-        /*if (isJumping || !isGrounded)
-        {
-            _animator.SetBool(_isIdleHash, false);
-        }*/
     }
+    
 }

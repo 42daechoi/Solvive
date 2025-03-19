@@ -52,7 +52,7 @@ public class EquipItem : MonoBehaviourPunCallbacks
         if (equipItem)
         {
             photonView.RPC("SyncEquipItem", RpcTarget.All, viewID, itemData.equipPosition, itemData.equipRotation, photonView.ViewID);
-            string animationState = itemData.itemName == "Battery" ? "Carry" : "Default";
+            string animationState = itemData.itemName == "Gun" ? "Gun" : "Default";
             EventManager_Game.Instance.InvokeAnimationStateChange(animationState);
         }
         StartCoroutine(CheckItemIsPasswordPaper(itemData.itemName, equipItem));
@@ -202,6 +202,8 @@ public class EquipItem : MonoBehaviourPunCallbacks
         if (photonView.IsMine && currentFPSWeapon != null)
         {
             StartCoroutine(UnequipArmRotation());
+            
+            EventManager_Game.Instance.InvokeAnimationStateChange("Default");
         }
     }
 
