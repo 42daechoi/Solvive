@@ -37,6 +37,7 @@ public class EquipItem : MonoBehaviourPunCallbacks
         
         if (item == null)
         {
+            EventManager_Game.Instance.InvokeAnimationStateChange("Default");
             return null;
         }
         ItemData itemData = item.GetItemData();

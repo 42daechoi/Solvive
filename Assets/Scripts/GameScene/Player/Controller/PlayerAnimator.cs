@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,8 @@ public class PlayerAnimator : MonoBehaviour
     private int _isJumpingHash;
     private int _isFallingHash;
     private int _isGroundedHash;
+
+    private int _pistolLayerIndex;
     
     // Start is called before the first frame update
     private void Awake()
@@ -22,8 +25,19 @@ public class PlayerAnimator : MonoBehaviour
         _isJumpingHash = Animator.StringToHash("IsJumping");
         _isGroundedHash = Animator.StringToHash("IsGrounded");
         
+        _pistolLayerIndex = _animator.GetLayerIndex("Pistol");
     }
-    
+
+    private void OnEnable()
+    {
+        EventManager_Game.Instance.OnAnimationStateChanged += SetAnimationState;
+    }
+
+    private void OnDisable()
+    {
+        EventManager_Game.Instance.OnAnimationStateChanged -= SetAnimationState;
+    }
+
     public void SetMoveAnim(float horizontal, float vertical, float offset)
     {
         if (_animator == null) return;
@@ -46,5 +60,33 @@ public class PlayerAnimator : MonoBehaviour
         _animator.SetBool(_isJumpingHash, isJumping);
         _animator.SetBool(_isGroundedHash, isGrounded);
     }
-    
+
+    public void SetAnimationState(string state)
+    {
+        if (_animator == null) return;
+
+        ResetWeaponLayerWeights();
+
+        switch (state)
+        {
+            case "Gun":
+                if (_pistolLayerIndex != -1)
+                {
+                    _animator.SetLayerWeight(_pistolLayerIndex, 1f);
+                }
+
+                break;
+            case "Default":
+            default:
+                break;
+        }
+    }
+
+    private void ResetWeaponLayerWeights()
+    {
+        if (_pistolLayerIndex != -1)
+        {
+            _animator.SetLayerWeight(_pistolLayerIndex, 0f);
+        }
+    }
 }
