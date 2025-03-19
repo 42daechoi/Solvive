@@ -15,6 +15,7 @@ public class PlayerCamera : MonoBehaviour
 
     [SerializeField] Transform targetObject;
     
+    public Transform TargetObject => targetObject;
     
     private void OnEnable()
     {
