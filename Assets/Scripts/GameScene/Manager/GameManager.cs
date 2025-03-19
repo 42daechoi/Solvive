@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         return count;
     }
 
-    public void EliminateOrEscapeCitizen(int viewID)
+    public void EliminateOrEscapeCitizen(int viewID, string flag)
     {
         if (citizenCount < 1)
         {
@@ -72,12 +72,12 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            photonView.RPC("SyncEliminateOrEscapeCitizen", RpcTarget.All, viewID);
+            photonView.RPC("SyncEliminateOrEscapeCitizen", RpcTarget.All, viewID, flag);
         }
     }
 
     [PunRPC]
-    private void SyncEliminateOrEscapeCitizen(int viewID)
+    private void SyncEliminateOrEscapeCitizen(int viewID, string flag)
     {
         citizenCount--;
         EventManager_Game.Instance.InvokeObserverState(viewID);
@@ -86,7 +86,15 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             if (GetRoleCount(PlayerRole.Mannequin) > 0)
             {
-                EventManager_Game.Instance.InvokeEndGame(PlayerRole.Mannequin);
+                if (flag == "Escape") 
+                {
+                    EventManager_Game.Instance.InvokeEndGame(PlayerRole.Citizen);
+                }
+                else
+                {
+                    EventManager_Game.Instance.InvokeEndGame(PlayerRole.Mannequin);
+                }
+
             }
             else
             {

@@ -61,9 +61,10 @@ public class PlayerHealth : MonoBehaviourPun
         private void Die()
         {
             Debug.Log($"{gameObject.name} 사망");
+            EventManager_Game.Instance.InvokeEliminateOrEscape("Eliminate");
             if (TryGetComponent(out PlayerRoleDistribution prd))
             {
-                if (prd.role == PlayerRole.Citizen) GameManager.Instance.EliminateOrEscapeCitizen(photonView.ViewID);
+                if (prd.role == PlayerRole.Citizen) GameManager.Instance.EliminateOrEscapeCitizen(photonView.ViewID, "Eliminate");
             }
         }
     }
