@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 3984789023996562868}
   - component: {fileID: 7429352715517708346}
   - component: {fileID: 1925617021503598115}
+  - component: {fileID: 5898894438438940798}
   m_Layer: 3
   m_Name: CowBoy
   m_TagString: Player
@@ -818,6 +819,22 @@ MonoBehaviour:
     spineStiffness: 0.5
     pullBodyVertical: 0.5
     pullBodyHorizontal: 0
+--- !u!114 &5898894438438940798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561389139830730110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 319f1f7d82e610840a6e40de33ad50c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseSensitivity: 1
+  playerBody: {fileID: 1332784042215467423}
+  sensitivitySlider: {fileID: 0}
+  sensitivityInput: {fileID: 0}
 --- !u!1 &776565091165452062
 GameObject:
   m_ObjectHideFlags: 0

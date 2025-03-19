@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class MouseControl : MonoBehaviour
 {
-    public float mouseSensitivity = 100f; // 기본 마우스 감도
+    public float mouseSensitivity = 1f; // 기본 마우스 감도
     public Transform playerBody;
 
     // 슬라이더와 인풋 필드를 연결할 변수
@@ -17,7 +17,6 @@ public class MouseControl : MonoBehaviour
 
     void Start()
     {
-
         // 슬라이더와 인풋 필드에 초기 감도 설정
         sensitivitySlider.value = mouseSensitivity;
         sensitivityInput.text = mouseSensitivity.ToString();
@@ -63,7 +62,7 @@ public class MouseControl : MonoBehaviour
     public void UpdateSensitivityFromSlider(float value)
     {
         mouseSensitivity = value;
-        sensitivityInput.text = value.ToString("F1"); // 소수점 1자리까지 표시
+        sensitivityInput.text = value.ToString("F2"); // 소수점 1자리까지 표시
     }
 
     // 입력 필드에 값이 입력되었을 때 호출되는 함수
