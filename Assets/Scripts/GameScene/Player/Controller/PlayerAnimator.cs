@@ -27,17 +27,7 @@ public class PlayerAnimator : MonoBehaviour
         
         _pistolLayerIndex = _animator.GetLayerIndex("Pistol");
     }
-
-    private void OnEnable()
-    {
-        EventManager_Game.Instance.OnAnimationStateChanged += SetAnimationState;
-    }
-
-    private void OnDisable()
-    {
-        EventManager_Game.Instance.OnAnimationStateChanged -= SetAnimationState;
-    }
-
+    
     public void SetMoveAnim(float horizontal, float vertical, float offset)
     {
         if (_animator == null) return;

@@ -144,6 +144,7 @@ public class PlayerController : MonoBehaviourPun
         EventManager_Game.Instance.OnUseComputer += HandleUseComputer;
         EventManager_Game.Instance.OnMoveToComputer += HandleMoveToComputer;
         EventManager_Game.Instance.OnObserverState += HandleObserverState;
+        EventManager_Game.Instance.OnAnimationStateChanged += HandleAnimationStateChange;
     }
 
     private void OnDisable()
@@ -153,6 +154,7 @@ public class PlayerController : MonoBehaviourPun
         EventManager_Game.Instance.OnUseComputer -= HandleUseComputer;
         EventManager_Game.Instance.OnMoveToComputer -= HandleMoveToComputer;
         EventManager_Game.Instance.OnObserverState -= HandleObserverState;
+        EventManager_Game.Instance.OnAnimationStateChanged -= HandleAnimationStateChange;
     }
     
     private void Update()
@@ -305,7 +307,16 @@ public class PlayerController : MonoBehaviourPun
         bool isJumping = VerticalVelocity > 0.1f;
         _playerAnimator.SetJumpAnim(isJumping, isGrounded); 
         _playerAnimator.SetMoveAnim(_playerMovement.InputDirection.x, _playerMovement.InputDirection.z, _playerMovement.Offset);
+    }
+    
+    private void HandleAnimationStateChange(string state)
+    {
+        if (!_photonView.IsMine) return;
         
+        if (_playerAnimator != null)
+        {
+            _playerAnimator.SetAnimationState(state);
+        }
     }
 
     private void HandleObserverState(int viewID)
