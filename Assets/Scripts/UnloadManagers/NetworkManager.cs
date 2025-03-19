@@ -81,6 +81,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         SceneManager.LoadScene("MainScene");
     }
 
+
     //public override void OnPlayerLeftRoom(Player otherPlayer)
     //{
     //    if (SceneManager.GetActiveScene().name == "GameScene")

@@ -17,6 +17,7 @@ public class EventManager_Game : MonoBehaviour
     public event Action OnUseItem;
     public event Action<bool> OnFPSflashlightToggle;
     public event Action OnInteraction;
+    public event Action OnTakeDamage;
 
     // Player Animation
     public event Action<string> OnAnimationStateChanged;
@@ -189,5 +190,10 @@ public class EventManager_Game : MonoBehaviour
     public void InvokeEliminateOrEscape(string flag)
     {
         OnEliminateOrEscape?.Invoke(flag);
+    }
+
+    public void InvokeTakeDamageUI()
+    {
+        OnTakeDamage?.Invoke();
     }
 }
