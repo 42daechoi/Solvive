@@ -162,6 +162,10 @@ public class PlayerController : MonoBehaviourPun
         if (_photonView.IsMine)
         {
             _currentState.UpdateState(this, _playerMovement.InputDirection, _playerMovement.Offset);
+            if (Time.time % 1f < 0.02f)
+            {
+                SavePlayerPosition();
+            }
         }
     }
 
@@ -172,6 +176,14 @@ public class PlayerController : MonoBehaviourPun
             _currentState.FixedUpdateState(this, _playerMovement.InputDirection, _playerMovement.Offset, _mannequinEscape);
         }
     }
+
+    private void SavePlayerPosition()
+    {
+        ExitGames.Client.Photon.Hashtable playerProps = PhotonNetwork.LocalPlayer.CustomProperties;
+        playerProps["LastPosition"] = transform.position;
+        PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
+    }
+
 
     public void TransitionToState(IState newState)
     {
