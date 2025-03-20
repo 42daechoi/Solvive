@@ -14,6 +14,7 @@ public class PlayerAnimator : MonoBehaviour
     private int _isGroundedHash;
 
     private int _pistolLayerIndex;
+    private int _knifeLayerIndex;
     
     // Start is called before the first frame update
     private void Awake()
@@ -26,6 +27,7 @@ public class PlayerAnimator : MonoBehaviour
         _isGroundedHash = Animator.StringToHash("IsGrounded");
         
         _pistolLayerIndex = _animator.GetLayerIndex("Pistol");
+        _knifeLayerIndex = _animator.GetLayerIndex("Knife");
     }
     
     public void SetMoveAnim(float horizontal, float vertical, float offset)
@@ -66,6 +68,13 @@ public class PlayerAnimator : MonoBehaviour
                 }
 
                 break;
+            case "Knife":
+                if (_knifeLayerIndex != -1)
+                {
+                    _animator.SetLayerWeight(_knifeLayerIndex, 1f);
+                }
+
+                break;
             case "Default":
             default:
                 break;
@@ -77,6 +86,11 @@ public class PlayerAnimator : MonoBehaviour
         if (_pistolLayerIndex != -1)
         {
             _animator.SetLayerWeight(_pistolLayerIndex, 0f);
+        }
+        
+        if (_knifeLayerIndex != -1)
+        {
+            _animator.SetLayerWeight(_knifeLayerIndex, 0f);
         }
     }
 }
