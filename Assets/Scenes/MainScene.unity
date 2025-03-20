@@ -2933,7 +2933,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae126996a3d69ef47a94e820403a99d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myMixer: {fileID: 24100000, guid: f26d42b8d6fff8f4db8136f133ef8c85, type: 2}
+  audioSource: {fileID: 1218134033}
   MusicSlider: {fileID: 1258564171}
 --- !u!1 &667360598
 GameObject:
@@ -4704,7 +4704,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: bc6ba3c8412118342add8083f0b3c69e, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.3
+  m_Volume: 0.31
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -6947,7 +6947,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1707768942
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7026,7 +7026,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1743122968
 RectTransform:
   m_ObjectHideFlags: 0

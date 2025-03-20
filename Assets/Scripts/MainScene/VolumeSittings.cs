@@ -5,12 +5,17 @@ using UnityEngine.Audio;
 
 public class VolumeSittings : MonoBehaviour
 {
-    [SerializeField] private AudioMixer myMixer;
+    [SerializeField] private AudioSource audioSource;
     [SerializeField] private Slider MusicSlider;
 
     private void Start()
     {
-        if (PlayerPrefs.HasKey("musicVolume"))
+        // audioSource가 할당되지 않았다면, 같은 게임 오브젝트에서 AudioSource 컴포넌트를 가져옵니다.
+        if(audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
+        if (PlayerPrefs.HasKey("MainBGM"))
         {
             LoadVolume();
         }
@@ -23,14 +28,13 @@ public class VolumeSittings : MonoBehaviour
     public void SetMusicVolume()
     {
         float volume = MusicSlider.value;
-        myMixer.SetFloat("music", Mathf.Log10(volume)*20);
-        PlayerPrefs.SetFloat("musicVolume", volume);
+        audioSource.volume = volume;
+        PlayerPrefs.SetFloat("MainBGM", volume);
     }
 
     private void LoadVolume()
     {
-        MusicSlider.value = PlayerPrefs.GetFloat("musicVolume");
-        
+        MusicSlider.value = PlayerPrefs.GetFloat("MainBGM");
         SetMusicVolume();
     }
 }
