@@ -53,7 +53,15 @@ public class EquipItem : MonoBehaviourPunCallbacks
         if (equipItem)
         {
             photonView.RPC("SyncEquipItem", RpcTarget.All, viewID, itemData.equipPosition, itemData.equipRotation, photonView.ViewID);
-            string animationState = itemData.itemName == "Gun" ? "Gun" : "Default";
+            string animationState = "Default";
+            if (itemData.itemName == "Gun")
+            {
+                animationState = "Gun";
+            }
+            else if (itemData.itemName == "Knife")
+            {
+                animationState = "Knife";
+            }
             EventManager_Game.Instance.InvokeAnimationStateChange(animationState);
         }
         StartCoroutine(CheckItemIsPasswordPaper(itemData.itemName, equipItem));
