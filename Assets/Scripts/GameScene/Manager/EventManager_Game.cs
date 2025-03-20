@@ -63,7 +63,6 @@ public class EventManager_Game : MonoBehaviour
         OnPlayerMove?.Invoke(horizontal, vertical);
     }
 
-    // 스프린트 이벤트 발행
     public void InvokeSprint(bool isSprint)
     {
         OnPlayerSprint?.Invoke(isSprint);
