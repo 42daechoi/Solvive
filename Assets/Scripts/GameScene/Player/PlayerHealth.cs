@@ -17,7 +17,7 @@ public class PlayerHealth : MonoBehaviourPun
 			GameObject[] allObjects = GameObject.FindObjectsOfType<GameObject>();
 			foreach (GameObject obj in allObjects)
 			{
-				if (obj.name == "Slider" && obj.GetComponent<Slider>() != null)
+				if (obj.name == "HealthSlider" && obj.GetComponent<Slider>() != null)
 				{
 					healthSlider = obj.GetComponent<Slider>();
 					Debug.Log("이름으로 슬라이더를 찾았습니다.");
