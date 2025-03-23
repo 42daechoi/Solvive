@@ -42,6 +42,11 @@ public class EventManager_Game : MonoBehaviour
     public event Action<PlayerRole> OnEndGame;
     public static event Action OnEscButton;
     public event Action<string> OnEliminateOrEscape;
+    //UI Button
+    public static event Action OnControlPanelButtonClicked;
+    public static event Action OnResolutionPanelButtonClicked;
+    public static event Action OnAudioPanelButtonClicked;
+    public static event Action OnOptionConfirmButtonClicked;
 
     public static EventManager_Game Instance { get; private set; }
 
@@ -194,5 +199,25 @@ public class EventManager_Game : MonoBehaviour
     public void InvokeTakeDamageUI()
     {
         OnTakeDamage?.Invoke();
+    }
+
+    public void InvokeControlPanelButton()
+    {
+        OnControlPanelButtonClicked?.Invoke();
+    }
+
+    public void InvokeResolutionPanelButton()
+    {
+        OnResolutionPanelButtonClicked?.Invoke();
+    }
+
+    public void InvokeAudioPanelButton()
+    {
+        OnAudioPanelButtonClicked?.Invoke();
+    }
+
+    public void InvokeOptionConfirmButtonClicked()
+    {
+        OnOptionConfirmButtonClicked.Invoke();
     }
 }
