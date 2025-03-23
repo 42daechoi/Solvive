@@ -9,6 +9,7 @@ public class EventManager_Game : MonoBehaviour
     public event Action<float, float> OnPlayerMove;
     public event Action<bool> OnPlayerSprint;
     public event Action OnPlayerJump;
+    public event Action<bool> OnPlayerSprintWithStamina;
 
 
     // Player Active
@@ -219,5 +220,10 @@ public class EventManager_Game : MonoBehaviour
     public void InvokeOptionConfirmButtonClicked()
     {
         OnOptionConfirmButtonClicked.Invoke();
+    }
+
+    public void InvokeOnPlayerSprintWithStamina(bool canSprint)
+    {
+        OnPlayerSprintWithStamina.Invoke(canSprint);
     }
 }
