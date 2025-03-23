@@ -16,18 +16,32 @@ public class BrightnessController : MonoBehaviour
     {
         if (Instance == null)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            // = this;
+            //DontDestroyOnLoad(gameObject);
         }
         else if (Instance != this)
         {
-            Destroy(gameObject);
-            return;
+            //Destroy(gameObject);
+            //return;
         }
     }
 
     private void Start()
     {
+        if (brightnessSlider == null)
+        {
+            GameObject sliderObj = GameObject.Find("BrightnessSlider"); // 슬라이더 오브젝트 이름
+            if (sliderObj != null)
+            {
+                brightnessSlider = sliderObj.GetComponent<Slider>();
+                brightnessSlider.onValueChanged.AddListener(SetBrightness);
+            }
+            else
+            {
+                Debug.LogWarning("BrightnessSlider 오브젝트를 찾을 수 없습니다.");
+            }
+        }
+        
         if (postProcessVolume != null && postProcessVolume.profile.TryGet(out exposure))
         {
             exposure.compensation.value = 0f;

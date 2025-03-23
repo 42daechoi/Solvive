@@ -99,7 +99,6 @@ public class EventManager_Main : MonoBehaviour
     
     public void OnClickMultiMode() {
         OnMultiModeClicked?.Invoke();
-        
     }
     public void OnGMS_background(){
         Debug.Log("있음");

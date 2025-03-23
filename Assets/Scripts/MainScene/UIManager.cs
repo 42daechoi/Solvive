@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
@@ -47,6 +48,8 @@ public class UIManager : MonoBehaviourPun
     void Awake(){
         DontDestroyOnLoad(gameObject);
     }
+
+    
 
     void FindGame()
     { 
