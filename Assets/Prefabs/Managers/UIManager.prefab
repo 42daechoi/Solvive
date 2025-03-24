@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 8969039428609777175}
   - component: {fileID: 8026176799020856400}
   - component: {fileID: 5632770793486802564}
-  - component: {fileID: 5265291194278513355}
   - component: {fileID: 2345560505552743853}
   - component: {fileID: 4781854705400392578}
+  - component: {fileID: 6299995455241439999}
   m_Layer: 0
   m_Name: UIManager
   m_TagString: Untagged
@@ -87,21 +87,6 @@ MonoBehaviour:
   backToLobby: {fileID: 0}
   leaveGame: {fileID: 0}
   waitForMasterText: {fileID: 0}
---- !u!114 &5265291194278513355
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8922031823815175291}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dba36e9aa07782d47bb744eea18532ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  escCanvas: {fileID: 0}
-  backGameButton: {fileID: 0}
-  exitGameButton: {fileID: 0}
 --- !u!114 &2345560505552743853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,3 +114,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   takeDamageImage: {fileID: 0}
   fadeDuration: 2
+--- !u!114 &6299995455241439999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8922031823815175291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dba36e9aa07782d47bb744eea18532ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  escCanvas: {fileID: 0}
+  backGameButton: {fileID: 0}
+  exitGameButton: {fileID: 0}
+  SettingButton: {fileID: 0}
+  OptionUI: {fileID: 0}
+  ControlPanel: {fileID: 0}
+  resolutionPanel: {fileID: 0}
+  AudioPanel: {fileID: 0}
