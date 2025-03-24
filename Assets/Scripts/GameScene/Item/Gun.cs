@@ -24,6 +24,11 @@ namespace GameScene.Item
 
             if (rayModule != null && shooterTransform != null)
             {
+                GunShootEffect gunShootEffect = shooterTransform.GetComponentInChildren<GunShootEffect>();
+                if (gunShootEffect != null)
+                {
+                    gunShootEffect.PlayShootEffect();
+                }
                 RaycastHit? raycastHit = rayModule.ExecuteRayAction(shooterTransform, currentSpeed);
                 // 2) 맞은 대상이 있으면 처리
                 if (raycastHit.HasValue)
@@ -73,6 +78,7 @@ namespace GameScene.Item
                 Debug.LogWarning($"RayModule 또는 ShooterTransform이 유효하지 않습니다.");
             }
         }
+
 
         private Transform GetShooterTransform()
         {
