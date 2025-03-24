@@ -30,8 +30,7 @@ public class EscUI : MonoBehaviourPunCallbacks
     {
         // 시작할 때 캔버스를 비활성화
         escCanvas.SetActive(false);
-
-        // 버튼 클릭 이벤트 연결
+        
         backGameButton.onClick.AddListener(BackGame);
         exitGameButton.onClick.AddListener(ExitGame);
         SettingButton.onClick.AddListener(OptionSetting);
