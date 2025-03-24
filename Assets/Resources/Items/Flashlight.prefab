@@ -184,6 +184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   whiteLight: {fileID: 1175331865632600}
+  isOn: 0
 --- !u!1 &1175331865632600
 GameObject:
   m_ObjectHideFlags: 0
