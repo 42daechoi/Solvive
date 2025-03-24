@@ -5,7 +5,16 @@ using UnityEditor;
 public class FlashLightControl : MonoBehaviourPun
 {
     [SerializeField] private GameObject whiteLight;
-    private bool isOn = false;
+    [SerializeField] private bool isOn = false;
+
+    private void OnEnable()
+    {
+        Light light = whiteLight.GetComponent<Light>();
+        if (light != null)
+        {
+            isOn = light.enabled;
+        }
+    }
 
     public void ToggleFlashlight()
     {
