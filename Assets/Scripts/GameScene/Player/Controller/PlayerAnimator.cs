@@ -6,13 +6,13 @@ using UnityEngine;
 public class PlayerAnimator : MonoBehaviour
 {
     private Animator _animator;
+    
     private int _horizontalHash;
     private int _verticalHash;
     private int _isIdleHash;
     private int _isJumpingHash;
-    private int _isFallingHash;
     private int _isGroundedHash;
-
+    
     private int _pistolLayerIndex;
     private int _knifeLayerIndex;
     

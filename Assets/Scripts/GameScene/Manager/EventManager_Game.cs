@@ -21,6 +21,7 @@ public class EventManager_Game : MonoBehaviour
 
     // Player Animation
     public event Action<string> OnAnimationStateChanged;
+    public event Action<string> OnFPSUseItem;
 
     // Interaction
     public event Action<ItemData> OnOpenDoor;
@@ -135,6 +136,11 @@ public class EventManager_Game : MonoBehaviour
     public void InvokeAnimationStateChange(string animationState)
     {
         OnAnimationStateChanged?.Invoke(animationState);
+    }
+
+    public void InvokeFPSUseItem(string item)
+    {
+        OnFPSUseItem?.Invoke(item);
     }
 
     public void InvokeTypeNumberAtComputer(char keyCode, int playerViewID)
