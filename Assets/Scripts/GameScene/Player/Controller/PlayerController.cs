@@ -49,8 +49,6 @@ public class PlayerController : MonoBehaviourPun
     public float VerticalVelocity { get; set; }
     private bool _mannequinEscape = false;
     
-    //private RaycastHit[] _groundHits = new RaycastHit[1];
-    
     private float _currentSpeed;
     private Vector3 _computerInteractionPoint;
     private Quaternion _computerInteractionRotation;
@@ -82,6 +80,9 @@ public class PlayerController : MonoBehaviourPun
     
     private void Start()
     {
+        _playerMovement = gameObject.AddComponent<PlayerMovement>();
+        _playerAnimator = gameObject.AddComponent<PlayerAnimator>();
+        
         _controller = GetComponent<CharacterController>();
         _photonView = GetComponent<PhotonView>();
         _interaction = GetComponent<Interaction>();
@@ -89,10 +90,6 @@ public class PlayerController : MonoBehaviourPun
         _currentSpeed = _speedSettings.walkSpeed;
         _playerMovement = GetComponent<PlayerMovement>();
         _playerCamera = GetComponent<PlayerCamera>();
-        
-        _playerMovement = gameObject.AddComponent<PlayerMovement>();
-        _playerAnimator = gameObject.AddComponent<PlayerAnimator>();
-        
 
         IdleState = new IdleState();
         JumpState = new JumpState();
