@@ -25,8 +25,10 @@ namespace GameScene.Item
             if (rayModule != null && shooterTransform != null)
             {
                 GunShootEffect gunShootEffect = shooterTransform.GetComponentInChildren<GunShootEffect>();
-                if (gunShootEffect != null)
+                FPSGunShootEffect gunShootEffectFPS = shooterTransform.GetComponentInChildren<FPSGunShootEffect>();
+                if (gunShootEffect != null && gunShootEffectFPS != null)
                 {
+                    gunShootEffectFPS.PlayShootEffect();
                     gunShootEffect.PlayShootEffect();
                 }
                 RaycastHit? raycastHit = rayModule.ExecuteRayAction(shooterTransform, currentSpeed);

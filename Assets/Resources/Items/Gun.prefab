@@ -227,7 +227,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 637c77d6fde69694186bdea409344fac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootEffect: {fileID: 3048009132212123977, guid: b306b59c1d271294a8e434eeeb5a284d, type: 3}
   muzzlePosition: {fileID: 745184771128781624}
 --- !u!4 &5502172216401881881 stripped
 Transform:
