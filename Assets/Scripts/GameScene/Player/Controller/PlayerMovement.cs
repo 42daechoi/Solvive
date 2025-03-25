@@ -15,13 +15,13 @@ public class PlayerMovement : MonoBehaviour
     private void OnEnable()
     {
         EventManager_Game.Instance.OnPlayerMove += UpdateMoveInput;
-        EventManager_Game.Instance.OnPlayerSprint += UpdateSprintInput;
+        EventManager_Game.Instance.OnPlayerSprintWithStamina += UpdateSprintInput;
     }
 
     private void OnDisable()
     {
         EventManager_Game.Instance.OnPlayerMove -= UpdateMoveInput;
-        EventManager_Game.Instance.OnPlayerSprint -= UpdateSprintInput;
+        EventManager_Game.Instance.OnPlayerSprintWithStamina -= UpdateSprintInput;
     }
     
     private void UpdateMoveInput(float horizontal, float vertical)

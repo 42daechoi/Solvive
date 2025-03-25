@@ -45,15 +45,16 @@ public class PlayerStamina : MonoBehaviour
             currentStamina += staminaRecoveryRate * Time.deltaTime;
         }
         currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
-        // 1번 방법
-        // if (currentStamina < 2) PlayerController에서 SprintState로 변경 불가하게
-        // else PlayerController에서 SprintState로 변경 가능하게
-
-        // 2번 방법
-        // 1번 방법보다 더 좋을 것 같은 방법은 위 조건에서 PlayerController로 보내기
-        // 즉 InputManager -> PlayerController, InputManager -> PlayerStamina가 아니라
-        // InputManager -> PlayerStamina -> PlayerController로 절차형 이벤트
+        EventManager_Game.Instance.InvokeOnPlayerSprintWithStamina(IsSprintEnabled(isSprint));
         if (staminaBar) staminaBar.value = currentStamina;
     }
 
+    private bool IsSprintEnabled(bool isSprint)
+    {
+        if (isSprint && currentStamina > 0)
+        {
+            return true;
+        }
+        return false;
+    }
 }
