@@ -92,11 +92,13 @@ public class InputManager_Game : MonoBehaviour
         {
             EventManager_Game.Instance.InvokeEscUI();
         }
-
-        // 아이템 버리기
         if (Input.GetKeyDown(KeyCode.G))
         {
             EventManager_Game.Instance.InvokeDropItem();
         }
+
+        bool onVoice = (Input.GetKey(KeyCode.V));
+        EventManager_Game.Instance.InvokeVoiceOn(onVoice);
+        
     }
 }
