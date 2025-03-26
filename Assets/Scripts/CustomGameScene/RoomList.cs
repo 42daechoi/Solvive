@@ -69,7 +69,7 @@ public class RoomList : MonoBehaviourPunCallbacks
                 CustomRoomInfo info = new CustomRoomInfo()
                 {
                     RoomName = roomInfo.Name,
-                    MaxPlayers = roomInfo.MaxPlayers,
+                    MaxPlayers = (byte)roomInfo.MaxPlayers,
                     CurrentPlayers = roomInfo.PlayerCount,
                     IsVisible = roomInfo.IsVisible
                 };

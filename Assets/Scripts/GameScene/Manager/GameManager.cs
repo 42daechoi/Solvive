@@ -3,6 +3,7 @@ using Photon.Realtime;
 using Photon.Pun;
 using UnityEngine;
 using System.Collections.Generic;
+using Photon.Voice;
 
 
 public class GameManager : MonoBehaviourPunCallbacks
@@ -13,6 +14,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] private int maxGeneratorCount;
     [SerializeField] private int unlockedComputerCount;
     [SerializeField] private int citizenCount;
+    [SerializeField] private string voiceAppId = "14f705a4-2975-4ab3-a0e2-84cedca9e602";
+    [SerializeField] private string regionCode = "kr";
 
     [SerializeField] private GameObject inputManager_Game;
 
@@ -26,6 +29,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             Destroy(gameObject);
         }
+        PhotonAppSettings.Instance.UseCloud(voiceAppId, regionCode);
     }
 
     private void Start()

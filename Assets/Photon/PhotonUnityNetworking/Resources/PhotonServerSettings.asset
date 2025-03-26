@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AppSettings:
     AppIdRealtime: 8237e33c-a48b-4c44-933e-4ae5dc97685e
+    AppIdFusion: 
     AppIdChat: 
-    AppIdVoice: 
+    AppIdVoice: 14f705a4-2975-4ab3-a0e2-84cedca9e602
     AppVersion: 
     UseNameServer: 1
-    FixedRegion: kr
+    FixedRegion: 
     Server: 
     Port: 0
     ProxyServer: 
@@ -32,7 +33,46 @@ MonoBehaviour:
   EnableSupportLogger: 0
   RunInBackground: 1
   StartInOfflineMode: 0
-  RpcList: []
+  RpcList:
+  - CantHearYou
+  - ChangeColour
+  - ClickRpc
+  - DestroyRpc
+  - HeresWhy
+  - BatteryObjectSync
+  - DecreaseBatteryCount
+  - Escape
+  - GeneratorStateChange
+  - IncreaseBatteryCount
+  - InitItemInfo
+  - Loading
+  - OnAllPasswordsMatched
+  - RequestInstallBattery
+  - RpcSpawnKeycard
+  - SetRoleRPC
+  - StartGame
+  - StartLoadingScene
+  - SyncEliminateOrEscapeCitizen
+  - SyncEndInteraction
+  - SyncEquipItem
+  - SyncGetObject
+  - SyncInitCitizenCount
+  - SyncInitPasswords
+  - SyncInventory
+  - SyncItemInfo
+  - SyncParent
+  - SyncRemovePassword
+  - SyncReplaceItem
+  - SyncReturnObject
+  - SyncStartInteraction
+  - SyncToggleFlashlight
+  - SyncUnequip
+  - SyncUnlockedComputerCount
+  - SyncValidatedPassword
+  - TakeDamage
+  - UpdateMannequinPosition
+  - UpdateText
+  - UsedSpawnPointSync
   DisableAutoOpenWizard: 1
   ShowSettings: 1
-  DevRegionSetOnce: 1
+  DevRegionSetOnce: 0
