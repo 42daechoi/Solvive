@@ -19,6 +19,7 @@ public class EventManager_Game : MonoBehaviour
     public event Action<bool> OnFPSflashlightToggle;
     public event Action OnInteraction;
     public event Action OnTakeDamage;
+    public event Action<bool> OnVoice;
 
     // Player Animation
     public event Action<string> OnAnimationStateChanged;
@@ -231,5 +232,10 @@ public class EventManager_Game : MonoBehaviour
     public void InvokeOnPlayerSprintWithStamina(bool canSprint)
     {
         OnPlayerSprintWithStamina.Invoke(canSprint);
+    }
+
+    public void InvokeVoiceOn(bool voiceOn)
+    {
+        OnVoice?.Invoke(voiceOn);
     }
 }

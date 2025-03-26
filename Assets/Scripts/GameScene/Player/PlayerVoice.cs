@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Voice.Unity;
@@ -6,6 +7,16 @@ using Photon.Voice;
 public class PlayerVoice : MonoBehaviourPun
 {
     Recorder recorder;
+
+    private void OnEnable()
+    {
+        EventManager_Game.Instance.OnVoice += HandleVoice;
+    }
+
+    void OnDisable()
+    {
+        EventManager_Game.Instance.OnVoice -= HandleVoice;
+    }
 
     void Start()
     {
@@ -38,10 +49,14 @@ public class PlayerVoice : MonoBehaviourPun
         recorder.TransmitEnabled = false;
     }
 
-    void Update()
+    void HandleVoice(bool value)
     {
-        if (!photonView.IsMine || recorder == null) return;
+        if (recorder == null)
+        {
+            Debug.LogWarning("⚠️ Recorder 아직 초기화되지 않음, Transmit 설정 스킵됨");
+            return;
+        }
 
-        recorder.TransmitEnabled = Input.GetKey(KeyCode.V);
+        recorder.TransmitEnabled = value;
     }
 }
