@@ -24,13 +24,7 @@ namespace GameScene.Item
 
             if (rayModule != null && shooterTransform != null)
             {
-                GunShootEffect gunShootEffect = shooterTransform.GetComponentInChildren<GunShootEffect>();
-                FPSGunShootEffect gunShootEffectFPS = shooterTransform.GetComponentInChildren<FPSGunShootEffect>();
-                if (gunShootEffect != null && gunShootEffectFPS != null)
-                {
-                    gunShootEffectFPS.PlayShootEffect();
-                    gunShootEffect.PlayShootEffect();
-                }
+                PlayVFXAndSFX(shooterTransform);
                 RaycastHit? raycastHit = rayModule.ExecuteRayAction(shooterTransform, currentSpeed);
                 // 2) 맞은 대상이 있으면 처리
                 if (raycastHit.HasValue)
@@ -78,6 +72,22 @@ namespace GameScene.Item
             else
             {
                 Debug.LogWarning($"RayModule 또는 ShooterTransform이 유효하지 않습니다.");
+            }
+        }
+
+        private void PlayVFXAndSFX(Transform shooterTransform)
+        {
+            GunShootEffect gunShootEffect = shooterTransform.GetComponentInChildren<GunShootEffect>();
+            FPSGunShootEffect gunShootEffectFPS = shooterTransform.GetComponentInChildren<FPSGunShootEffect>();
+            GunShootSound gunShootSound = shooterTransform.GetComponentInChildren<GunShootSound>();
+            if (gunShootSound != null)
+            {
+                gunShootSound.PlayShootSound();
+            }
+            if (gunShootEffect != null && gunShootEffectFPS != null)
+            {
+                gunShootEffectFPS.PlayShootEffect();
+                gunShootEffect.PlayShootEffect();
             }
         }
 

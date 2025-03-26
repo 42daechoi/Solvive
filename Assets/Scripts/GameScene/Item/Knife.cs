@@ -16,6 +16,7 @@ namespace GameScene.Item
         {
             Transform shooterTransform = GetShooterTransform();
 
+            PlaySFX(shooterTransform);
             if (rayModule != null && shooterTransform != null)
             {
                 RaycastHit? raycastHit = rayModule.ExecuteRayAction(shooterTransform, 0f);
@@ -65,6 +66,15 @@ namespace GameScene.Item
             else
             {
                 Debug.LogWarning($"RayModule 또는 ShooterTransform이 유효하지 않습니다.");
+            }
+        }
+
+        private void PlaySFX(Transform shooterTransform)
+        {
+            KnifeStabSound knifeStabSound = shooterTransform.GetComponentInChildren<KnifeStabSound>();
+            if (knifeStabSound != null)
+            {
+                knifeStabSound.PlayStabSound();
             }
         }
 
