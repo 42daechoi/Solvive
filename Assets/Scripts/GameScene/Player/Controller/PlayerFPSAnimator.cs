@@ -52,6 +52,11 @@ public class PlayerFPSAnimator : MonoBehaviour
         {
             PlayKnifeStab(poseData);
         }
+
+        if (itemName == "Keycard")
+        {
+            PlayKeycard(poseData);
+        }
     }
 
     private void PlayGunRecoil(WeaponPoseData poseData)
@@ -79,9 +84,37 @@ public class PlayerFPSAnimator : MonoBehaviour
         float duration = 0.1f;
         float returnDuration = 0.25f;
         
-        Quaternion stabForearmRot = Quaternion.Euler(-98.25f, -172.6f, 90.8f);
-        Quaternion stabArmRot = Quaternion.Euler(-55.38f, -10.75f, -33.1f);
-        Quaternion stabHandRot = Quaternion.Euler(-6.28f, 129.9f, 55.3f);
+        Quaternion stabForearmRot = Quaternion.Euler(-36.8f, -39.7f, 2.4f);
+        Quaternion stabArmRot = Quaternion.Euler(-77f, 283.2f, -6f);
+        Quaternion stabHandRot = Quaternion.Euler(-7.5f, 141.4f, 56.4f);
+        
+        Quaternion defaultArmRot = Quaternion.Euler(poseData.r_ArmStrech);
+        Quaternion defaultForearmRot = Quaternion.Euler(poseData.r_ForearmRotation);
+        Quaternion defaultHandRot = Quaternion.Euler(poseData.r_HandRotation);
+        
+        Sequence seq = DOTween.Sequence();
+        
+        seq.Append(r_ArmStrech.DOLocalRotateQuaternion(stabArmRot, duration).SetEase(Ease.OutSine));
+        seq.Join(r_Forearm.DOLocalRotateQuaternion(stabForearmRot, duration).SetEase(Ease.OutSine));
+        seq.Join(r_Hand.DOLocalRotateQuaternion(stabHandRot, duration).SetEase(Ease.OutSine));
+        
+        seq.Append(r_ArmStrech.DOLocalRotateQuaternion(defaultArmRot, returnDuration).SetEase(Ease.OutQuad));
+        seq.Join(r_Forearm.DOLocalRotateQuaternion(defaultForearmRot, returnDuration).SetEase(Ease.OutQuad));
+        seq.Join(r_Hand.DOLocalRotateQuaternion(defaultHandRot, returnDuration).SetEase(Ease.OutQuad));
+    }
+
+    private void PlayKeycard(WeaponPoseData poseData)
+    {
+        r_ArmStrech.DOKill();
+        r_Forearm.DOKill();
+        r_Hand.DOKill();
+
+        float duration = 0.5f;
+        float returnDuration = 0.6f;
+        
+        Quaternion stabForearmRot = Quaternion.Euler(115.4f, -65.35f, -170.5f);
+        Quaternion stabArmRot = Quaternion.Euler(-38.9f, -7.3f, -46.8f);
+        Quaternion stabHandRot = Quaternion.Euler(47f, -151.3f, -16f);
         
         Quaternion defaultArmRot = Quaternion.Euler(poseData.r_ArmStrech);
         Quaternion defaultForearmRot = Quaternion.Euler(poseData.r_ForearmRotation);
