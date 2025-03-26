@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6883409937818272547}
   - component: {fileID: 802796583895997839}
   - component: {fileID: 6584300784632382813}
+  - component: {fileID: 1245032596534747332}
   m_Layer: 0
   m_Name: Generator
   m_TagString: Untagged
@@ -102,11 +103,11 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  observableSearch: 2
   Synchronization: 3
   OwnershipTransfer: 0
+  observableSearch: 2
   ObservedComponents: []
-  viewIdField: 0
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!65 &6883409937818272547
@@ -142,6 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71219e674047f8e4dab804596b8f214e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isComputerPhase: 0
   installedBatteryCount: 0
   installedBattery: []
 --- !u!114 &6584300784632382813
@@ -156,5 +158,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1778da6324688440a4168509220c617, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vibrationIntensity: 0.05
-  vibrationSpeed: 10
+  vibrationIntensity: 0.01
+  vibrationSpeed: 20
+--- !u!114 &1245032596534747332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2759788103863344102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59a8607c308a44e4385463812d42ed12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
+  startClip: {fileID: 8300000, guid: d5e2271e12cbfcf409daee4a26f5edd6, type: 3}
+  loopClip: {fileID: 8300000, guid: 343b33776bccccb4dab6e430fa566aa5, type: 3}
+  endClip: {fileID: 8300000, guid: 597279d46317a12479434780aae74a60, type: 3}

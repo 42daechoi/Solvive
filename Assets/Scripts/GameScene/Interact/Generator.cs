@@ -6,10 +6,12 @@ using System.Collections;
 public class Generator : MonoBehaviourPun, IInteractableObject
 {
 	[SerializeField] private bool isComputerPhase;
-    private int maxBatteryCount = 3;
 	[SerializeField] private int installedBatteryCount;
 	[SerializeField] private GameObject[] installedBattery;
-	private Vector3 batteryPositionOffset;
+	private GeneratorSound generatorSound;
+	private GeneratorVibration generatorVibration;
+    private int maxBatteryCount = 3;
+    private Vector3 batteryPositionOffset;
 
     private IEnumerator WaitForEventManager()
     {
@@ -32,15 +34,32 @@ public class Generator : MonoBehaviourPun, IInteractableObject
         EventManager_Game.Instance.OnAllGeneratorsActivated -= OnChangePhase;
     }
 
-    void Start()
+	void Start()
 	{
-        isComputerPhase = false;
-        installedBatteryCount = 0;
+		isComputerPhase = false;
+		installedBatteryCount = 0;
 		installedBattery = new GameObject[3];
 		batteryPositionOffset = new Vector3(-0.4f, 0.5f, 0.3f);
+		if (TryGetComponent(out GeneratorSound _generatorSound))
+		{
+			generatorSound = _generatorSound;
+		}
+		else
+		{
+			Debug.LogError("Generator : GeneratorSound를 찾을 수 없습니다.");
+		}
+		if (TryGetComponent(out GeneratorVibration _generatorVibration))
+		{
+			generatorVibration = _generatorVibration;
+		}
+		else
+		{
+			Debug.LogError("Generator : GeneratorVibration을 찾을 수 없습니다.");
+		}
 	}
 
-	public void Interact(int playerID)
+
+    public void Interact(int playerID)
 	{
 		if (installedBatteryCount != 0 && !isComputerPhase)
 		{
@@ -167,19 +186,14 @@ public class Generator : MonoBehaviourPun, IInteractableObject
 	{
 		if (IsAllBatteryInstalled())
 		{
-            if (TryGetComponent(out GeneratorVibration generatorVibration))
-			{
-				generatorVibration.SetIsGeneratorActive(true);
-			}
-            Debug.Log("Generator : 발전기 가동 완료.");
+			generatorVibration.SetIsGeneratorActive(true);
+			generatorSound.PlayStartSound();
             GameManager.Instance.AddActiveGenerator();
 		}
 		else
 		{
-            if (TryGetComponent(out GeneratorVibration generatorVibration))
-            {
-                generatorVibration.SetIsGeneratorActive(false);
-            }
+            generatorVibration.SetIsGeneratorActive(false);
+			generatorSound.PlayEndSound();
             GameManager.Instance.SubActiveGenerator();
         }
 	}

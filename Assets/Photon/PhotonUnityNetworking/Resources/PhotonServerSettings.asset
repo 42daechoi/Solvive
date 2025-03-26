@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: PhotonServerSettings
   m_EditorClassIdentifier: 
   AppSettings:
-    AppIdRealtime: 
+    AppIdRealtime: 8237e33c-a48b-4c44-933e-4ae5dc97685e
     AppIdFusion: 
     AppIdChat: 
-    AppIdVoice: 
+    AppIdVoice: 14f705a4-2975-4ab3-a0e2-84cedca9e602
     AppVersion: 
     UseNameServer: 1
-    FixedRegion: 
+    FixedRegion: kr
     Server: 
     Port: 0
     ProxyServer: 
@@ -28,7 +28,7 @@ MonoBehaviour:
     AuthMode: 0
     EnableLobbyStatistics: 0
     NetworkLogging: 1
-  DevRegion: 
+  DevRegion: rue
   PunLogging: 0
   EnableSupportLogger: 0
   RunInBackground: 1
@@ -73,6 +73,9 @@ MonoBehaviour:
   - UpdateMannequinPosition
   - UpdateText
   - UsedSpawnPointSync
+  - SyncPlayMissShootSound
+  - SyncPlayShootSound
+  - SyncPlayStabSound
   DisableAutoOpenWizard: 1
-  ShowSettings: 0
-  DevRegionSetOnce: 0
+  ShowSettings: 1
+  DevRegionSetOnce: 1
