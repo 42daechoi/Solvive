@@ -45,11 +45,15 @@ public class EventManager_Game : MonoBehaviour
     public event Action<PlayerRole> OnEndGame;
     public static event Action OnEscButton;
     public event Action<string> OnEliminateOrEscape;
-    //UI Button
+    // UI Button
     public static event Action OnControlPanelButtonClicked;
     public static event Action OnResolutionPanelButtonClicked;
     public static event Action OnAudioPanelButtonClicked;
     public static event Action OnOptionConfirmButtonClicked;
+
+    // EventLock
+    private bool isUsingItem = false;
+    private float useItemCooldown = 0.5f;
 
     public static EventManager_Game Instance { get; private set; }
 
@@ -101,7 +105,19 @@ public class EventManager_Game : MonoBehaviour
 
     public void InvokeUseItem()
     {
+        if (isUsingItem)
+        {
+            return;
+        }
+        isUsingItem = true;
         OnUseItem?.Invoke();
+        StartCoroutine(ResetUseItemCooldown());
+    }
+
+    private IEnumerator ResetUseItemCooldown()
+    {
+        yield return new WaitForSeconds(useItemCooldown);
+        isUsingItem = false;
     }
 
 
