@@ -33,16 +33,16 @@ namespace GameScene.Item
                     switch (hitTag)
                     {
                         case "Head":
-                            damageMultiplier = 10f;
+                            damageMultiplier = 7f;
                             break;
                         case "Body":
-                            damageMultiplier = 6f;
+                            damageMultiplier = 3f;
                             break;
                         case "Arm":
-                            damageMultiplier = 2f;
+                            damageMultiplier = 1f;
                             break;
                         case "Leg":
-                            damageMultiplier = 2f;
+                            damageMultiplier = 1f;
                             break;
                     }
                     
