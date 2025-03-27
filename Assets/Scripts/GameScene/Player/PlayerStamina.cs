@@ -57,4 +57,14 @@ public class PlayerStamina : MonoBehaviour
         }
         return false;
     }
+
+    public bool TryToUseStamina(float requiredStamina)
+    {
+        if (currentStamina < requiredStamina) return false;
+        else
+        {
+            currentStamina -= requiredStamina;
+            return true;
+        }
+    }
 }

@@ -11,10 +11,14 @@ namespace GameScene.Item
         public RayModule rayModule;
         private RaycastHit hit;
         public float damage = 10f;
+        public float requiredStaminaForAttack = 20f;
 
         public override void UseItem()
         {
             Transform shooterTransform = GetShooterTransform();
+
+            PlayerStamina playerStamina = shooterTransform.GetComponent<PlayerStamina>();
+            if (!playerStamina.TryToUseStamina(requiredStaminaForAttack)) return;
 
             PlaySFX(shooterTransform);
             if (rayModule != null && shooterTransform != null)
@@ -77,6 +81,7 @@ namespace GameScene.Item
                 knifeStabSound.PlayStabSound();
             }
         }
+
 
         private Transform GetShooterTransform()
         {
