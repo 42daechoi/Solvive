@@ -24,7 +24,7 @@ namespace GameScene.Item
 
             if (rayModule != null && shooterTransform != null)
             {
-                PlayVFXAndSFX(shooterTransform);
+                CheckBullet(shooterTransform);
                 RaycastHit? raycastHit = rayModule.ExecuteRayAction(shooterTransform, currentSpeed);
                 // 2) 맞은 대상이 있으면 처리
                 if (raycastHit.HasValue)
@@ -75,7 +75,7 @@ namespace GameScene.Item
             }
         }
 
-        private void PlayVFXAndSFX(Transform shooterTransform)
+        private void ShootEffect(Transform shooterTransform)
         {
             GunShootEffect gunShootEffect = shooterTransform.GetComponentInChildren<GunShootEffect>();
             FPSGunShootEffect gunShootEffectFPS = shooterTransform.GetComponentInChildren<FPSGunShootEffect>();
@@ -91,6 +91,30 @@ namespace GameScene.Item
             }
         }
 
+        private void MissShootEffect(Transform shooterTransform)
+        {
+            GunShootSound gunShootSound = shooterTransform.GetComponentInChildren<GunShootSound>();
+            if (gunShootSound != null)
+            {
+                gunShootSound.PlayMissShootSound();
+            }
+        }
+
+        private void CheckBullet(Transform shooterTransform)
+        {
+            GunBullet gunBullet = shooterTransform.GetComponentInChildren<GunBullet>();
+            if (gunBullet != null)
+            {
+                if (gunBullet.TryGunShoot())
+                {
+                    ShootEffect(shooterTransform);
+                }
+                else
+                {
+                    MissShootEffect(shooterTransform);
+                }
+            }
+        }
 
         private Transform GetShooterTransform()
         {

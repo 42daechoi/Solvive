@@ -467,6 +467,7 @@ GameObject:
   - component: {fileID: -7823814475910469512}
   - component: {fileID: 2001571292380012779}
   - component: {fileID: 8318204178912711634}
+  - component: {fileID: 5622079007941912110}
   m_Layer: 0
   m_Name: Gun
   m_TagString: Untagged
@@ -736,6 +737,18 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   shootClip: {fileID: 8300000, guid: 256dc9ae9256f774a8968406a7b063f3, type: 3}
   missShootClip: {fileID: 8300000, guid: 22a49f90fe283ae4e860b5000a55a952, type: 3}
+--- !u!114 &5622079007941912110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5120721239749964195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd453d828d10f3a49b911cac93752e64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5879394906050020662
 GameObject:
   m_ObjectHideFlags: 0
