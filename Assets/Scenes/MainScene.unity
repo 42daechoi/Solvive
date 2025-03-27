@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 262.1226, g: 324.77786, b: 429.8404, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1406,6 +1406,7 @@ GameObject:
   - component: {fileID: 636294463}
   - component: {fileID: 636294464}
   - component: {fileID: 636294465}
+  - component: {fileID: 636294466}
   m_Layer: 5
   m_Name: Main_Menu_Canvas
   m_TagString: Untagged
@@ -1571,6 +1572,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 1218134033}
   MusicSlider: {fileID: 1258564171}
+--- !u!114 &636294466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 636294455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f713b7ab0558ffe47bf5ea635a8680ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  micDropdown: {fileID: 970143905}
 --- !u!1 &667360598
 GameObject:
   m_ObjectHideFlags: 0
@@ -2104,6 +2118,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 837531172}
   m_CullTransparentMesh: 1
+--- !u!114 &970143905 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6389344015184923859, guid: fdab65fb14de44244bee8648f16792c3, type: 3}
+  m_PrefabInstance: {fileID: 9004835809728642258}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1027463731
 GameObject:
   m_ObjectHideFlags: 0
@@ -3700,6 +3725,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 636294460}
     m_Modifications:
+    - target: {fileID: 148106147541422124, guid: fdab65fb14de44244bee8648f16792c3, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 286974049424761664, guid: fdab65fb14de44244bee8648f16792c3, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1536607450690044163, guid: fdab65fb14de44244bee8648f16792c3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -3731,6 +3764,10 @@ PrefabInstance:
     - target: {fileID: 5169257152564901759, guid: fdab65fb14de44244bee8648f16792c3, type: 3}
       propertyPath: m_Name
       value: Option UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 5169257152564901759, guid: fdab65fb14de44244bee8648f16792c3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5414206706701595850, guid: fdab65fb14de44244bee8648f16792c3, type: 3}
       propertyPath: m_Pivot.x

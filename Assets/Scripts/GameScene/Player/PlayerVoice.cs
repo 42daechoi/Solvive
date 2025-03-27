@@ -6,7 +6,17 @@ using Photon.Voice;
 
 public class PlayerVoice : MonoBehaviourPun
 {
+    public static PlayerVoice Instance { get; private set; }
+    
     Recorder recorder;
+    
+    private void Awake()
+    {
+        if (photonView.IsMine && Instance == null)
+        {
+            Instance = this;
+        }
+    }
 
     private void OnEnable()
     {
@@ -32,21 +42,30 @@ public class PlayerVoice : MonoBehaviourPun
         string[] micDevices = Microphone.devices;
         if (micDevices.Length == 0)
         {
-            Debug.LogError("❌ 마이크 디바이스가 없습니다.");
+            Debug.LogError("❌ 사용 가능한 마이크가 없습니다.");
             return;
         }
 
-        string micName = micDevices[0];
-        Debug.Log("🎙️ 마이크 선택됨: " + micName);
+        // 기본 마이크 적용 (UI 없이도 작동하게)
+        SetMicrophone(micDevices[0]);
+
+        recorder.TransmitEnabled = false;
+    }
+    
+    public void SetMicrophone(string micName)
+    {
+        if (recorder == null)
+        {
+            Debug.LogWarning("⚠️ Recorder가 아직 초기화되지 않음.");
+            return;
+        }
 
         recorder.SourceType = Recorder.InputSourceType.Microphone;
         recorder.MicrophoneType = Recorder.MicType.Unity;
-
-        // ✅ DeviceFeatures 없이 생성
         recorder.MicrophoneDevice = new DeviceInfo(micName, micName);
-
         recorder.RestartRecording();
-        recorder.TransmitEnabled = false;
+
+        Debug.Log($"✅ 마이크 변경됨: {micName}");
     }
 
     void HandleVoice(bool value)
