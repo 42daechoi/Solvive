@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2345560505552743853}
   - component: {fileID: 4781854705400392578}
   - component: {fileID: 6299995455241439999}
+  - component: {fileID: 6773879712975870092}
   m_Layer: 0
   m_Name: UIManager
   m_TagString: Untagged
@@ -134,3 +135,16 @@ MonoBehaviour:
   ControlPanel: {fileID: 0}
   resolutionPanel: {fileID: 0}
   AudioPanel: {fileID: 0}
+--- !u!114 &6773879712975870092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8922031823815175291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f713b7ab0558ffe47bf5ea635a8680ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  micDropdown: {fileID: 0}
