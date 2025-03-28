@@ -8,6 +8,7 @@ public class GeneratorSound : MonoBehaviour
     public AudioClip startClip;
     public AudioClip loopClip;
     public AudioClip endClip;
+    public AudioClip installBatteryClip;
 
     private void Start()
     {
@@ -41,6 +42,13 @@ public class GeneratorSound : MonoBehaviour
     {
         audioSource.Stop();
         audioSource.clip = endClip;
+        audioSource.loop = false;
+        audioSource.Play();
+    }
+
+    public void PlayInstallBatterySound()
+    {
+        audioSource.clip = installBatteryClip;
         audioSource.loop = false;
         audioSource.Play();
     }

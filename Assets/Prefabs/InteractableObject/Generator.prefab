@@ -177,6 +177,7 @@ MonoBehaviour:
   startClip: {fileID: 8300000, guid: d5e2271e12cbfcf409daee4a26f5edd6, type: 3}
   loopClip: {fileID: 8300000, guid: 343b33776bccccb4dab6e430fa566aa5, type: 3}
   endClip: {fileID: 8300000, guid: 597279d46317a12479434780aae74a60, type: 3}
+  installBatteryClip: {fileID: 8300000, guid: 88afbff225f99bc43a4f4365a3a9968d, type: 3}
 --- !u!82 &4128702706641150805
 AudioSource:
   m_ObjectHideFlags: 0
