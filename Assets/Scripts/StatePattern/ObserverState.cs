@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ObserverState : IState
 {
-    public void EnterState(PlayerController player)
+    public void EnterState(PlayerController player, PlayerSound playerSound)
     {
         CinemachineVirtualCamera fpsCam = player.FPSCam;
         CinemachineVirtualCamera obCam = player.ObserverCam;
@@ -19,7 +19,7 @@ public class ObserverState : IState
         playerCamera.SetCamFollowPos(observerTarget);
     }
 
-    public void UpdateState(PlayerController player, Vector3 inputDirection, float offset)
+    public void UpdateState(PlayerController player, Vector3 inputDirection, float offset, PlayerSound playerSound)
     {
         if (inputDirection.sqrMagnitude < 0.1f)
         {
@@ -34,7 +34,7 @@ public class ObserverState : IState
     }
     
 
-    public void FixedUpdateState(PlayerController player, Vector3 inputDirection, float offset, bool escape)
+    public void FixedUpdateState(PlayerController player, Vector3 inputDirection, float offset, bool escape, PlayerSound playerSound)
     {
         
     }

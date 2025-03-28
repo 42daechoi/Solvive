@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviourPun
     private Interaction _interaction;
     private InputManager_Game _defaultInputManager;
     private InputManager_Computer _computerInputManager;
+    private PlayerSound _playerSound;
     public MovementSettings localSpeedSettings;
     
     [Header("Speed Settings")]
@@ -90,6 +91,7 @@ public class PlayerController : MonoBehaviourPun
         _currentSpeed = _speedSettings.walkSpeed;
         _playerMovement = GetComponent<PlayerMovement>();
         _playerCamera = GetComponent<PlayerCamera>();
+        _playerSound = GetComponent<PlayerSound>();
 
         IdleState = new IdleState();
         JumpState = new JumpState();
@@ -158,7 +160,7 @@ public class PlayerController : MonoBehaviourPun
     {
         if (_photonView.IsMine)
         {
-            _currentState.UpdateState(this, _playerMovement.InputDirection, _playerMovement.Offset);
+            _currentState.UpdateState(this, _playerMovement.InputDirection, _playerMovement.Offset, _playerSound);
             //if (Time.time % 1f < 0.02f)
             //{
             //    SavePlayerPosition();
@@ -170,7 +172,7 @@ public class PlayerController : MonoBehaviourPun
     {
         if (_photonView.IsMine)
         {
-            _currentState.FixedUpdateState(this, _playerMovement.InputDirection, _playerMovement.Offset, _mannequinEscape);
+            _currentState.FixedUpdateState(this, _playerMovement.InputDirection, _playerMovement.Offset, _mannequinEscape, _playerSound);
         }
     }
 
@@ -191,7 +193,7 @@ public class PlayerController : MonoBehaviourPun
         }
 
         _currentState = newState;
-        _currentState.EnterState(this);
+        _currentState.EnterState(this, _playerSound);
         
         if (_previousState is UseComputerState && _currentState is IdleState)
         {

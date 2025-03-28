@@ -2,12 +2,15 @@ using UnityEngine;
 
 public class MoveState : IState
 {
-    public void EnterState(PlayerController player)
+    private float footstepInterval = 0.5f;
+    private float footstepTimer = 0f;
+
+    public void EnterState(PlayerController player, PlayerSound playerSound)
     {
         Debug.Log("Move행동 진입");
     }
 
-    public void UpdateState(PlayerController player, Vector3 inputDirection, float offset)
+    public void UpdateState(PlayerController player, Vector3 inputDirection, float offset, PlayerSound playerSound)
     {
         player.UpdateAnimator();
         
@@ -20,9 +23,15 @@ public class MoveState : IState
         {
             player.TransitionToState(new IdleState());
         }
+        footstepTimer += Time.deltaTime;
+        if (footstepTimer >= footstepInterval)
+        {
+            playerSound.PlayWalkSound();
+            footstepTimer = 0f;
+        }
     }
 
-    public void FixedUpdateState(PlayerController player, Vector3 inputDirection, float offset, bool escape)
+    public void FixedUpdateState(PlayerController player, Vector3 inputDirection, float offset, bool escape, PlayerSound playerSound)
     {
         player.UpdateAnimator();
         player.ApplyGravity();
