@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class IdleState : IState
 {
-    public void EnterState(PlayerController player)
+    public void EnterState(PlayerController player, PlayerSound p)
     {
         Debug.Log("Idle자세");
     }
 
-    public void UpdateState(PlayerController player, Vector3 inputDirection, float offset)
+    public void UpdateState(PlayerController player, Vector3 inputDirection, float offset, PlayerSound playerSound)
     {
         player.UpdateAnimator();
         if (inputDirection.sqrMagnitude > 0.1f)
@@ -16,7 +16,7 @@ public class IdleState : IState
         }
     }
     
-    public void FixedUpdateState(PlayerController player, Vector3 inputDirection, float offset, bool escape)
+    public void FixedUpdateState(PlayerController player, Vector3 inputDirection, float offset, bool escape, PlayerSound playerSound)
     {
         player.UpdateAnimator();
         player.ApplyGravity();

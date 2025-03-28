@@ -4,18 +4,19 @@ public class JumpState : IState
 {
     private bool shouldMove = false;
 
-    public void EnterState(PlayerController player)
+    public void EnterState(PlayerController player, PlayerSound playerSound)
     {
         shouldMove = player.GetPreviousState() is MoveState || player.GetPreviousState() is SprintState;
         player.VerticalVelocity = player.SpeedSettings.jumpForce;
+        playerSound.PlayJumpSound();
     }
 
-    public void UpdateState(PlayerController player, Vector3 inputDirection, float offset)
+    public void UpdateState(PlayerController player, Vector3 inputDirection, float offset, PlayerSound playerSound)
     {
         player.UpdateAnimator();
     }
 
-    public void FixedUpdateState(PlayerController player, Vector3 inputDirection, float offset, bool escape)
+    public void FixedUpdateState(PlayerController player, Vector3 inputDirection, float offset, bool escape, PlayerSound playerSound)
     {
         player.UpdateAnimator();
         Vector3 movement = Vector3.zero;
@@ -40,6 +41,7 @@ public class JumpState : IState
         if (player.IsGrounded() && player.VerticalVelocity <= 0)
         {
             player.TransitionToState(player.WasInSprintState() ? new SprintState() : new IdleState());
+            playerSound.PlayJumpLandSound();
         }
     }
 

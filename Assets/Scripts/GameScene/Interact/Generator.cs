@@ -170,6 +170,7 @@ public class Generator : MonoBehaviourPun, IInteractableObject
 	{
 		installedBatteryCount++;
 		batteryPositionOffset += new Vector3(0.4f, 0, 0);
+		generatorSound.PlayInstallBatterySound();
 		Debug.Log($"Generator : 배터리 장착 성공. 현재 장착된 배터리 갯수 : {installedBatteryCount}");
 	}
 
@@ -178,7 +179,8 @@ public class Generator : MonoBehaviourPun, IInteractableObject
 	{
 		installedBatteryCount--;
 		batteryPositionOffset -= new Vector3(0.4f, 0, 0);
-		Debug.Log($"Generator : 배터리 회수 성공. 현재 장착된 배터리 갯수 : {installedBatteryCount}");
+        generatorSound.PlayInstallBatterySound();
+        Debug.Log($"Generator : 배터리 회수 성공. 현재 장착된 배터리 갯수 : {installedBatteryCount}");
 	}
 
 	[PunRPC]

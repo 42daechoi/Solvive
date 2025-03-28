@@ -77,6 +77,13 @@ MonoBehaviour:
   - SyncPlayShootSound
   - SyncPlayStabSound
   - SyncBulletCount
+  - SyncPlayJumpSound
+  - SyncPlaySprintSound
+  - SyncPlayWalkSound
+  - SyncPlayJumpLandSound
+  - SyncPlayCardSpawnSound
+  - SyncPlayClickSound
+  - SyncPlayErrorSound
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

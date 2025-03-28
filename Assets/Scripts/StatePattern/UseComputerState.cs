@@ -2,19 +2,19 @@ using UnityEngine;
 
 public class UseComputerState : IState
 {
-    public void EnterState(PlayerController player)
+    public void EnterState(PlayerController player, PlayerSound playerSound)
     {
         Debug.Log("UseComputerState에 진입했습니다.");
         player.StartMoveToComputer();
     }
 
-    public void UpdateState(PlayerController player, Vector3 inputDirection, float offset)
+    public void UpdateState(PlayerController player, Vector3 inputDirection, float offset, PlayerSound playerSound)
     {
         
     }
     
 
-    public void FixedUpdateState(PlayerController player, Vector3 inputDirection, float offset, bool escape)
+    public void FixedUpdateState(PlayerController player, Vector3 inputDirection, float offset, bool escape, PlayerSound playerSound)
     {
         
     }

@@ -2,21 +2,29 @@ using UnityEngine;
 
 public class SprintState : IState
 {
-    public void EnterState(PlayerController player)
+    private float footstepInterval = 0.3f;
+    private float footstepTimer = 0f;
+    public void EnterState(PlayerController player, PlayerSound playerSound)
     {
         Debug.Log("Sprint행동 진입");
     }
 
-    public void UpdateState(PlayerController player, Vector3 inputDirection, float offset)
+    public void UpdateState(PlayerController player, Vector3 inputDirection, float offset, PlayerSound playerSound)
     {
         if (offset <= 0.5f)
         {
             player.TransitionToState(new MoveState());
         }
         player.UpdateAnimator();
+        footstepTimer += Time.deltaTime;
+        if (footstepTimer >= footstepInterval)
+        {
+            playerSound.PlaySprintSound();
+            footstepTimer = 0f;
+        }
     }
 
-    public void FixedUpdateState(PlayerController player, Vector3 inputDirection, float offset, bool escape)
+    public void FixedUpdateState(PlayerController player, Vector3 inputDirection, float offset, bool escape, PlayerSound playerSound)
     {
         Vector3 movement = new Vector3(inputDirection.x, 0, inputDirection.z).normalized;
         movement = player.transform.TransformDirection(movement);
