@@ -6,9 +6,14 @@ public class Flashlight : ItemData
     public override void UseItem()
     {
         FlashLightControl flashLightControl = GetFlashLightControl();
+        FlashlightSound flashlightSound = GetFlashlightSound();
         if (flashLightControl != null)
         {
             flashLightControl.ToggleFlashlight();
+            if (flashlightSound != null)
+            {
+                flashlightSound.PlayClickSound();
+            }
         }
         else
         {
@@ -21,6 +26,15 @@ public class Flashlight : ItemData
         if (PlayerController.Instance != null)
         {
             return PlayerController.Instance.GetComponentInChildren<FlashLightControl>();
+        }
+        return null;
+    }
+
+    private FlashlightSound GetFlashlightSound()
+    {
+        if (PlayerController.Instance != null)
+        {
+            return PlayerController.Instance.GetComponentInChildren<FlashlightSound>();
         }
         return null;
     }

@@ -1,6 +1,5 @@
-using UnityEngine;
+﻿using UnityEngine;
 using Photon.Pun;
-
 
 public class PlayerSound : MonoBehaviourPun
 {
@@ -9,6 +8,8 @@ public class PlayerSound : MonoBehaviourPun
     public AudioClip walkClip;
     public AudioClip jumpClip;
     public AudioClip jumpLandClip;
+    public AudioClip pantingClip;
+    private bool isPantingPlaying = false;
 
     void Start()
     {
@@ -22,7 +23,6 @@ public class PlayerSound : MonoBehaviourPun
 
     public void PlayWalkSound()
     {
-
         photonView.RPC("SyncPlayWalkSound", RpcTarget.All);
     }
 
@@ -30,10 +30,9 @@ public class PlayerSound : MonoBehaviourPun
     private void SyncPlayWalkSound()
     {
         audioSource.maxDistance = 10.0f;
-        audioSource.clip = walkClip;
-        audioSource.loop = false;
-        audioSource.Play();
+        audioSource.PlayOneShot(walkClip);
     }
+
 
     public void PlaySprintSound()
     {
@@ -44,10 +43,33 @@ public class PlayerSound : MonoBehaviourPun
     private void SyncPlaySprintSound()
     {
         audioSource.maxDistance = 20.0f;
-        audioSource.clip = sprintClip;
-        audioSource.loop = false;
-        audioSource.Play();
+        audioSource.PlayOneShot(sprintClip);
     }
+
+
+
+    public void PlayPantingSound()
+    {
+        if (!isPantingPlaying)
+        {
+            photonView.RPC("SyncPlayPantingSound", RpcTarget.All);
+            isPantingPlaying = true;
+            Invoke(nameof(ResetPantingFlag), pantingClip.length);
+        }
+    }
+
+    [PunRPC]
+    private void SyncPlayPantingSound()
+    {
+        audioSource.maxDistance = 20.0f;
+        audioSource.PlayOneShot(pantingClip);
+    }
+
+    private void ResetPantingFlag()
+    {
+        isPantingPlaying = false;
+    }
+
 
     public void PlayJumpSound()
     {
@@ -57,10 +79,9 @@ public class PlayerSound : MonoBehaviourPun
     [PunRPC]
     private void SyncPlayJumpSound()
     {
-        audioSource.clip = jumpClip;
-        audioSource.loop = false;
-        audioSource.Play();
+        audioSource.PlayOneShot(jumpClip);
     }
+
 
     public void PlayJumpLandSound()
     {
@@ -70,8 +91,6 @@ public class PlayerSound : MonoBehaviourPun
     [PunRPC]
     private void SyncPlayJumpLandSound()
     {
-        audioSource.clip = jumpLandClip;
-        audioSource.loop = false;
-        audioSource.Play();
+        audioSource.PlayOneShot(jumpLandClip);
     }
 }

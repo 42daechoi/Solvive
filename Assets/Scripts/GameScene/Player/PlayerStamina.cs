@@ -8,7 +8,8 @@ public class PlayerStamina : MonoBehaviour
     [SerializeField] private float staminaDrainRate = 8f;
     [SerializeField] private float currentStamina;
     [SerializeField] private Slider staminaBar;
-    [SerializeField] private PlayerController playerController;
+    private PlayerController playerController;
+    private PlayerSound playerSound;
 
     private void Start()
     {
@@ -22,6 +23,7 @@ public class PlayerStamina : MonoBehaviour
             if (obj != null) staminaBar = obj.GetComponent<Slider>();
         }
         playerController = GetComponent<PlayerController>();
+        playerSound = GetComponent<PlayerSound>();
         currentStamina = maxStamina;
         if (staminaBar) staminaBar.maxValue = maxStamina;
     }
@@ -36,6 +38,10 @@ public class PlayerStamina : MonoBehaviour
 
     private void HandleStamina(bool isSprint)
     {
+        if (currentStamina <= 0)
+        {
+            playerSound.PlayPantingSound();
+        }
         if (isSprint && currentStamina > 0)
         {
             currentStamina -= staminaDrainRate * Time.deltaTime;
