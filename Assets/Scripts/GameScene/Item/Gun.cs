@@ -108,6 +108,7 @@ namespace GameScene.Item
                 if (gunBullet.TryGunShoot())
                 {
                     ShootEffect(shooterTransform);
+                    EventManager_Game.Instance.InvokeFPSUseItem(itemName);
                 }
                 else
                 {
