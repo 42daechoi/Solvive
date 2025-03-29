@@ -160,7 +160,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void AddUnlockedComputerCount(int n)
     {
         photonView.RPC("SyncUnlockedComputerCount", RpcTarget.All, n);
-        if (unlockedComputerCount % 2 == 0)
+        if (unlockedComputerCount > 0 && unlockedComputerCount % 2 == 0)
         {
             Debug.Log("GameManger : 모든 컴퓨터 잠금해제 완료.");
             if (PhotonNetwork.IsMasterClient)
