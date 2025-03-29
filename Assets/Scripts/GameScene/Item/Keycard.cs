@@ -16,6 +16,7 @@ public class Keycard : ItemData
         
         if (raycastHit != null && raycastHit.Value.collider.CompareTag("Button"))
         {
+            EventManager_Game.Instance.InvokeFPSUseItem(itemName);
             EventManager_Game.Instance.InvokeOpenDoor(this);
         }
     }

@@ -18,7 +18,14 @@ namespace GameScene.Item
             Transform shooterTransform = GetShooterTransform();
 
             PlayerStamina playerStamina = shooterTransform.GetComponent<PlayerStamina>();
-            if (!playerStamina.TryToUseStamina(requiredStaminaForAttack)) return;
+            if (playerStamina.TryToUseStamina(requiredStaminaForAttack))
+            {
+                EventManager_Game.Instance.InvokeFPSUseItem(itemName);
+            }
+            else
+            {
+                return;
+            }
 
             PlaySFX(shooterTransform);
             if (rayModule != null && shooterTransform != null)

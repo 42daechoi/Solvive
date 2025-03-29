@@ -219,6 +219,5 @@ public class HeldItem : MonoBehaviourPunCallbacks
         ItemData itemData = item.GetItemData();
         Debug.Log($"HeldItem : {item.GetItemData().itemName} 아이템 사용");
         itemData.UseItem();
-        EventManager_Game.Instance.InvokeFPSUseItem(itemData.itemName);
     }
 }
