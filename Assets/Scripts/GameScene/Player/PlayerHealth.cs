@@ -26,8 +26,8 @@ public class PlayerHealth : MonoBehaviourPun
 			}
 		}
 		if (healthSlider != null)
-	{
-				healthSlider.maxValue = maxHealth;
+		{
+			healthSlider.maxValue = maxHealth;
 			healthSlider.value = currentHealth;
 		}
 	}
@@ -61,9 +61,6 @@ public class PlayerHealth : MonoBehaviourPun
 	{
 		Debug.Log($"{gameObject.name} 사망");
 		EventManager_Game.Instance.InvokeEliminateOrEscape("Eliminate");
-		if (TryGetComponent(out PlayerRoleDistribution prd))
-		{
-			if (prd.role == PlayerRole.Citizen) GameManager.Instance.EliminateOrEscapeCitizen(photonView.ViewID, "Eliminate");
-		}
+		GameManager.Instance.EliminateOrEscapeCitizen(photonView.ViewID, "Eliminate");
 	}
 }
