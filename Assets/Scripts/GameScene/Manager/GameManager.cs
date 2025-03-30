@@ -69,6 +69,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void EliminateOrEscapeCitizen(int viewID, string flag)
     {
+        
         if (citizenCount < 1)
         {
             Debug.Log("GameManager : citizenCount가 초기화 되지 않았습니다.");
@@ -83,8 +84,16 @@ public class GameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void SyncEliminateOrEscapeCitizen(int viewID, string flag)
     {
-        citizenCount--;
-        EventManager_Game.Instance.InvokeObserverState(viewID);
+        if (flag == "Eliminate")
+        {
+            EventManager_Game.Instance.InvokeObserverState(viewID);
+            
+            var player = PhotonView.Find(viewID)?.GetComponent<PlayerRoleDistribution>();
+            if (player != null && player.role == PlayerRole.Citizen)
+            {
+                citizenCount--;
+            }
+        }
         Debug.Log($"GameManager: InvokeObserverState발행요청 - ViewID: {viewID}");
         if (citizenCount == 0)
         {
