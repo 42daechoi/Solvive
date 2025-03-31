@@ -8,6 +8,11 @@ public class HitEffect : MonoBehaviour
     void Start()
     {
         skinnedMeshRenderer = GetComponent<SkinnedMeshRenderer>();
+        PlayerHealth playerHealth = GetComponentInParent<PlayerHealth>();
+        if (playerHealth != null)
+        {
+            playerHealth.SetHitEffect(this);
+        }
     }
 
     public void OnHit()

@@ -11,8 +11,6 @@ public class PlayerHealth : MonoBehaviourPun
 		
 	private void Start()
 	{
-		hitEffect = GetComponentInChildren<HitEffect>();
-		if (hitEffect == null) Debug.LogError("PlayerHealth : HitEffect를 찾을 수 없습니다.");
 		currentHealth = maxHealth;
 			
 		if (healthSlider == null)
@@ -70,4 +68,9 @@ public class PlayerHealth : MonoBehaviourPun
 		EventManager_Game.Instance.InvokeEliminateOrEscape("Eliminate");
 		GameManager.Instance.EliminateOrEscapeCitizen(photonView.ViewID, "Eliminate");
 	}
+
+    public void SetHitEffect(HitEffect effect)
+    {
+        hitEffect = effect;
+    }
 }
