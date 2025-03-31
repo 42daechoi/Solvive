@@ -84,14 +84,22 @@ public class GameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void SyncEliminateOrEscapeCitizen(int viewID, string flag)
     {
-        if (flag == "Eliminate")
+        var player = PhotonView.Find(viewID)?.GetComponent<PlayerRoleDistribution>();
+        if (player == null) return;
+
+        if (player.role == PlayerRole.Citizen)
         {
-            EventManager_Game.Instance.InvokeObserverState(viewID);
-            
-            var player = PhotonView.Find(viewID)?.GetComponent<PlayerRoleDistribution>();
-            if (player != null && player.role == PlayerRole.Citizen)
+            if (flag == "Eliminate" || flag == "Escape")
             {
+                EventManager_Game.Instance.InvokeObserverState(viewID);
                 citizenCount--;
+            }
+        }
+        else if (player.role == PlayerRole.Mannequin)
+        {
+            if (flag == "Eliminate")
+            {
+                EventManager_Game.Instance.InvokeObserverState(viewID);
             }
         }
         Debug.Log($"GameManager: InvokeObserverState발행요청 - ViewID: {viewID}");
