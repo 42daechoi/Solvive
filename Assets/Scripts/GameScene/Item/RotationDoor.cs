@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Photon.Pun;
+using Photon.Realtime;
 
-public class RotationDoor : MonoBehaviour
+public class RotationDoor : MonoBehaviourPunCallbacks
 {
     [SerializeField] private Transform door1;
     [SerializeField] private Transform door2;
@@ -18,12 +20,26 @@ public class RotationDoor : MonoBehaviour
     
     private void OnEnable()
     {
-        EventManager_Game.Instance.OnOpenDoor += HandleOpenDoor;
+        if (EventManager_Game.Instance != null)
+        {
+            EventManager_Game.Instance.OnOpenDoor += HandleOpenDoor;
+        }
+        else
+        {
+            Debug.LogWarning("EventManager_Game.Instance is null - RotationDoor");
+        }
     }
 
     private void OnDisable()
     {
-        EventManager_Game.Instance.OnOpenDoor -= HandleOpenDoor;
+        if (EventManager_Game.Instance != null)
+        {
+            EventManager_Game.Instance.OnOpenDoor -= HandleOpenDoor;
+        }
+        else
+        {
+            Debug.LogWarning("EventManager_Game.Instance is null - RotationDoor");
+        }
     }
     
     public void SetFocus(bool focus)
@@ -33,11 +49,14 @@ public class RotationDoor : MonoBehaviour
 
     private void HandleOpenDoor(ItemData heldItem)
     {
-        OpenBothDoors();
+        if (isDoorOpen) return;
+        photonView.RPC(nameof(RPC_OpenBothDoors), RpcTarget.AllViaServer);
     }
 
-    private void OpenBothDoors()
+    [PunRPC]
+    private void RPC_OpenBothDoors()
     {
+        if (isDoorOpen) return;
         Debug.Log("문 열기");
 
         if (door1Animator != null) 
@@ -51,12 +70,25 @@ public class RotationDoor : MonoBehaviour
             door2Animator.ResetTrigger("CloseDoor2");
             door2Animator.SetTrigger("OpenDoor2"); // OpenDoor2 실행
         }
-
-        // 10초 후 CloseDoor 실행
-        Invoke(nameof(CloseBothDoors), 10f);
+        isDoorOpen = true;
+        
+        photonView.RPC(nameof(RPC_StartCloseCountdown), RpcTarget.All);
+    }
+    
+    [PunRPC]
+    private void RPC_StartCloseCountdown()
+    {
+        StartCoroutine(DelayedClose());
+    }
+    
+    private IEnumerator DelayedClose()
+    {
+        yield return new WaitForSeconds(10f);
+        photonView.RPC(nameof(RPC_CloseBothDoors), RpcTarget.AllBufferedViaServer);
     }
 
-    private void CloseBothDoors()
+    [PunRPC]
+    private void RPC_CloseBothDoors()
     {
         Debug.Log("문 닫기");
 
@@ -71,6 +103,7 @@ public class RotationDoor : MonoBehaviour
             door2Animator.ResetTrigger("OpenDoor2");
             door2Animator.SetTrigger("CloseDoor2"); // CloseDoor2 실행
         }
+        isDoorOpen = false;
     }
 }
     
