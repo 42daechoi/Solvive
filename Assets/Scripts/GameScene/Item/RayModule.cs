@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using System.Linq;
+using Photon.Pun;
 using UnityEngine;
 
 
@@ -56,19 +57,29 @@ public class RayModule : ScriptableObject
         Ray finalRay = new Ray(origin, direction);
 
         // 4) 레이캐스트
-        int playerLayer = LayerMask.NameToLayer("Player");
-        int layerMask = ~(1 << playerLayer);
+        RaycastHit[] hits = Physics.RaycastAll(finalRay, 100f);
+    
+        PhotonView myView = shooterTransform.GetComponentInParent<PhotonView>();
 
-        if (Physics.Raycast(finalRay, out RaycastHit hit, 100f, layerMask))
+        foreach (var hit in hits.OrderBy(h => h.distance))
         {
-            PhotonView myView = shooterTransform.GetComponentInParent<PhotonView>();
             PhotonView hitView = hit.collider.GetComponentInParent<PhotonView>();
-            
-            if (hitView == null || myView == null || hitView.ViewID != myView.ViewID)
+
+            bool isSelf = hitView != null && myView != null && hitView.ViewID == myView.ViewID;
+
+            int hitLayer = hit.collider.gameObject.layer;
+            bool isIgnoredLayer = hitLayer == LayerMask.NameToLayer("Player") ||
+                                  hitLayer == LayerMask.NameToLayer("Hitbox");
+
+            if (isSelf && isIgnoredLayer)
             {
-                Debug.DrawRay(origin, direction * 100f, Color.red, 1f);
-                return hit;
+                Debug.DrawRay(origin, direction * 100f, Color.yellow, 1f);
+                continue;
             }
+
+            
+            Debug.DrawRay(origin, direction * 100f, Color.green, 1f);
+            return hit;
         }
         return null;
     }
@@ -88,17 +99,28 @@ public class RayModule : ScriptableObject
         Vector3 direction = centerRay.direction;
         Ray finalRay = new Ray(origin, direction);
 
-        // 3) 레이캐스트 (knifeRange 까지만)
-        if (Physics.Raycast(finalRay, out RaycastHit hit, knifeRange))
+        RaycastHit[] hits = Physics.RaycastAll(finalRay, knifeRange);
+
+        PhotonView myView = shooterTransform.GetComponentInParent<PhotonView>();
+
+        foreach (var hit in hits.OrderBy(h => h.distance))
         {
-            PhotonView myView = shooterTransform.GetComponentInParent<PhotonView>();
             PhotonView hitView = hit.collider.GetComponentInParent<PhotonView>();
-            
-            if (hitView == null || myView == null || hitView.ViewID != myView.ViewID)
+
+            bool isSelf = hitView != null && myView != null && hitView.ViewID == myView.ViewID;
+
+            int hitLayer = hit.collider.gameObject.layer;
+            bool isIgnoredLayer = hitLayer == LayerMask.NameToLayer("Player") ||
+                                  hitLayer == LayerMask.NameToLayer("Hitbox");
+
+            if (isSelf && isIgnoredLayer)
             {
-                Debug.DrawRay(origin, direction * knifeRange, Color.blue, 1f);
-                return hit;
+                Debug.DrawRay(origin, direction * knifeRange, Color.yellow, 1f);
+                continue; // 자기 자신 + 무시 레이어 → 다음으로 넘어감
             }
+
+            Debug.DrawRay(origin, direction * knifeRange, Color.green, 1f);
+            return hit; // 유효한 대상 처음 만났을 때 return
         }
         return null;
     }
