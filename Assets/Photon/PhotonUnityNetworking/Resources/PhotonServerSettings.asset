@@ -85,6 +85,10 @@ MonoBehaviour:
   - SyncPlayClickSound
   - SyncPlayErrorSound
   - SyncPlayPantingSound
+  - RPC_OpenBothDoors
+  - CloseBothDoors
+  - RPC_CloseBothDoors
+  - RPC_StartCloseCountdown
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
