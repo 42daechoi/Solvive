@@ -61,9 +61,14 @@ public class RayModule : ScriptableObject
 
         if (Physics.Raycast(finalRay, out RaycastHit hit, 100f, layerMask))
         {
-            // 디버그 레이 (씬 뷰에서 빨간 선으로 확인)
-            Debug.DrawRay(origin, direction * 100f, Color.red, 1f);
-            return hit;
+            PhotonView myView = shooterTransform.GetComponentInParent<PhotonView>();
+            PhotonView hitView = hit.collider.GetComponentInParent<PhotonView>();
+            
+            if (hitView == null || myView == null || hitView.ViewID != myView.ViewID)
+            {
+                Debug.DrawRay(origin, direction * 100f, Color.red, 1f);
+                return hit;
+            }
         }
         return null;
     }
@@ -86,9 +91,14 @@ public class RayModule : ScriptableObject
         // 3) 레이캐스트 (knifeRange 까지만)
         if (Physics.Raycast(finalRay, out RaycastHit hit, knifeRange))
         {
-            // 디버그 레이 (씬 뷰에서 파란 선으로 확인)
-            Debug.DrawRay(origin, direction * knifeRange, Color.blue, 1f);
-            return hit;
+            PhotonView myView = shooterTransform.GetComponentInParent<PhotonView>();
+            PhotonView hitView = hit.collider.GetComponentInParent<PhotonView>();
+            
+            if (hitView == null || myView == null || hitView.ViewID != myView.ViewID)
+            {
+                Debug.DrawRay(origin, direction * knifeRange, Color.blue, 1f);
+                return hit;
+            }
         }
         return null;
     }
