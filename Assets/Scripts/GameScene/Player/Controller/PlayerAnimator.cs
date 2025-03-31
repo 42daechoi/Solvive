@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class PlayerAnimator : MonoBehaviour
@@ -64,16 +65,25 @@ public class PlayerAnimator : MonoBehaviour
             case "Gun":
                 if (_pistolLayerIndex != -1)
                 {
-                    _animator.SetLayerWeight(_pistolLayerIndex, 1f);
+                    float currentWeight = _animator.GetLayerWeight(_pistolLayerIndex);
+                    DOTween.To(() => currentWeight, 
+                        x => {
+                            currentWeight = x;
+                            _animator.SetLayerWeight(_pistolLayerIndex, currentWeight);
+                        },
+                        1f,
+                        0.5f);
                 }
-
                 break;
             case "Knife":
                 if (_knifeLayerIndex != -1)
                 {
-                    _animator.SetLayerWeight(_knifeLayerIndex, 1f);
+                    float currentWeight = _animator.GetLayerWeight(_knifeLayerIndex);
+                    DOTween.To(() => currentWeight,
+                        x => _animator.SetLayerWeight(_knifeLayerIndex, x),
+                        1f,
+                        0.5f).SetEase(Ease.OutSine);
                 }
-
                 break;
             case "Default":
             default:
@@ -85,12 +95,20 @@ public class PlayerAnimator : MonoBehaviour
     {
         if (_pistolLayerIndex != -1)
         {
-            _animator.SetLayerWeight(_pistolLayerIndex, 0f);
+            float currentWeight = _animator.GetLayerWeight(_pistolLayerIndex);
+            DOTween.To(() => currentWeight,
+                x => _animator.SetLayerWeight(_pistolLayerIndex, x),
+                0f,
+                0.3f).SetEase(Ease.OutSine);
         }
         
         if (_knifeLayerIndex != -1)
         {
-            _animator.SetLayerWeight(_knifeLayerIndex, 0f);
+            float currentWeight = _animator.GetLayerWeight(_knifeLayerIndex);
+            DOTween.To(() => currentWeight,
+                x => _animator.SetLayerWeight(_knifeLayerIndex, x),
+                0f,
+                0.3f).SetEase(Ease.OutSine);
         }
     }
 }
