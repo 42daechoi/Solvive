@@ -4,12 +4,15 @@ using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviourPun
 {
+	private HitEffect hitEffect;
 	public float maxHealth = 100f;
 	public Slider healthSlider;
 	public float currentHealth;
 		
 	private void Start()
 	{
+		hitEffect = GetComponentInChildren<HitEffect>();
+		if (hitEffect == null) Debug.LogError("PlayerHealth : HitEffect를 찾을 수 없습니다.");
 		currentHealth = maxHealth;
 			
 		if (healthSlider == null)
@@ -35,7 +38,11 @@ public class PlayerHealth : MonoBehaviourPun
 	[PunRPC]
 	public void TakeDamage(float amount)
 	{
-		if (!photonView.IsMine) return;
+		if (!photonView.IsMine)
+		{
+			hitEffect.OnHit();
+			return;
+		}
 		currentHealth -= amount;
 		currentHealth = Mathf.Clamp(currentHealth, 0f, 100f);
 		
