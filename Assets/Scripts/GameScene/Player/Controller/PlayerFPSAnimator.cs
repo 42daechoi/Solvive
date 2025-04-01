@@ -54,6 +54,7 @@ public class PlayerFPSAnimator : MonoBehaviour
 		if (itemName == "Knife")
 		{
 			PlayKnifeStab(poseData);
+			playerAnimator.TriggerShootAnim();
 		}
 
 		if (itemName == "Keycard")
