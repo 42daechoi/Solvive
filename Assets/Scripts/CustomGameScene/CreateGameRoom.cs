@@ -16,6 +16,8 @@ public class CreateGameRoom : MonoBehaviourPunCallbacks
     public Canvas GameRobbyCanvas;
     public const byte ROOM_INFO_EVENT = 1;
 
+    private List<RoomInfo> cachedRoomList = new List<RoomInfo>();
+
 
     public void Start()
     {
@@ -41,6 +43,13 @@ public class CreateGameRoom : MonoBehaviourPunCallbacks
     {
         RoomOptions roomOptions = new RoomOptions();
 
+        // 방코드 설정
+        string roomCode = GenerateRoomCode();
+        while (!IsNotDuplicated(roomCode))
+        {
+            roomCode = GenerateRoomCode();
+        }
+
         // Public/Private 설정
         roomOptions.IsVisible = publicToggle.isOn;
         roomOptions.IsOpen = true;
@@ -51,10 +60,42 @@ public class CreateGameRoom : MonoBehaviourPunCallbacks
         {
             roomOptions.MaxPlayers = (byte)maxPlayers;
         }
+
+        // 방 코드 추가 (커스텀 프로퍼티)
+        Hashtable customProps = new Hashtable { { "RoomCode", roomCode } };
+        roomOptions.CustomRoomProperties = customProps;
+        roomOptions.CustomRoomPropertiesForLobby = new string[] { "RoomCode" };
+
         // 방 이름 생성 및 방 생성
         string roomName = "Room_" + Random.Range(1000, 10000);
         PhotonNetwork.CreateRoom(roomName, roomOptions);
-        Debug.Log($"방 생성 시도: {roomName}");
+        Debug.Log($"방 생성 시도: {roomName}, 코드: {roomCode}");
+    }
+
+    private bool IsNotDuplicated(string roomCode)
+    {
+        foreach (RoomInfo room in cachedRoomList)
+        {
+            if (room.CustomProperties.ContainsKey("RoomCode"))
+            {
+                if (room.CustomProperties["RoomCode"].ToString() == roomCode)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        cachedRoomList = roomList;
+        Debug.Log("CreateGameRoom : 룸인포 업데이트됨");
+    }
+
+    private string GenerateRoomCode()
+    {
+        return Random.Range(100000, 999999).ToString();
     }
 
     public override void OnCreatedRoom()
@@ -65,7 +106,7 @@ public class CreateGameRoom : MonoBehaviourPunCallbacks
             PhotonNetwork.CurrentRoom.Name,
             PhotonNetwork.CurrentRoom.MaxPlayers,
             PhotonNetwork.CurrentRoom.PlayerCount,
-            PhotonNetwork.CurrentRoom.IsVisible
+            PhotonNetwork.CurrentRoom.IsVisible,
         };
 
         // 모든 클라이언트에게 전송할 옵션 설정 (모두에게)
