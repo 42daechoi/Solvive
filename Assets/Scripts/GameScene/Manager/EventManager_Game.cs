@@ -53,7 +53,7 @@ public class EventManager_Game : MonoBehaviour
 
     // EventLock
     private bool isUsingItem = false;
-    private float useItemCooldown = 0.5f;
+    private float useItemCooldown = 0.7f;
 
     public static EventManager_Game Instance { get; private set; }
 

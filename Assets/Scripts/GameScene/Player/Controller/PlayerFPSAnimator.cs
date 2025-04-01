@@ -7,6 +7,8 @@ using UnityEngine;
 public class PlayerFPSAnimator : MonoBehaviour
 {
 	[SerializeField] private WeaponPoseDatabase weaponPoseDB;
+
+	private PlayerAnimator playerAnimator;
 	
 	[SerializeField] private Transform r_ArmStrech;
 	[SerializeField] private Transform r_Forearm;
@@ -16,7 +18,7 @@ public class PlayerFPSAnimator : MonoBehaviour
 	[SerializeField] private Transform l_Hand;
 	void Start()
 	{
-		
+		playerAnimator = GetComponentInParent<PlayerAnimator>();
 	}
 
 	private void OnEnable()
@@ -46,6 +48,7 @@ public class PlayerFPSAnimator : MonoBehaviour
 		if (itemName == "Gun")
 		{
 			PlayGunRecoil(poseData);
+			playerAnimator.TriggerShootAnim();
 		}
 
 		if (itemName == "Knife")
@@ -77,6 +80,7 @@ public class PlayerFPSAnimator : MonoBehaviour
 	
 	private void PlayKnifeStab(WeaponPoseData poseData)
 	{
+		
 		r_ArmStrech.DOKill();
 		r_Forearm.DOKill();
 		r_Hand.DOKill();

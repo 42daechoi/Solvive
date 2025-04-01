@@ -12,7 +12,7 @@ public class PlayerAnimator : MonoBehaviour
     private int _verticalHash;
     private int _isIdleHash;
     private int _isJumpingHash;
-    private int _isGroundedHash;
+    private int _shootHash;
     
     private int _pistolLayerIndex;
     private int _knifeLayerIndex;
@@ -25,7 +25,7 @@ public class PlayerAnimator : MonoBehaviour
         _verticalHash = Animator.StringToHash("Vertical");
         _isIdleHash = Animator.StringToHash("IsIdle");
         _isJumpingHash = Animator.StringToHash("IsJumping");
-        _isGroundedHash = Animator.StringToHash("IsGrounded");
+        _shootHash = Animator.StringToHash("isShoot");
         
         _pistolLayerIndex = _animator.GetLayerIndex("Pistol");
         _knifeLayerIndex = _animator.GetLayerIndex("Knife");
@@ -51,7 +51,6 @@ public class PlayerAnimator : MonoBehaviour
         if (_animator == null) return;
 
         _animator.SetBool(_isJumpingHash, isJumping);
-        _animator.SetBool(_isGroundedHash, isGrounded);
     }
 
     public void SetAnimationState(string state)
@@ -110,5 +109,14 @@ public class PlayerAnimator : MonoBehaviour
                 0f,
                 0.3f).SetEase(Ease.OutSine);
         }
+    }
+
+    public void TriggerShootAnim()
+    {
+        _animator.SetBool(_shootHash, true);
+        DOVirtual.DelayedCall(0.1f, () =>
+        {
+            _animator.SetBool(_shootHash, false);
+        });
     }
 }
