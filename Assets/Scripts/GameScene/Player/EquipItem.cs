@@ -66,6 +66,10 @@ public class EquipItem : MonoBehaviourPunCallbacks
             {
                 animationState = "Keycard";
             }
+            else if (itemData.itemName == "Battery")
+            {
+                animationState = "Battery";
+            }
             EventManager_Game.Instance.InvokeAnimationStateChange(animationState);
         }
         StartCoroutine(CheckItemIsPasswordPaper(itemData.itemName, equipItem));
