@@ -186,7 +186,7 @@ public class EquipItem : MonoBehaviourPunCallbacks
         {
             UnequipArmRotation(() =>
             {
-                EventManager_Game.Instance.InvokeAnimationStateChange("Default");
+                /*EventManager_Game.Instance.InvokeAnimationStateChange("Default");*/
             });
         }
     }
