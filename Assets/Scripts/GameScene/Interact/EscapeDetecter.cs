@@ -25,18 +25,6 @@ public class playerDetecter : MonoBehaviourPunCallbacks
                     PhotonView pv = other.GetComponent<PhotonView>();
                     GameManager.Instance.EliminateOrEscapeCitizen(pv.ViewID, "Escape");
                     pre.SetRole(PlayerRole.Observer);
-                    /*Debug.Log("시민");
-                    // PlayerObserver 컴포넌트를 찾고, 캐릭터랑 UI 제거
-                    PlayerObserver observer = other.GetComponent<PlayerObserver>();
-                    if (observer != null)
-                    {
-                        observer.HideCowboy(other.gameObject);
-                        pre.SetRole(PlayerRole.Observer);
-                    }
-                    else
-                    {
-                        Debug.LogWarning("PlayerObserver 컴포넌트를 찾을 수 없습니다.");
-                    }*/
                 }
                 else if (pre.role == PlayerRole.Mannequin)
                 {
