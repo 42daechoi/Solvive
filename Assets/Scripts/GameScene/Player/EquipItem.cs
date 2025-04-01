@@ -197,7 +197,7 @@ public class EquipItem : MonoBehaviourPunCallbacks
         GameObject weaponToDisable = currentFPSWeapon;
 
         Quaternion targetLeftArmRotation = Quaternion.Euler(25.05f, -84.53f, 63.9f);
-        Quaternion targetRightArmRotation = Quaternion.Euler(-8.2f, 48.5f, -35.3f);
+        Quaternion targetRightArmRotation = Quaternion.Euler(-0.84f, 73.5f, -51.11f);
 
         float duration = 0.2f;
 
