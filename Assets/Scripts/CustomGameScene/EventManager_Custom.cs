@@ -17,6 +17,9 @@ public class EventManager_Custom : MonoBehaviour
     public static event Action OnDecreaseButtonClicked;
     public static event Action OnCancleButtonClicked;
     public static event Action OnCreateComfirmButtonClicked;
+    public static event Action OnJoinWithCodeButtonClicked;
+    public static event Action OnJoinWithCodeEscButtonClicked;
+    public static event Action OnCodeJoinButtonClicked;
 
     public void OnClickCreateButton() {
         OnCreateButtonClicked?.Invoke();   
@@ -43,5 +46,20 @@ public class EventManager_Custom : MonoBehaviour
     }
     public void OnCreateComfirmButton(){
         OnCreateComfirmButtonClicked?.Invoke();
+    }
+
+    public void OnClickJoinWithCodeButton()
+    {
+        OnJoinWithCodeButtonClicked?.Invoke();
+    }
+
+    public void OnClickJoinWithCodeEscButton()
+    {
+        OnJoinWithCodeEscButtonClicked?.Invoke();
+    }
+
+    public void OnClickCodeJoinButton()
+    {
+        OnCodeJoinButtonClicked?.Invoke();
     }
 }

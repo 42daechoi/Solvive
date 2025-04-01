@@ -322,7 +322,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 561389139830730110}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.99836636, z: 0, w: -0.057136986}
+  m_LocalRotation: {x: 0, y: -0.9995065, z: 0, w: -0.03141524}
   m_LocalPosition: {x: 0.32, y: -0.00000011920929, z: -0.9762237}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -763,7 +763,6 @@ MonoBehaviour:
   maxStamina: 100
   staminaRecoveryRate: 5
   staminaDrainRate: 8
-  jumpStaminaCost: 15
   currentStamina: 0
   staminaBar: {fileID: 0}
 --- !u!114 &1990204919803237660

@@ -6,16 +6,20 @@ using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.UIElements;
 
 public class CustomUI_Event : MonoBehaviourPunCallbacks
 {
     public GameObject CreateGameRoom;
     public TMP_InputField NumOfPeople;
+    public GameObject joinWithCodePanel;
+    public TMP_InputField roomCodeInput;
     public int step = 1;
     public int minValue = 2;  // 최소 인원
     public int maxValue = 16;  // 최대 인원
     private int currentValue = 0; // 방 인원
     private RoomList.CustomRoomInfo selectedRoom;
+    RoomList roomListComponent;
 
     public override void OnEnable()
     {
@@ -27,7 +31,10 @@ public class CustomUI_Event : MonoBehaviourPunCallbacks
         EventManager_Custom.OnDecreaseButtonClicked += Decrease;
         EventManager_Custom.OnCancleButtonClicked += Cancle;
         EventManager_Custom.OnCreateComfirmButtonClicked += CreateComfirm;
-        RoomList roomListComponent = FindObjectOfType<RoomList>();
+        EventManager_Custom.OnJoinWithCodeButtonClicked += HandleJoinWithCode;
+        EventManager_Custom.OnJoinWithCodeEscButtonClicked += HandleJoinWithCodeEsc;
+        EventManager_Custom.OnCodeJoinButtonClicked += HandleCodeJoin;
+        roomListComponent = FindObjectOfType<RoomList>();
         if (roomListComponent != null)
         {
             roomListComponent.OnRoomSelected += OnRoomButtonClicked; // 방 선택 시 처리
@@ -44,6 +51,9 @@ public class CustomUI_Event : MonoBehaviourPunCallbacks
         EventManager_Custom.OnDecreaseButtonClicked -= Decrease;
         EventManager_Custom.OnCancleButtonClicked -= Cancle;
         EventManager_Custom.OnCreateComfirmButtonClicked -= CreateComfirm;
+        EventManager_Custom.OnJoinWithCodeButtonClicked -= HandleJoinWithCode;
+        EventManager_Custom.OnJoinWithCodeEscButtonClicked -= HandleJoinWithCodeEsc;
+        EventManager_Custom.OnCodeJoinButtonClicked -= HandleCodeJoin;
         RoomList roomListComponent = FindObjectOfType<RoomList>();
         if (roomListComponent != null)
         {
@@ -148,6 +158,41 @@ public class CustomUI_Event : MonoBehaviourPunCallbacks
         {
             CreateGameRoom.SetActive(false);
         }
+    }
+
+    private void HandleJoinWithCode()
+    {
+        joinWithCodePanel.SetActive(true);
+        roomCodeInput.text = "";
+    }
+
+    private void HandleJoinWithCodeEsc()
+    {
+        joinWithCodePanel.SetActive(false);
+    }
+
+    private void HandleCodeJoin()
+    {
+        int count = 0;
+        string enteredCode = roomCodeInput.text.Trim();
+        if (string.IsNullOrEmpty(enteredCode))
+        {
+            return;
+        }
+
+        foreach (RoomInfo room in roomListComponent.roomInfoList)
+        {
+            if (room.CustomProperties.ContainsKey("RoomCode") &&
+                room.CustomProperties["RoomCode"].ToString() == enteredCode)
+            {
+                PhotonNetwork.JoinRoom(room.Name);
+                Debug.Log($"CustomUI_Event : 방 코드 {enteredCode}에 해당하는 방({room.Name}) 입장 시도");
+                return;
+            }
+            count++;
+        }
+
+        Debug.Log($"CustomUI_Event : 해당 방 코드를 가진 방이 없습니다. 방숫자{count}.");
     }
 
     public void CreateComfirm()

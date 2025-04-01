@@ -23,6 +23,8 @@ public class RoomList : MonoBehaviourPunCallbacks
     public CustomUI_Event customUIEvent;
     public event Action<CustomRoomInfo> OnRoomSelected;
 
+    public List<RoomInfo> roomInfoList;
+
     // 커스텀 룸 정보 클래스
     public class CustomRoomInfo
     {
@@ -30,6 +32,7 @@ public class RoomList : MonoBehaviourPunCallbacks
         public byte MaxPlayers;
         public int CurrentPlayers;
         public bool IsVisible;
+        public string Code;
     }
 
     IEnumerator Start()
@@ -71,12 +74,13 @@ public class RoomList : MonoBehaviourPunCallbacks
                     RoomName = roomInfo.Name,
                     MaxPlayers = (byte)roomInfo.MaxPlayers,
                     CurrentPlayers = roomInfo.PlayerCount,
-                    IsVisible = roomInfo.IsVisible
+                    IsVisible = roomInfo.IsVisible,
                 };
                 cachedRoomList[roomInfo.Name] = info;
             }
         }
         UpdateUI();
+        roomInfoList = roomList;
     }
 
     public void UpdateUI()

@@ -6,7 +6,6 @@ public class PlayerStamina : MonoBehaviour
     [SerializeField] private float maxStamina = 100f;
     [SerializeField] private float staminaRecoveryRate = 5f;
     [SerializeField] private float staminaDrainRate = 8f;
-    [SerializeField] private float jumpStaminaCost = 15f;
     [SerializeField] private float currentStamina;
     [SerializeField] private Slider staminaBar;
     private PlayerController playerController;
