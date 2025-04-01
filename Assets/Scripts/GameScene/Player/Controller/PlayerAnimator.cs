@@ -31,12 +31,12 @@ public class PlayerAnimator : MonoBehaviour
         isJumpingHash = Animator.StringToHash("IsJumping");
         shootHash = Animator.StringToHash("isShoot");
         
-        pistolLayerIndex = animator.GetLayerIndex("Pistol");
+        pistolLayerIndex = animator.GetLayerIndex("Gun");
         knifeLayerIndex = animator.GetLayerIndex("Knife");
         computerLayerIndex = animator.GetLayerIndex("Computer");
-        cardKeyLayerIndex = animator.GetLayerIndex("KeyCard");
+        cardKeyLayerIndex = animator.GetLayerIndex("Keycard");
         batteryLayerIndex = animator.GetLayerIndex("Battery");
-        flashLayerIndex = animator.GetLayerIndex("Flash");
+        flashLayerIndex = animator.GetLayerIndex("Flashlight");
     }
     
     public void SetMoveAnim(float horizontal, float vertical, float offset)
@@ -112,7 +112,7 @@ public class PlayerAnimator : MonoBehaviour
                         0.5f).SetEase(Ease.OutSine);
                 }
                 break;
-            case "Flash":
+            case "Flashlight":
                 if (flashLayerIndex != -1)
                 {
                     float currentWeight = animator.GetLayerWeight(flashLayerIndex);
