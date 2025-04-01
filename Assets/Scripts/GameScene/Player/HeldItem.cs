@@ -216,6 +216,7 @@ public class HeldItem : MonoBehaviourPunCallbacks
             Debug.Log("HeldItem : 사용할 아이템이 없습니다.");
             return;
         }
+        if (equipItem.IsEquipping) return;
         ItemData itemData = item.GetItemData();
         Debug.Log($"HeldItem : {item.GetItemData().itemName} 아이템 사용");
         itemData.UseItem();
