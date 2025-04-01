@@ -12,13 +12,13 @@ public class RotationDoor : MonoBehaviourPunCallbacks
     [SerializeField] private Transform door3;
     [SerializeField] private Transform door4;
     [SerializeField] private Transform door5;
-    [SerializeField] private Transform door6;
+    //[SerializeField] private Transform door6;
     [SerializeField] private Animator door1Animator;
     [SerializeField] private Animator door2Animator;
     [SerializeField] private Animator door3Animator;
     [SerializeField] private Animator door4Animator;
     [SerializeField] private Animator door5Animator;
-    [SerializeField] private Animator door6Animator;
+    //[SerializeField] private Animator door6Animator;
     
     private bool isDoorOpen = false;
     
@@ -92,8 +92,8 @@ public class RotationDoor : MonoBehaviourPunCallbacks
                 door5Animator?.ResetTrigger("CloseDoor5");
                 door5Animator?.SetTrigger("OpenDoor5");
 
-                door6Animator?.ResetTrigger("CloseDoor6");
-                door6Animator?.SetTrigger("OpenDoor6");
+                //door6Animator?.ResetTrigger("CloseDoor6");
+                //door6Animator?.SetTrigger("OpenDoor6");
                 break;
 
             default:
@@ -152,11 +152,11 @@ public class RotationDoor : MonoBehaviourPunCallbacks
             door5Animator.SetTrigger("CloseDoor5");
         }
 
-        if (door6Animator != null) 
-        {
-            door6Animator.ResetTrigger("OpenDoor6");
-            door6Animator.SetTrigger("CloseDoor6");
-        }
+        // if (door6Animator != null) 
+        // {
+        //     door6Animator.ResetTrigger("OpenDoor6");
+        //     door6Animator.SetTrigger("CloseDoor6");
+        // }
         isDoorOpen = false;
     }
 }
