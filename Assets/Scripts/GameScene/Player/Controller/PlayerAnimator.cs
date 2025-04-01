@@ -18,6 +18,7 @@ public class PlayerAnimator : MonoBehaviour
     private int knifeLayerIndex;
     private int computerLayerIndex;
     private int cardKeyLayerIndex;
+    private int batteryLayerIndex;
     
     // Start is called before the first frame update
     private void Awake()
@@ -33,6 +34,7 @@ public class PlayerAnimator : MonoBehaviour
         knifeLayerIndex = animator.GetLayerIndex("Knife");
         computerLayerIndex = animator.GetLayerIndex("Computer");
         cardKeyLayerIndex = animator.GetLayerIndex("KeyCard");
+        batteryLayerIndex = animator.GetLayerIndex("Battery");
     }
     
     public void SetMoveAnim(float horizontal, float vertical, float offset)
@@ -97,7 +99,16 @@ public class PlayerAnimator : MonoBehaviour
                         1f,
                         0.5f).SetEase(Ease.OutSine);
                 }
-
+                break;
+            case "Battery":
+                if (batteryLayerIndex != -1)
+                {
+                    float currentWeight = animator.GetLayerWeight(batteryLayerIndex);
+                    DOTween.To(() => currentWeight,
+                        x => animator.SetLayerWeight(batteryLayerIndex, x),
+                        1f,
+                        0.5f).SetEase(Ease.OutSine);
+                }
                 break;
             case "Default":
             default:
@@ -129,6 +140,15 @@ public class PlayerAnimator : MonoBehaviour
             float currentWeight = animator.GetLayerWeight(cardKeyLayerIndex);
             DOTween.To(() => currentWeight,
                 x => animator.SetLayerWeight(cardKeyLayerIndex, x),
+                0f,
+                0.3f).SetEase(Ease.OutSine);
+        }
+
+        if (batteryLayerIndex != -1)
+        {
+            float currentWeight = animator.GetLayerWeight(batteryLayerIndex);
+            DOTween.To(() => currentWeight,
+                x => animator.SetLayerWeight(batteryLayerIndex, x),
                 0f,
                 0.3f).SetEase(Ease.OutSine);
         }
