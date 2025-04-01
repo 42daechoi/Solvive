@@ -61,6 +61,7 @@ public class PlayerController : MonoBehaviourPun
     public CinemachineVirtualCamera ObserverCam => obCam;
     public Transform ObserverTarget => obFollow;
     public PlayerCamera PlayerCamera => _playerCamera;
+    public PlayerAnimator PlayerAnimator => _playerAnimator;
     
     private void Awake()
     {

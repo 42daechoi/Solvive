@@ -563,6 +563,8 @@ MonoBehaviour:
     LayerIndex: 1
   - SynchronizeType: 2
     LayerIndex: 2
+  - SynchronizeType: 2
+    LayerIndex: 3
 --- !u!143 &1386508099115150098
 CharacterController:
   m_ObjectHideFlags: 0
