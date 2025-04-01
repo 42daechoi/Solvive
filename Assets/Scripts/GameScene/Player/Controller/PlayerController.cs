@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviourPun
     private InputManager_Game _defaultInputManager;
     private InputManager_Computer _computerInputManager;
     private PlayerSound _playerSound;
+    private PlayerStamina _playerStamina;
     public MovementSettings localSpeedSettings;
     
     [Header("Speed Settings")]
@@ -93,6 +94,7 @@ public class PlayerController : MonoBehaviourPun
         _playerMovement = GetComponent<PlayerMovement>();
         _playerCamera = GetComponent<PlayerCamera>();
         _playerSound = GetComponent<PlayerSound>();
+        _playerStamina = GetComponent<PlayerStamina>();
 
         IdleState = new IdleState();
         JumpState = new JumpState();
@@ -350,7 +352,7 @@ public class PlayerController : MonoBehaviourPun
     
     private void HandlePlayerJump()
     {
-        if (IsGrounded())
+        if (IsGrounded() && _playerStamina.TryToUseStamina(15f))
         {
             TransitionToState(JumpState);
         }

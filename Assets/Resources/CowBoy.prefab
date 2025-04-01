@@ -763,6 +763,7 @@ MonoBehaviour:
   maxStamina: 100
   staminaRecoveryRate: 5
   staminaDrainRate: 8
+  jumpStaminaCost: 15
   currentStamina: 0
   staminaBar: {fileID: 0}
 --- !u!114 &1990204919803237660
