@@ -6,6 +6,7 @@ using System.Collections;
 public class InputManager_Game : MonoBehaviour
 {
     private PlayerController _playerController;
+    private bool isPlayingGame = true;
 
     void Start()
     {
@@ -25,8 +26,18 @@ public class InputManager_Game : MonoBehaviour
         }
         Debug.Log("PlayerController 초기화 완료!");
     }
+    private void OnApplicationFocus(bool hasPlay)
+    {
+        isPlayingGame = hasPlay;
+        if (!hasPlay)
+        {
+            EventManager_Game.Instance.InvokePlayerMove(0f, 0f);
+            EventManager_Game.Instance.InvokeSprint(false);
+        }
+    }
     void Update()
     {
+        if (!isPlayingGame) return;
         if (_playerController != null)
         {
             IState currentState = _playerController.GetCurrentState();
