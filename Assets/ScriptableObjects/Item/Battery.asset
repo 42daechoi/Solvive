@@ -16,4 +16,5 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 6fede148265bb8b48858eb97ccc29773, type: 3}
   equipPosition: {x: -0.24, y: -0.04, z: 0}
   equipRotation: {x: 81.95, y: -9.15, z: -123.87}
+  animationState: Battery
   rayModule: {fileID: 11400000, guid: 415e93ab7a3fb6c439873c8febaef11f, type: 2}

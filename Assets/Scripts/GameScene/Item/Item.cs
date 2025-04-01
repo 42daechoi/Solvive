@@ -10,5 +10,9 @@ public abstract class ItemData : ScriptableObject
     [Header("Equip Settings")]
     public Vector3 equipPosition;
     public Vector3 equipRotation;
+    
+    [Header("Animator Settings")]
+    public string animationState = "Default";
+    
     public abstract void UseItem();
 }
