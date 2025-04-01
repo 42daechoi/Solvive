@@ -54,6 +54,10 @@ public class EventManager_Game : MonoBehaviour
     // EventLock
     private bool isUsingItem = false;
     private float useItemCooldown = 0.7f;
+    
+    // Swap EventLock (도저히 락말고는 해결방법이 없다)
+    private bool isChangingWeapon = false;
+    private float weaponSwapCooldown = 0.5f;
 
     public static EventManager_Game Instance { get; private set; }
 
@@ -95,7 +99,16 @@ public class EventManager_Game : MonoBehaviour
     }
     public void InvokeHeldItem(int keyCode)
     {
+        if (isChangingWeapon) return;
+        
+        isChangingWeapon = true;
         OnHeldItem?.Invoke(keyCode);
+        StartCoroutine(ResetHeldItemCooldown());
+    }
+    private IEnumerator ResetHeldItemCooldown()
+    {
+        yield return new WaitForSeconds(weaponSwapCooldown);
+        isChangingWeapon = false;
     }
 
     public void InvokeDropItem()
