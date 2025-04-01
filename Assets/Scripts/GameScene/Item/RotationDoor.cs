@@ -9,24 +9,30 @@ public class RotationDoor : MonoBehaviourPunCallbacks
 {
     [SerializeField] private Transform door1;
     [SerializeField] private Transform door2;
-
-    // 문이 열렸는지 닫혔는지 상태를 표시할 변수
-    private bool isDoorOpen = false;
-
-    private bool isFocused = false;
-    
     [SerializeField] private Animator door1Animator;
     [SerializeField] private Animator door2Animator;
     
+    private bool isDoorOpen = false;
+    
     private void OnEnable()
     {
+        StartCoroutine(DelayedSubscribe());
+    }
+    
+    private IEnumerator DelayedSubscribe()
+    {
+        // 1-2프레임 기다리거나 짧은 시간 대기
+        yield return new WaitForSeconds(0.1f);
+        // 또는 yield return null; (한 프레임 대기)
+    
         if (EventManager_Game.Instance != null)
         {
             EventManager_Game.Instance.OnOpenDoor += HandleOpenDoor;
+            Debug.Log("Successfully subscribed to OnOpenDoor event");
         }
         else
         {
-            Debug.LogWarning("EventManager_Game.Instance is null - RotationDoor");
+            Debug.LogWarning("Failed to subscribe: EventManager_Game.Instance is still null after delay");
         }
     }
 
@@ -41,15 +47,14 @@ public class RotationDoor : MonoBehaviourPunCallbacks
             Debug.LogWarning("EventManager_Game.Instance is null - RotationDoor");
         }
     }
-    
-    public void SetFocus(bool focus)
-    {
-        isFocused = focus;
-    }
 
     private void HandleOpenDoor(ItemData heldItem)
     {
         if (isDoorOpen) return;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            RPC_OpenBothDoors(); 
+        }
         photonView.RPC(nameof(RPC_OpenBothDoors), RpcTarget.AllViaServer);
     }
 
@@ -84,7 +89,7 @@ public class RotationDoor : MonoBehaviourPunCallbacks
     private IEnumerator DelayedClose()
     {
         yield return new WaitForSeconds(10f);
-        photonView.RPC(nameof(RPC_CloseBothDoors), RpcTarget.AllBufferedViaServer);
+        photonView.RPC(nameof(RPC_CloseBothDoors), RpcTarget.All);
     }
 
     [PunRPC]
