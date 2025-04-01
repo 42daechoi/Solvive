@@ -121,8 +121,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   door1: {fileID: 0}
   door2: {fileID: 0}
+  door3: {fileID: 0}
+  door4: {fileID: 0}
+  door5: {fileID: 0}
+  door6: {fileID: 0}
   door1Animator: {fileID: 0}
   door2Animator: {fileID: 0}
+  door3Animator: {fileID: 0}
+  door4Animator: {fileID: 0}
+  door5Animator: {fileID: 0}
+  door6Animator: {fileID: 0}
 --- !u!114 &1529057929043259084
 MonoBehaviour:
   m_ObjectHideFlags: 0

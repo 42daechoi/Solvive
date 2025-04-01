@@ -26,7 +26,7 @@ public class EventManager_Game : MonoBehaviour
     public event Action<string> OnFPSUseItem;
 
     // Interaction
-    public event Action<ItemData> OnOpenDoor;
+    public event Action<ItemData, string> OnOpenDoor;
     public event Action<bool> OnUseComputer;
     public event Action<int, Vector3, Quaternion> OnMoveToComputer;
     public event Action<int> OnExitComputer;
@@ -126,9 +126,9 @@ public class EventManager_Game : MonoBehaviour
         OnRemoveItem?.Invoke(slotIndex);
     }
 
-    public void InvokeOpenDoor(ItemData usedItem)
+    public void InvokeOpenDoor(ItemData usedItem, string buttonName)
     {
-        OnOpenDoor?.Invoke(usedItem);
+        OnOpenDoor?.Invoke(usedItem, buttonName);
     }
 
     public void InvokeUseComputer(bool isActComputer)
