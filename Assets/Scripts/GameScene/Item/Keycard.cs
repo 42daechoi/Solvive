@@ -14,10 +14,18 @@ public class Keycard : ItemData
     {
         RaycastHit? raycastHit = rayModule.ExecuteRayAction(GetShooterTransform(), 2);
         
-        if (raycastHit != null && raycastHit.Value.collider.CompareTag("Button"))
+        if (raycastHit.HasValue)
         {
-            EventManager_Game.Instance.InvokeFPSUseItem(itemName);
-            EventManager_Game.Instance.InvokeOpenDoor(this);
+            GameObject hitObj = raycastHit.Value.collider.gameObject;
+
+            if (hitObj.CompareTag("Button"))
+            {
+                string buttonName = hitObj.name;
+                Debug.Log("Button pressed: " + buttonName);
+
+                EventManager_Game.Instance.InvokeFPSUseItem(itemName);
+                EventManager_Game.Instance.InvokeOpenDoor(this, buttonName);
+            }
         }
     }
 
