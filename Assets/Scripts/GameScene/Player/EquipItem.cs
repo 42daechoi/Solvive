@@ -62,6 +62,10 @@ public class EquipItem : MonoBehaviourPunCallbacks
             {
                 animationState = "Knife";
             }
+            else if (itemData.itemName == "Keycard")
+            {
+                animationState = "Keycard";
+            }
             EventManager_Game.Instance.InvokeAnimationStateChange(animationState);
         }
         StartCoroutine(CheckItemIsPasswordPaper(itemData.itemName, equipItem));
