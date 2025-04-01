@@ -6,6 +6,7 @@ public class UseComputerState : IState
     {
         Debug.Log("UseComputerState에 진입했습니다.");
         player.StartMoveToComputer();
+        player.PlayerAnimator.EnterComputerAnim();
     }
 
     public void UpdateState(PlayerController player, Vector3 inputDirection, float offset, PlayerSound playerSound)
@@ -21,7 +22,7 @@ public class UseComputerState : IState
 
     public void ExitState(PlayerController player)
     {
-
+        player.PlayerAnimator.ExitComputerAnim();
     }
 
     public bool CanInteraction()
