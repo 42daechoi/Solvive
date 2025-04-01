@@ -343,7 +343,6 @@ public class PlayerController : MonoBehaviourPun
             GetComponent<EquipItem>().enabled = false;
             GetComponent<PlayerHealth>().enabled = false;
             GetComponent<Animator>().enabled = false;
-            GetComponent<PlayerObserver>().enabled = false;
             GetComponent<PhotonAnimatorView>().enabled = false;
             GetComponent<PhotonTransformView>().enabled = false;
         }

@@ -16,6 +16,24 @@ public class PlayerVoice : MonoBehaviourPun
         {
             Instance = this;
         }
+        
+        if (!photonView.IsMine) return;
+
+        recorder = GetComponent<Recorder>();
+        if (recorder == null)
+        {
+            return;
+        }
+
+        string[] micDevices = Microphone.devices;
+        if (micDevices.Length == 0)
+        {
+            return;
+        }
+        
+        SetMicrophone(micDevices[0]);
+
+        recorder.TransmitEnabled = false;
     }
 
     private void OnEnable()
@@ -30,26 +48,7 @@ public class PlayerVoice : MonoBehaviourPun
 
     void Start()
     {
-        if (!photonView.IsMine) return;
-
-        recorder = GetComponent<Recorder>();
-        if (recorder == null)
-        {
-            Debug.LogError("❌ Recorder 컴포넌트 없음!");
-            return;
-        }
-
-        string[] micDevices = Microphone.devices;
-        if (micDevices.Length == 0)
-        {
-            Debug.LogError("❌ 사용 가능한 마이크가 없습니다.");
-            return;
-        }
-
-        // 기본 마이크 적용 (UI 없이도 작동하게)
-        SetMicrophone(micDevices[0]);
-
-        recorder.TransmitEnabled = false;
+        
     }
     
     public void SetMicrophone(string micName)
@@ -64,15 +63,12 @@ public class PlayerVoice : MonoBehaviourPun
         recorder.MicrophoneType = Recorder.MicType.Unity;
         recorder.MicrophoneDevice = new DeviceInfo(micName, micName);
         recorder.RestartRecording();
-
-        Debug.Log($"✅ 마이크 변경됨: {micName}");
     }
 
     void HandleVoice(bool value)
     {
         if (recorder == null)
         {
-            Debug.LogWarning("⚠️ Recorder 아직 초기화되지 않음, Transmit 설정 스킵됨");
             return;
         }
 
