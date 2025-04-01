@@ -1,8 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using Photon.Pun;
-using Unity.VisualScripting;
 
 public class EquipItem : MonoBehaviourPunCallbacks
 {
@@ -21,6 +20,7 @@ public class EquipItem : MonoBehaviourPunCallbacks
     private GameObject currentFPSWeapon;
     
     private bool isProcessing = false;
+    
 
     public GameObject Equip(FarmingObject item)
     {
@@ -28,11 +28,11 @@ public class EquipItem : MonoBehaviourPunCallbacks
         {
             if (item == null)
             {
-                StartCoroutine(FirstPersonEquipProcess(null));
+                FirstPersonEquipProcess(null);
             }
             else
             {
-                StartCoroutine(FirstPersonEquipProcess(item.GetItemData()));
+                FirstPersonEquipProcess(item.GetItemData());
             }
         }
         
@@ -71,85 +71,69 @@ public class EquipItem : MonoBehaviourPunCallbacks
         }
     }
     
-    private IEnumerator FirstPersonEquipProcess(ItemData item)
+    private void FirstPersonEquipProcess(ItemData item)
     {
-        if (isProcessing)
-        {
-            yield break;
-        }
-        
+        if (isProcessing) return;
         isProcessing = true;
-        
-        yield return StartCoroutine(UnequipArmRotation());
-        
-        if (item == null)
+        IsEquipping = true;
+
+        UnequipArmRotation(() =>
         {
-            isProcessing = false;
-            yield break;
-        }
-        
-        yield return StartCoroutine(EquipFromUnequipPose(item.itemName));
-        
-        isProcessing = false;
+            if (item == null)
+            {
+                isProcessing = false;
+                IsEquipping = false;
+                return;
+            }
+
+            EquipFromUnequipPose(item.itemName, () =>
+            {
+                isProcessing = false;
+                IsEquipping = false;
+            });
+        });
     }
 
     #region Equip코루틴
-    private IEnumerator EquipFromUnequipPose(string itemName)
+    private void EquipFromUnequipPose(string itemName, System.Action onComplete)
     {
         Quaternion startLeftArmRotation = Quaternion.Euler(25.05f, -84.53f, 63.9f);
         Quaternion startRightArmRotation = Quaternion.Euler(-8.2f, 48.5f, -35.3f);
-        
+
         r_ArmStrech.localRotation = startRightArmRotation;
         l_ArmStrech.localRotation = startLeftArmRotation;
-    
+
         GameObject firstPersonWeapon = System.Array.Find(firstPersonWeapons, w => w.name == itemName);
         if (firstPersonWeapon != null)
         {
             firstPersonWeapon.SetActive(true);
             currentFPSWeapon = firstPersonWeapon;
         }
-        
+
         WeaponPoseData poseData = System.Array.Find(weaponPoseDB.weaponPoses, w => w.weaponName == itemName);
         if (poseData == null)
         {
             Debug.LogWarning($"EquipItem : WeaponPoseData에 {itemName} 존재x");
-            yield break;
+            return;
         }
-        
-        Quaternion targetRightArmRotation = Quaternion.Euler(poseData.r_ArmStrech);
-        Quaternion targetRightForearmRotation = Quaternion.Euler(poseData.r_ForearmRotation);
-        Quaternion targetRightHandRotation = Quaternion.Euler(poseData.r_HandRotation);
-    
-        Quaternion targetLeftArmRotation = Quaternion.Euler(poseData.l_ArmStrech);
-        Quaternion targetLeftForearmRotation = Quaternion.Euler(poseData.l_ForearmRotation);
-        Quaternion targetLeftHandRotation = Quaternion.Euler(poseData.l_HandRotation);
-        
+
         float duration = 0.3f;
-        float elapsedTime = 0f;
-    
-        while (elapsedTime < duration)
-        {
-            float t = elapsedTime / duration;
-            float smoothT = t * t * (3f - 2f * t);
-            
-            r_ArmStrech.localRotation = Quaternion.Slerp(startRightArmRotation, targetRightArmRotation, smoothT);
-            r_Forearm.localRotation = Quaternion.Slerp(Quaternion.identity, targetRightForearmRotation, smoothT);
-            r_Hand.localRotation = Quaternion.Slerp(Quaternion.identity, targetRightHandRotation, smoothT);
-        
-            l_ArmStrech.localRotation = Quaternion.Slerp(startLeftArmRotation, targetLeftArmRotation, smoothT);
-            l_Forearm.localRotation = Quaternion.Slerp(Quaternion.identity, targetLeftForearmRotation, smoothT);
-            l_Hand.localRotation = Quaternion.Slerp(Quaternion.identity, targetLeftHandRotation, smoothT);
-        
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
+
+        Sequence seq = DOTween.Sequence();
+
+        seq.Join(r_ArmStrech.DOLocalRotateQuaternion(Quaternion.Euler(poseData.r_ArmStrech), duration));
+        seq.Join(r_Forearm.DOLocalRotateQuaternion(Quaternion.Euler(poseData.r_ForearmRotation), duration));
+        seq.Join(r_Hand.DOLocalRotateQuaternion(Quaternion.Euler(poseData.r_HandRotation), duration));
+
+        seq.Join(l_ArmStrech.DOLocalRotateQuaternion(Quaternion.Euler(poseData.l_ArmStrech), duration));
+        seq.Join(l_Forearm.DOLocalRotateQuaternion(Quaternion.Euler(poseData.l_ForearmRotation), duration));
+        seq.Join(l_Hand.DOLocalRotateQuaternion(Quaternion.Euler(poseData.l_HandRotation), duration));
+
+        seq.SetEase(Ease.OutSine).OnComplete(() => onComplete?.Invoke());
     }
     #endregion
 
-    private Transform GetEquipTransform()
-    {
-        return _equipTransform;
-    }
+    private Transform GetEquipTransform() => _equipTransform;
 
     [PunRPC]
     private void SyncEquipItem(int viewID, Vector3 equipPosition, Vector3 equipRotation, int playerViewID)
@@ -192,66 +176,47 @@ public class EquipItem : MonoBehaviourPunCallbacks
         if (itemObject)
         {
             if (isReturnPool)
-            {
                 ObjectPool.instance.ReturnObject(itemObject);
-            }
+
             int viewID = itemObject.GetPhotonView().ViewID;
             photonView.RPC("SyncUnequip", RpcTarget.All, viewID, needCollider);
         }
-        
-        // 1인칭 처리
+
         if (photonView.IsMine && currentFPSWeapon != null)
         {
-            StartCoroutine(UnequipArmRotation());
-            
-            EventManager_Game.Instance.InvokeAnimationStateChange("Default");
+            UnequipArmRotation(() =>
+            {
+                EventManager_Game.Instance.InvokeAnimationStateChange("Default");
+            });
         }
     }
 
     #region Unequip코루틴 애니메이션
-    private IEnumerator UnequipArmRotation()
+    private void UnequipArmRotation(System.Action onComplete)
     {
         GameObject weaponToDisable = currentFPSWeapon;
-        
-        Quaternion startRightArmRotation = r_ArmStrech.localRotation;
-        Quaternion startLeftArmRotation = l_ArmStrech.localRotation;
-        
+
         Quaternion targetLeftArmRotation = Quaternion.Euler(25.05f, -84.53f, 63.9f);
         Quaternion targetRightArmRotation = Quaternion.Euler(-8.2f, 48.5f, -35.3f);
-        
+
         float duration = 0.2f;
-        float elapsedTime = 0f;
-        
-        while (elapsedTime < duration)
+
+        Sequence seq = DOTween.Sequence();
+        seq.Join(l_ArmStrech.DOLocalRotateQuaternion(targetLeftArmRotation, duration));
+        seq.Join(r_ArmStrech.DOLocalRotateQuaternion(targetRightArmRotation, duration));
+
+        seq.SetEase(Ease.OutSine).OnComplete(() =>
         {
-            // 시간에 따른 보간 계수 계산 (0에서 1 사이)
-            float t = elapsedTime / duration;
-        
-            // 부드러운 보간을 위해 smoothstep 사용
-            float smoothT = t * t * (3f - 2f * t);
-        
-            // 왼쪽 팔과 오른쪽 팔의 회전값 보간
-            if (l_ArmStrech != null && r_ArmStrech != null)
+            if (weaponToDisable != null)
             {
-                l_ArmStrech.localRotation = Quaternion.Slerp(startLeftArmRotation, targetLeftArmRotation, smoothT);
-                r_ArmStrech.localRotation = Quaternion.Slerp(startRightArmRotation, targetRightArmRotation, smoothT);
+                weaponToDisable.SetActive(false);
+                if (currentFPSWeapon == weaponToDisable)
+                {
+                    currentFPSWeapon = null;
+                }
             }
-            
-            elapsedTime += Time.deltaTime;
-        
-            yield return null;
-        }
-        
-        if (weaponToDisable != null)
-        {
-            weaponToDisable.SetActive(false);
-            if (currentFPSWeapon == weaponToDisable)
-            {
-                currentFPSWeapon = null;
-            }
-        }
-        
-        isProcessing = false;
+            onComplete?.Invoke();
+        });
     }
     #endregion
 
@@ -259,29 +224,23 @@ public class EquipItem : MonoBehaviourPunCallbacks
     private void SyncUnequip(int viewID, bool needCollider)
     {
         GameObject unequipItem = PhotonView.Find(viewID).gameObject;
-        
+
         if (photonView.IsMine)
         {
             Renderer[] renderers = unequipItem.GetComponentsInChildren<Renderer>();
             foreach (Renderer renderer in renderers)
-            {
                 renderer.enabled = true;
-            }
         }
-        
+
         if (unequipItem.name.Contains("Flashlight"))
         {
             Light light = unequipItem.GetComponentInChildren<Light>();
-            if (light != null)
-            {
-                light.enabled = false;
-            }
+            if (light != null) light.enabled = false;
         }
-        
+
         unequipItem.transform.SetParent(null);
         if (needCollider)
-        {
             unequipItem.GetComponent<Collider>().enabled = true;
-        }
     }
+    public bool IsEquipping { get; private set; } = false;
 }
