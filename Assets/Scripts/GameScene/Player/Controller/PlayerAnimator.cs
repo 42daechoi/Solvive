@@ -19,6 +19,7 @@ public class PlayerAnimator : MonoBehaviour
     private int computerLayerIndex;
     private int cardKeyLayerIndex;
     private int batteryLayerIndex;
+    private int flashLayerIndex;
     
     // Start is called before the first frame update
     private void Awake()
@@ -35,6 +36,7 @@ public class PlayerAnimator : MonoBehaviour
         computerLayerIndex = animator.GetLayerIndex("Computer");
         cardKeyLayerIndex = animator.GetLayerIndex("KeyCard");
         batteryLayerIndex = animator.GetLayerIndex("Battery");
+        flashLayerIndex = animator.GetLayerIndex("Flash");
     }
     
     public void SetMoveAnim(float horizontal, float vertical, float offset)
@@ -110,6 +112,16 @@ public class PlayerAnimator : MonoBehaviour
                         0.5f).SetEase(Ease.OutSine);
                 }
                 break;
+            case "Flash":
+                if (flashLayerIndex != -1)
+                {
+                    float currentWeight = animator.GetLayerWeight(flashLayerIndex);
+                    DOTween.To(() => currentWeight,
+                        x => animator.SetLayerWeight(flashLayerIndex, x),
+                        1f,
+                        0.5f).SetEase(Ease.OutSine);
+                }
+                break;
             case "Default":
             default:
                 break;
@@ -149,6 +161,14 @@ public class PlayerAnimator : MonoBehaviour
             float currentWeight = animator.GetLayerWeight(batteryLayerIndex);
             DOTween.To(() => currentWeight,
                 x => animator.SetLayerWeight(batteryLayerIndex, x),
+                0f,
+                0.3f).SetEase(Ease.OutSine);
+        }
+        if (flashLayerIndex != -1)
+        {
+            float currentWeight = animator.GetLayerWeight(flashLayerIndex);
+            DOTween.To(() => currentWeight,
+                x => animator.SetLayerWeight(flashLayerIndex, x),
                 0f,
                 0.3f).SetEase(Ease.OutSine);
         }

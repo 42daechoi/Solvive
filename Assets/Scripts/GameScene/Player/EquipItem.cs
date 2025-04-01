@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Unity.VisualScripting;
@@ -53,24 +54,7 @@ public class EquipItem : MonoBehaviourPunCallbacks
         if (equipItem)
         {
             photonView.RPC("SyncEquipItem", RpcTarget.All, viewID, itemData.equipPosition, itemData.equipRotation, photonView.ViewID);
-            string animationState = "Default";
-            if (itemData.itemName == "Gun")
-            {
-                animationState = "Gun";
-            }
-            else if (itemData.itemName == "Knife")
-            {
-                animationState = "Knife";
-            }
-            else if (itemData.itemName == "Keycard")
-            {
-                animationState = "Keycard";
-            }
-            else if (itemData.itemName == "Battery")
-            {
-                animationState = "Battery";
-            }
-            EventManager_Game.Instance.InvokeAnimationStateChange(animationState);
+            EventManager_Game.Instance.InvokeAnimationStateChange(itemData.animationState);
         }
         StartCoroutine(CheckItemIsPasswordPaper(itemData.itemName, equipItem));
 
