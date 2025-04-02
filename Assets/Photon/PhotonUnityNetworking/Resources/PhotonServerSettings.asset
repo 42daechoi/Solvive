@@ -90,6 +90,7 @@ MonoBehaviour:
   - RPC_CloseBothDoors
   - RPC_StartCloseCountdown
   - SyncPlayCrouchSound
+  - UsedPlayerSpawnPointSync
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -1,16 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using Photon.Pun;
 using UnityEngine;
-using UnityEngine.InputSystem;
+
 
 public class SpawnManager : MonoBehaviourPun
 {
 	public Transform[] playerSpawnPoints;
-	public Transform[] itemSpawnPoints;
     public Transform[] hatchSpawnPoints;
-	private bool[] isSpawned;
+    private bool[] isSpawned;
 
     private void Awake()
     {
@@ -20,12 +18,12 @@ public class SpawnManager : MonoBehaviourPun
 	{
 		EventManager_Game.Instance.OnAllComputerUnlocked += SpawnKeycard;
         EventManager_Game.Instance.OnOneCitizenAlive += SpawnHatch;
-		SpawnPlayers();
+        SpawnPlayers();
 		if (PhotonNetwork.IsMasterClient)
 		{
-            SpawnItems();
-			SpawnInteractableObjects();
-            SpawnHatch();
+            //SpawnItemsForDeveloper();
+            //SpawnInteractableObjectsForDeveloper();
+            //SpawnHatch();
         }
 	}
 
@@ -45,16 +43,16 @@ public class SpawnManager : MonoBehaviourPun
 		Quaternion spawnRotation = playerSpawnPoints[spawnIdx].rotation;
 		GameObject player = PhotonNetwork.Instantiate("CowBoy", spawnPosition, spawnRotation);
         Debug.Log("Player spawned: " + player.name + " for player: " + PhotonNetwork.LocalPlayer.NickName);
-        photonView.RPC("UsedSpawnPointSync", RpcTarget.All, spawnIdx);
+        photonView.RPC("UsedPlayerSpawnPointSync", RpcTarget.All, spawnIdx);
 		
 		// 아이템 임시 스폰 - 삭제 필요
-		PhotonNetwork.InstantiateRoomObject("Items/Knife", spawnPosition - new Vector3(-3, 2, 0), spawnRotation);
-        PhotonNetwork.InstantiateRoomObject("Items/Flashlight", spawnPosition - new Vector3(-2, 2, 0), spawnRotation);
-		PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(2, 2, 0), spawnRotation);
-		PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(5, 2, 0), spawnRotation);
-		PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(4, 2, 0), spawnRotation);
-		PhotonNetwork.InstantiateRoomObject("Items/Gun", spawnPosition - new Vector3(0, 2, 0), spawnRotation);
-		PhotonNetwork.InstantiateRoomObject("Items/Keycard", spawnPosition - new Vector3(-4, 2, 0), spawnRotation);
+		//PhotonNetwork.InstantiateRoomObject("Items/Knife", spawnPosition - new Vector3(-3, 2, 0), spawnRotation);
+  //      PhotonNetwork.InstantiateRoomObject("Items/Flashlight", spawnPosition - new Vector3(-2, 2, 0), spawnRotation);
+		//PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(2, 2, 0), spawnRotation);
+		//PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(5, 2, 0), spawnRotation);
+		//PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(4, 2, 0), spawnRotation);
+		//PhotonNetwork.InstantiateRoomObject("Items/Gun", spawnPosition - new Vector3(0, 2, 0), spawnRotation);
+		//PhotonNetwork.InstantiateRoomObject("Items/Keycard", spawnPosition - new Vector3(-4, 2, 0), spawnRotation);
 	}
 	
 	private int GetAvailableSpawnIndex(int playerIdx)
@@ -76,17 +74,17 @@ public class SpawnManager : MonoBehaviourPun
     }
 
 	[PunRPC]
-	private void UsedSpawnPointSync(int spawnIdx)
+	private void UsedPlayerSpawnPointSync(int spawnIdx)
 	{
         isSpawned[spawnIdx] = true;
     }
 
-	void SpawnItems()
+	void SpawnItemsForDeveloper()
 	{
-		SpawnPasswordPapers();
+        SpawnPasswordPapersForDeveloper();
 	}
 
-	private void SpawnPasswordPapers()
+	private void SpawnPasswordPapersForDeveloper()
 	{
 		float x = -33.289f;
 
@@ -97,7 +95,7 @@ public class SpawnManager : MonoBehaviourPun
 		}
 	}
 
-	private void SpawnInteractableObjects()
+	private void SpawnInteractableObjectsForDeveloper()
 	{
         PhotonNetwork.InstantiateRoomObject("InteractableObjects/Computer", new Vector3(-29.77029f, 20.269f, 21.33452f), Quaternion.identity);
         PhotonNetwork.InstantiateRoomObject("InteractableObjects/Computer", new Vector3(-30.77f, 20.269f, 21.33452f), Quaternion.identity);
