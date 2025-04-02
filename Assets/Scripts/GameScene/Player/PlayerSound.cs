@@ -11,13 +11,17 @@ public class PlayerSound : MonoBehaviourPun
     public AudioClip pantingClip;
     private bool isPantingPlaying = false;
 
-    void Start()
+
+    void Awake()
     {
-        audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.spatialBlend = 1.0f;
-        audioSource.minDistance = 1.0f;
-        audioSource.maxDistance = 10.0f;
-        audioSource.rolloffMode = AudioRolloffMode.Linear;
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.spatialBlend = 1.0f;
+            audioSource.minDistance = 1.0f;
+            audioSource.maxDistance = 10.0f;
+            audioSource.rolloffMode = AudioRolloffMode.Linear;
+        }
     }
 
 
