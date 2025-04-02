@@ -320,7 +320,7 @@ public class PlayerController : MonoBehaviourPun
         bool isGrounded = IsGrounded();
         bool isJumping = VerticalVelocity > 0.1f;
         _playerAnimator.SetJumpAnim(isJumping, isGrounded); 
-        _playerAnimator.SetMoveAnim(_playerMovement.InputDirection.x, _playerMovement.InputDirection.z, _playerMovement.Offset);
+        _playerAnimator.SetMoveAnim(_playerMovement.InputDirection.x, _playerMovement.InputDirection.z, _playerMovement.Offset, _playerMovement.IsCrouch);
     }
     
     private void HandleAnimationStateChange(string state)

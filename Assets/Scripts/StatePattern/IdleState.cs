@@ -23,7 +23,6 @@ public class IdleState : IState
     
     public void FixedUpdateState(PlayerController player, Vector3 inputDirection, float offset, bool escape, PlayerSound playerSound)
     {
-        player.UpdateAnimator();
         player.ApplyGravity();
         Vector3 movement = new Vector3(0, player.VerticalVelocity, 0);
         player.Controller.Move(movement * Time.fixedDeltaTime);
@@ -31,7 +30,7 @@ public class IdleState : IState
 
     public void ExitState(PlayerController player)
     {
-        
+        Debug.Log("Idle 종료");
     }
 
     public bool CanInteraction()
