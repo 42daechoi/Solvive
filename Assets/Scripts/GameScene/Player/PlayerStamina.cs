@@ -1,15 +1,19 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class PlayerStamina : MonoBehaviour
 {
     [SerializeField] private float maxStamina = 100f;
     [SerializeField] private float staminaRecoveryRate = 5f;
     [SerializeField] private float staminaDrainRate = 8f;
+    [SerializeField] private float staminaRecoveryDelay = 1f;
     [SerializeField] private float currentStamina;
     [SerializeField] private Slider staminaBar;
+
     private PlayerController playerController;
     private PlayerSound playerSound;
+    private Coroutine recoveryCoroutine;
 
     private void Start()
     {
@@ -38,39 +42,53 @@ public class PlayerStamina : MonoBehaviour
 
     private void HandleStamina(bool isSprint)
     {
-        if (currentStamina <= 0)
-        {
-            playerSound.PlayPantingSound();
-        }
-        if (isSprint && currentStamina > 0)
+        if (isSprint)
         {
             currentStamina -= staminaDrainRate * Time.deltaTime;
+            if (currentStamina <= 0) playerSound.PlayPantingSound();
+
+            if (recoveryCoroutine != null)
+            {
+                StopCoroutine(recoveryCoroutine);
+                recoveryCoroutine = null;
+            }
         }
-        if (!isSprint && currentStamina < maxStamina)
+        else if (recoveryCoroutine == null)
         {
-            currentStamina += staminaRecoveryRate * Time.deltaTime;
+            recoveryCoroutine = StartCoroutine(WaitForRecoverStamina());
         }
+
         currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
-        EventManager_Game.Instance.InvokeOnPlayerSprintWithStamina(IsSprintEnabled(isSprint));
         if (staminaBar) staminaBar.value = currentStamina;
+
+        EventManager_Game.Instance.InvokeOnPlayerSprintWithStamina(isSprint && currentStamina > 0);
     }
 
-    private bool IsSprintEnabled(bool isSprint)
+    private IEnumerator WaitForRecoverStamina()
     {
-        if (isSprint && currentStamina > 0)
+        yield return new WaitForSeconds(staminaRecoveryDelay);
+
+        while (currentStamina < maxStamina)
         {
-            return true;
+            currentStamina += staminaRecoveryRate * Time.deltaTime;
+            currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
+            if (staminaBar) staminaBar.value = currentStamina;
+            yield return null;
         }
-        return false;
+
+        recoveryCoroutine = null;
     }
 
     public bool TryToUseStamina(float requiredStamina)
     {
         if (currentStamina < requiredStamina) return false;
-        else
+
+        if (recoveryCoroutine != null)
         {
-            currentStamina -= requiredStamina;
-            return true;
+            StopCoroutine(recoveryCoroutine);
+            recoveryCoroutine = null;
         }
+        currentStamina -= requiredStamina;
+        return true;
     }
 }
