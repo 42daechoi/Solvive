@@ -7,10 +7,11 @@ public class VolumeSittings : MonoBehaviour
 {
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private Slider MusicSlider;
+    [SerializeField] private Slider micVolumeSlider;
+    [SerializeField] private AudioMixer voiceMixer;
 
     private void Start()
     {
-        // audioSource가 할당되지 않았다면, 같은 게임 오브젝트에서 AudioSource 컴포넌트를 가져옵니다.
         if(audioSource == null)
         {
             audioSource = GetComponent<AudioSource>();
@@ -23,6 +24,8 @@ public class VolumeSittings : MonoBehaviour
         {
             SetMusicVolume();
         }
+        micVolumeSlider.onValueChanged.AddListener(SetMicVolume);
+        micVolumeSlider.value = 0f;
     }
 
     public void SetMusicVolume()
@@ -36,5 +39,9 @@ public class VolumeSittings : MonoBehaviour
     {
         MusicSlider.value = PlayerPrefs.GetFloat("MainBGM");
         SetMusicVolume();
+    }
+    private void SetMicVolume(float value)
+    {
+        voiceMixer.SetFloat("Master", value);
     }
 }
