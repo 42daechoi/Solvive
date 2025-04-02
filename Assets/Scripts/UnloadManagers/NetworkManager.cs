@@ -23,8 +23,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     void Start()
     {
-        // 포톤 서버 연결
-        PhotonNetwork.ConnectUsingSettings();
+        if (!PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.ConnectUsingSettings();
+            Debug.Log("Photon 서버에 연결 시도 중...");
+        }
     }
 
     public override void OnConnectedToMaster()
