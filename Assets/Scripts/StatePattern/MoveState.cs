@@ -38,7 +38,6 @@ public class MoveState : IState
 
     public void FixedUpdateState(PlayerController player, Vector3 inputDirection, float offset, bool escape, PlayerSound playerSound)
     {
-        player.UpdateAnimator();
         player.ApplyGravity();
         Vector3 movement = new Vector3(inputDirection.x, 0, inputDirection.z).normalized;
         movement = player.transform.TransformDirection(movement);
