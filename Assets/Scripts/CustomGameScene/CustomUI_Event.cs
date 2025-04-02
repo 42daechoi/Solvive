@@ -186,9 +186,10 @@ public class CustomUI_Event : MonoBehaviourPunCallbacks
                 room.CustomProperties["RoomCode"].ToString() == enteredCode)
             {
                 PhotonNetwork.JoinRoom(room.Name);
-                Debug.Log($"CustomUI_Event : 방 코드 {enteredCode}에 해당하는 방({room.Name}) 입장 시도");
+                
                 return;
             }
+            Debug.Log($"CustomUI_Event : 방 코드 {enteredCode}에 해당하는 방({room.Name}) 입장 시도");
             count++;
         }
 
