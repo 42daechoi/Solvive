@@ -18,7 +18,6 @@ public class JumpState : IState
 
     public void FixedUpdateState(PlayerController player, Vector3 inputDirection, float offset, bool escape, PlayerSound playerSound)
     {
-        player.UpdateAnimator();
         Vector3 movement = Vector3.zero;
         
         // 공중에서의 수평 이동 처리

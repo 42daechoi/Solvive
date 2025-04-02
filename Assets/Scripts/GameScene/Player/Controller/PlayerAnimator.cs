@@ -11,7 +11,6 @@ public class PlayerAnimator : MonoBehaviour
     private int horizontalHash;
     private int verticalHash;
     private int isIdleHash;
-    private int isCrouchHash;
     private int isJumpingHash;
     private int shootHash;
     
@@ -21,6 +20,10 @@ public class PlayerAnimator : MonoBehaviour
     private int cardKeyLayerIndex;
     private int batteryLayerIndex;
     private int flashLayerIndex;
+    private int crouchLayerIndex;
+    
+    // 크라우치 상태 추적을 위한 변수
+    private bool _isCrouching = false;
     
     // Start is called before the first frame update
     private void Awake()
@@ -29,7 +32,6 @@ public class PlayerAnimator : MonoBehaviour
         horizontalHash = Animator.StringToHash("Horizontal");
         verticalHash = Animator.StringToHash("Vertical");
         isIdleHash = Animator.StringToHash("IsIdle");
-        isCrouchHash = Animator.StringToHash("isCrouch");
         isJumpingHash = Animator.StringToHash("IsJumping");
         shootHash = Animator.StringToHash("isShoot");
         
@@ -39,27 +41,33 @@ public class PlayerAnimator : MonoBehaviour
         cardKeyLayerIndex = animator.GetLayerIndex("Keycard");
         batteryLayerIndex = animator.GetLayerIndex("Battery");
         flashLayerIndex = animator.GetLayerIndex("Flashlight");
+        crouchLayerIndex = animator.GetLayerIndex("isCrouch");
     }
     
-    public void SetMoveAnim(float horizontal, float vertical, float offset)
+    public void SetMoveAnim(float horizontal, float vertical, float offset, bool isCrouching = false)
     {
         if (animator == null) return;
         
         float scaledHorizontal = horizontal * offset;
         float scaledVertical = vertical * offset;
         
-        animator.SetFloat(horizontalHash, scaledHorizontal);
-        animator.SetFloat(verticalHash, scaledVertical);
-
-        bool isIdle = Mathf.Abs(scaledHorizontal) < 0.1f && 
-                      Mathf.Abs(scaledVertical) < 0.1f;
-        animator.SetBool(isIdleHash, isIdle);
-    }
-
-    public void SetCrouch(bool isCrouch)
-    {
-        if (animator == null) return;
-        animator.SetBool(isCrouchHash, isCrouch);
+        if (isCrouching)
+        {
+            animator.SetFloat(horizontalHash, scaledHorizontal);
+            animator.SetFloat(verticalHash, scaledVertical);
+            
+            bool isIdle = true;
+            animator.SetBool(isIdleHash, isIdle);
+        }
+        else
+        {
+            animator.SetFloat(horizontalHash, scaledHorizontal);
+            animator.SetFloat(verticalHash, scaledVertical);
+            
+            bool isIdle = Mathf.Abs(scaledHorizontal) < 0.1f &&
+                          Mathf.Abs(scaledVertical) < 0.1f;
+            animator.SetBool(isIdleHash, isIdle);
+        }
     }
     
     public void SetJumpAnim(bool isJumping, bool isGrounded)
@@ -213,5 +221,25 @@ public class PlayerAnimator : MonoBehaviour
                 0f,
                 0.3f).SetEase(Ease.OutSine);
         }
+    }
+    
+    public void SetCrouchLayerActive(bool isActive)
+    {
+        if (animator == null || crouchLayerIndex == -1) return;
+        
+        _isCrouching = isActive;
+        
+        if (isActive)
+        {
+            animator.SetBool(isIdleHash, true);
+        }
+        
+        float targetWeight = isActive ? 1f : 0f;
+        float currentWeight = animator.GetLayerWeight(crouchLayerIndex);
+
+        DOTween.To(() => currentWeight,
+            x => animator.SetLayerWeight(crouchLayerIndex, x),
+            targetWeight,
+            0.3f).SetEase(Ease.OutSine);
     }
 }
