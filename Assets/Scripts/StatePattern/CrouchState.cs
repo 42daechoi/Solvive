@@ -9,7 +9,8 @@ public class CrouchState : IState
     public void EnterState(PlayerController player, PlayerSound playerSound)
     {
         player.PlayerAnimator.SetCrouchLayerActive(true);
-        Debug.Log("앉기 test");
+        playerSound.PlayCrouchSound();
+        footstepTimer = 0f;
     }
     
     public void UpdateState(PlayerController player, Vector3 inputDirection, float offset, PlayerSound playerSound)
@@ -38,7 +39,7 @@ public class CrouchState : IState
         footstepTimer += Time.deltaTime;
         if (inputDirection.sqrMagnitude > 0.1f && footstepTimer >= footstepInterval)
         {
-            playerSound.PlayWalkSound();
+            playerSound.PlayCrouchSound();
             footstepTimer = 0f;
         }
     }
@@ -65,7 +66,6 @@ public class CrouchState : IState
     public void ExitState(PlayerController player)
     {
         player.PlayerAnimator.SetCrouchLayerActive(false);
-        Debug.Log("앉기 끝 test");
     }
 
     public bool CanInteraction()

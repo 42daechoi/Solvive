@@ -30,6 +30,20 @@ public class PlayerSound : MonoBehaviourPun
     private void SyncPlayWalkSound()
     {
         audioSource.maxDistance = 10.0f;
+        audioSource.volume = 1f;
+        audioSource.PlayOneShot(walkClip);
+    }
+
+    public void PlayCrouchSound()
+    {
+        photonView.RPC("SyncPlayCrouchSound", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void SyncPlayCrouchSound()
+    {
+        audioSource.maxDistance = 5.0f;
+        audioSource.volume = 0.6f;
         audioSource.PlayOneShot(walkClip);
     }
 
@@ -42,6 +56,7 @@ public class PlayerSound : MonoBehaviourPun
     [PunRPC]
     private void SyncPlaySprintSound()
     {
+        audioSource.volume = 1f;
         audioSource.maxDistance = 20.0f;
         audioSource.PlayOneShot(sprintClip);
     }

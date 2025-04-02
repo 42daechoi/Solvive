@@ -42,7 +42,7 @@ public class PlayerStamina : MonoBehaviour
 
     private void HandleStamina(bool isSprint)
     {
-        if (isSprint)
+        if (isSprint && PlayerController.Instance.GetCurrentState() is not CrouchState)
         {
             currentStamina -= staminaDrainRate * Time.deltaTime;
             if (currentStamina <= 0) playerSound.PlayPantingSound();
