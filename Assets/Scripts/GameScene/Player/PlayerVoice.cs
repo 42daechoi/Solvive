@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Voice.Unity;
@@ -7,6 +8,9 @@ using Photon.Voice;
 public class PlayerVoice : MonoBehaviourPun
 {
     public static PlayerVoice Instance { get; private set; }
+    private Speaker speaker;
+    private PlayerRoleDistribution roleDist;
+    public PlayerRole Role { get; private set; }
     
     Recorder recorder;
     
@@ -16,14 +20,17 @@ public class PlayerVoice : MonoBehaviourPun
         {
             Instance = this;
         }
+        recorder = GetComponent<Recorder>();
+        speaker = GetComponent<Speaker>();
+        roleDist = GetComponent<PlayerRoleDistribution>();
         
         if (!photonView.IsMine) return;
-
-        recorder = GetComponent<Recorder>();
-        if (recorder == null)
+        
+        if (recorder == null || roleDist == null)
         {
             return;
         }
+        Role = roleDist.role;
 
         string[] micDevices = Microphone.devices;
         if (micDevices.Length == 0)
@@ -48,7 +55,10 @@ public class PlayerVoice : MonoBehaviourPun
 
     void Start()
     {
-        
+        if (photonView.IsMine)
+        {
+            StartCoroutine(CheckVoice());
+        }
     }
     
     public void SetMicrophone(string micName)
@@ -73,5 +83,47 @@ public class PlayerVoice : MonoBehaviourPun
         }
 
         recorder.TransmitEnabled = value;
+    }
+    
+    private IEnumerator CheckVoice()
+    {
+        while (true)
+        {
+            UpdateCanHear();
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    private void UpdateCanHear()
+    {
+        PlayerVoice[] allPlayers = FindObjectsOfType<PlayerVoice>();
+
+        foreach (var other in allPlayers)
+        {
+            if (other == this || other.speaker == null) continue;
+
+            float distance = Vector3.Distance(transform.position, other.transform.position);
+
+            bool canHear = false;
+
+            if (this.Role == PlayerRole.Observer && other.Role == PlayerRole.Observer)
+            {
+                canHear = true;
+            }
+            else if (this.Role == PlayerRole.Observer || other.Role == PlayerRole.Observer)
+            {
+                canHear = false;
+            }
+            else
+            {
+                canHear = distance <= 10f;
+            }
+
+            if (speaker != null && speaker.RemoteVoice != null &&
+                speaker.RemoteVoice.PlayerId == other.photonView.OwnerActorNr)
+            {
+                speaker.enabled = canHear;
+            }
+        }
     }
 }

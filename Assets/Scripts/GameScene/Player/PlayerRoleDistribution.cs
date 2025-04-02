@@ -13,9 +13,21 @@ public enum PlayerRole
     Observer
 }
 
-public class PlayerRoleDistribution : MonoBehaviourPunCallbacks
+public class PlayerRoleDistribution : MonoBehaviourPunCallbacks, IPunObservable
 {
     public PlayerRole role;
+    
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext((int)role);
+        }
+        else
+        {
+            role = (PlayerRole)stream.ReceiveNext();
+        }
+    }
 
     [PunRPC]
     public void SetRoleRPC(int roleInt)
