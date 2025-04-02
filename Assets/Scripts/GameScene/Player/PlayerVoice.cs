@@ -100,17 +100,23 @@ public class PlayerVoice : MonoBehaviourPun
 
         foreach (var other in allPlayers)
         {
-            if (other == this || other.speaker == null) continue;
+            if (other == this || other.photonView == null || other.photonView.Owner == null)
+                continue;
+
+            var otherRoleDist = other.GetComponent<PlayerRoleDistribution>();
+            if (otherRoleDist == null) continue;
+
+            PlayerRole otherRole = otherRoleDist.role;
 
             float distance = Vector3.Distance(transform.position, other.transform.position);
 
             bool canHear = false;
-
-            if (this.Role == PlayerRole.Observer && other.Role == PlayerRole.Observer)
+            
+            if (this.Role == PlayerRole.Observer && otherRole == PlayerRole.Observer)
             {
                 canHear = true;
             }
-            else if (this.Role == PlayerRole.Observer || other.Role == PlayerRole.Observer)
+            else if (this.Role == PlayerRole.Observer || otherRole == PlayerRole.Observer)
             {
                 canHear = false;
             }
@@ -119,7 +125,8 @@ public class PlayerVoice : MonoBehaviourPun
                 canHear = distance <= 10f;
             }
 
-            if (speaker != null && speaker.RemoteVoice != null &&
+            if (speaker != null &&
+                speaker.RemoteVoice != null &&
                 speaker.RemoteVoice.PlayerId == other.photonView.OwnerActorNr)
             {
                 speaker.enabled = canHear;
