@@ -1426,6 +1426,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 0}
   MusicSlider: {fileID: 3433262849094974850}
+  micVolumeSlider: {fileID: 2701483361899877095}
+  voiceMixer: {fileID: 24100000, guid: e296f62d20eaa774bb4380025ad1da97, type: 2}
 --- !u!1 &5421845423268706963
 GameObject:
   m_ObjectHideFlags: 0
@@ -3377,6 +3379,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5646686361249991005, guid: fdab65fb14de44244bee8648f16792c3, type: 3}
+      propertyPath: m_MaxValue
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646686361249991005, guid: fdab65fb14de44244bee8648f16792c3, type: 3}
+      propertyPath: m_MinValue
+      value: -80
+      objectReference: {fileID: 0}
     - target: {fileID: 6149370862140207569, guid: fdab65fb14de44244bee8648f16792c3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OptionConfirmButton
@@ -3436,6 +3446,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5414206706701595850, guid: fdab65fb14de44244bee8648f16792c3, type: 3}
   m_PrefabInstance: {fileID: 7719336448875486138}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2701483361899877095 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5646686361249991005, guid: fdab65fb14de44244bee8648f16792c3, type: 3}
+  m_PrefabInstance: {fileID: 7719336448875486138}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3024190287959201007 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4816743368238059349, guid: fdab65fb14de44244bee8648f16792c3, type: 3}

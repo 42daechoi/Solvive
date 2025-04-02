@@ -4,6 +4,8 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Voice.Unity;
 using Photon.Voice;
+using UnityEngine.Audio;
+
 
 public class PlayerVoice : MonoBehaviourPun
 {
@@ -12,6 +14,8 @@ public class PlayerVoice : MonoBehaviourPun
     private Recorder recorder;
     private Speaker speaker;
     private PlayerRoleDistribution roleDist;
+    [SerializeField] private AudioMixer voiceMixer;
+    [SerializeField] private AudioMixerGroup voiceMixerGroup;
 
     public PlayerRole Role { get; private set; }
 
@@ -60,8 +64,15 @@ public class PlayerVoice : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
+            SetOutputVolume(+30f);
             StartCoroutine(CheckVoice());
         }
+        
+    }
+    
+    private void SetOutputVolume(float dB)
+    {
+        voiceMixer.SetFloat("Volume", dB);
     }
 
     private void HandleRoleChanged(PlayerRole newRole)
@@ -135,6 +146,7 @@ public class PlayerVoice : MonoBehaviourPun
             AudioSource audioSource = sp.GetComponent<AudioSource>();
             if (audioSource != null)
             {
+                audioSource.outputAudioMixerGroup = voiceMixerGroup;
                 audioSource.volume = canHear ? 1f : 0f;
             }
         }

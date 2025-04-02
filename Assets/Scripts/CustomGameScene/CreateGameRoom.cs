@@ -5,6 +5,7 @@ using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
 using Unity.VisualScripting;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class CreateGameRoom : MonoBehaviourPunCallbacks
@@ -17,6 +18,7 @@ public class CreateGameRoom : MonoBehaviourPunCallbacks
     public const byte ROOM_INFO_EVENT = 1;
 
     private List<RoomInfo> cachedRoomList = new List<RoomInfo>();
+    [SerializeField] private AudioMixerGroup voiceMixerGroup;
 
 
     public void Start()
