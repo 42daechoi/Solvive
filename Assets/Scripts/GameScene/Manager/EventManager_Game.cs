@@ -8,6 +8,7 @@ public class EventManager_Game : MonoBehaviour
     // Player Movement
     public event Action<float, float> OnPlayerMove;
     public event Action<bool> OnPlayerSprint;
+    public event Action<bool> OnPlayerCrouch;
     public event Action OnPlayerJump;
     public event Action<bool> OnPlayerSprintWithStamina;
 
@@ -82,6 +83,11 @@ public class EventManager_Game : MonoBehaviour
     public void InvokeSprint(bool isSprint)
     {
         OnPlayerSprint?.Invoke(isSprint);
+    }
+
+    public void InvokeCrouch(bool isCrouch)
+    {
+        OnPlayerCrouch?.Invoke(isCrouch);
     }
 
     public void InvokeCameraActive(bool isActive)

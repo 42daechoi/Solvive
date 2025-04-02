@@ -10,6 +10,11 @@ public class IdleState : IState
     public void UpdateState(PlayerController player, Vector3 inputDirection, float offset, PlayerSound playerSound)
     {
         player.UpdateAnimator();
+        if (offset < 0.21f)
+        {
+            player.TransitionToState(new CrouchState());
+        }
+        
         if (inputDirection.sqrMagnitude > 0.1f)
         {
             player.TransitionToState(new MoveState());

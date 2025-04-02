@@ -11,6 +11,11 @@ public class SprintState : IState
 
     public void UpdateState(PlayerController player, Vector3 inputDirection, float offset, PlayerSound playerSound)
     {
+        if (offset <= 0.21f)
+        {
+            player.TransitionToState(new CrouchState());
+        }
+        
         if (offset <= 0.5f)
         {
             player.TransitionToState(new MoveState());
