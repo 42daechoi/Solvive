@@ -11,6 +11,7 @@ public class PlayerAnimator : MonoBehaviour
     private int horizontalHash;
     private int verticalHash;
     private int isIdleHash;
+    private int isCrouchHash;
     private int isJumpingHash;
     private int shootHash;
     
@@ -28,6 +29,7 @@ public class PlayerAnimator : MonoBehaviour
         horizontalHash = Animator.StringToHash("Horizontal");
         verticalHash = Animator.StringToHash("Vertical");
         isIdleHash = Animator.StringToHash("IsIdle");
+        isCrouchHash = Animator.StringToHash("isCrouch");
         isJumpingHash = Animator.StringToHash("IsJumping");
         shootHash = Animator.StringToHash("isShoot");
         
@@ -52,6 +54,12 @@ public class PlayerAnimator : MonoBehaviour
         bool isIdle = Mathf.Abs(scaledHorizontal) < 0.1f && 
                       Mathf.Abs(scaledVertical) < 0.1f;
         animator.SetBool(isIdleHash, isIdle);
+    }
+
+    public void SetCrouch(bool isCrouch)
+    {
+        if (animator == null) return;
+        animator.SetBool(isCrouchHash, isCrouch);
     }
     
     public void SetJumpAnim(bool isJumping, bool isGrounded)

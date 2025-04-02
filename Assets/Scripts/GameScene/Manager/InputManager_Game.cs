@@ -65,7 +65,9 @@ public class InputManager_Game : MonoBehaviour
         {
             EventManager_Game.Instance.InvokePlayerJump();
         }
-        
+
+        bool isCrouch = Input.GetKey(KeyCode.LeftControl);
+        EventManager_Game.Instance.InvokeCrouch(isCrouch);
         // 상호 작용
         if (Input.GetKeyDown(KeyCode.F))
         {

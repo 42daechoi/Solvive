@@ -14,6 +14,11 @@ public class MoveState : IState
     {
         player.UpdateAnimator();
         
+        if (offset <= 0.21f)
+        {
+            player.TransitionToState(new CrouchState());
+        }
+        
         if (offset > 0.5f)
         {
             player.TransitionToState(new SprintState());
