@@ -8,6 +8,8 @@ public class MoveState : IState
     public void EnterState(PlayerController player, PlayerSound playerSound)
     {
         Debug.Log("Move행동 진입");
+        playerSound.PlayWalkSound();
+        footstepTimer = 0f;
     }
 
     public void UpdateState(PlayerController player, Vector3 inputDirection, float offset, PlayerSound playerSound)

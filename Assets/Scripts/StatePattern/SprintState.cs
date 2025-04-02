@@ -7,6 +7,8 @@ public class SprintState : IState
     public void EnterState(PlayerController player, PlayerSound playerSound)
     {
         Debug.Log("Sprint행동 진입");
+        playerSound.PlaySprintSound();
+        footstepTimer = 0f;
     }
 
     public void UpdateState(PlayerController player, Vector3 inputDirection, float offset, PlayerSound playerSound)

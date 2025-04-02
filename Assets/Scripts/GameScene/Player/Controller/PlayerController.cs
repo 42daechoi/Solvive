@@ -161,7 +161,7 @@ public class PlayerController : MonoBehaviourPun
     
     private void Update()
     {
-        if (_photonView.IsMine)
+        if (_photonView.IsMine && _playerSound)
         {
             _currentState.UpdateState(this, _playerMovement.InputDirection, _playerMovement.Offset, _playerSound);
             //if (Time.time % 1f < 0.02f)
@@ -173,7 +173,7 @@ public class PlayerController : MonoBehaviourPun
 
     private void FixedUpdate()
     {
-        if (_photonView.IsMine)
+        if (_photonView.IsMine && _playerSound)
         {
             _currentState.FixedUpdateState(this, _playerMovement.InputDirection, _playerMovement.Offset, _mannequinEscape, _playerSound);
         }
