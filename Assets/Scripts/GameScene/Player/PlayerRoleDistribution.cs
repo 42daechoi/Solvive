@@ -16,6 +16,7 @@ public enum PlayerRole
 public class PlayerRoleDistribution : MonoBehaviourPunCallbacks, IPunObservable
 {
     public PlayerRole role;
+    public event Action<PlayerRole> OnRoleChanged;
     
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -33,6 +34,7 @@ public class PlayerRoleDistribution : MonoBehaviourPunCallbacks, IPunObservable
     public void SetRoleRPC(int roleInt)
     {
         role = (PlayerRole)roleInt;
+        OnRoleChanged?.Invoke(role);
         Debug.Log("플레이어의 역할: " + role + photonView.ViewID);
         if (photonView.IsMine) RoleUI.Instance.UpdateRoleUI(role);
     }

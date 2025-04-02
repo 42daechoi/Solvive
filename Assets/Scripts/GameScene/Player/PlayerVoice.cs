@@ -8,39 +8,37 @@ using Photon.Voice;
 public class PlayerVoice : MonoBehaviourPun
 {
     public static PlayerVoice Instance { get; private set; }
+
+    private Recorder recorder;
     private Speaker speaker;
     private PlayerRoleDistribution roleDist;
+
     public PlayerRole Role { get; private set; }
-    
-    Recorder recorder;
-    
+
     private void Awake()
     {
         if (photonView.IsMine && Instance == null)
         {
             Instance = this;
         }
+
         recorder = GetComponent<Recorder>();
         speaker = GetComponent<Speaker>();
         roleDist = GetComponent<PlayerRoleDistribution>();
-        
+
         if (!photonView.IsMine) return;
-        
-        if (recorder == null || roleDist == null)
-        {
-            return;
-        }
+        if (recorder == null || roleDist == null) return;
+
         Role = roleDist.role;
 
         string[] micDevices = Microphone.devices;
-        if (micDevices.Length == 0)
-        {
-            return;
-        }
-        
+        if (micDevices.Length == 0) return;
+
         SetMicrophone(micDevices[0]);
 
         recorder.TransmitEnabled = false;
+
+        roleDist.OnRoleChanged += HandleRoleChanged;
     }
 
     private void OnEnable()
@@ -48,24 +46,34 @@ public class PlayerVoice : MonoBehaviourPun
         EventManager_Game.Instance.OnVoice += HandleVoice;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
+        if (roleDist != null)
+        {
+            roleDist.OnRoleChanged -= HandleRoleChanged;
+        }
+
         EventManager_Game.Instance.OnVoice -= HandleVoice;
     }
 
-    void Start()
+    private void Start()
     {
         if (photonView.IsMine)
         {
             StartCoroutine(CheckVoice());
         }
     }
-    
+
+    private void HandleRoleChanged(PlayerRole newRole)
+    {
+        Role = newRole;
+    }
+
     public void SetMicrophone(string micName)
     {
         if (recorder == null)
         {
-            Debug.LogWarning("⚠️ Recorder가 아직 초기화되지 않음.");
+            Debug.LogWarning("PlayerVoice: ⚠️ Recorder가 아직 초기화되지 않음.");
             return;
         }
 
@@ -81,10 +89,9 @@ public class PlayerVoice : MonoBehaviourPun
         {
             return;
         }
-
         recorder.TransmitEnabled = value;
     }
-    
+
     private IEnumerator CheckVoice()
     {
         while (true)
@@ -98,38 +105,37 @@ public class PlayerVoice : MonoBehaviourPun
     {
         PlayerVoice[] allPlayers = FindObjectsOfType<PlayerVoice>();
 
-        foreach (var other in allPlayers)
+        foreach (var sp in GetComponentsInChildren<Speaker>())
         {
-            if (other == this || other.photonView == null || other.photonView.Owner == null)
-                continue;
+            if (sp.RemoteVoice == null) continue;
 
-            var otherRoleDist = other.GetComponent<PlayerRoleDistribution>();
-            if (otherRoleDist == null) continue;
+            int senderId = sp.RemoteVoice.PlayerId;
 
-            PlayerRole otherRole = otherRoleDist.role;
+            var sender = Array.Find(allPlayers, p => p.photonView.OwnerActorNr == senderId);
+            if (sender == null) continue;
 
-            float distance = Vector3.Distance(transform.position, other.transform.position);
+            PlayerRole senderRole = sender.Role;
+            float distance = Vector3.Distance(transform.position, sender.transform.position);
 
             bool canHear = false;
             
-            if (this.Role == PlayerRole.Observer && otherRole == PlayerRole.Observer)
-            {
-                canHear = true;
-            }
-            else if (this.Role == PlayerRole.Observer || otherRole == PlayerRole.Observer)
+            if (senderRole == PlayerRole.Observer && this.Role != PlayerRole.Observer)
             {
                 canHear = false;
+            }
+            else if (senderRole == PlayerRole.Observer && this.Role == PlayerRole.Observer)
+            {
+                canHear = true;
             }
             else
             {
                 canHear = distance <= 10f;
             }
 
-            if (speaker != null &&
-                speaker.RemoteVoice != null &&
-                speaker.RemoteVoice.PlayerId == other.photonView.OwnerActorNr)
+            AudioSource audioSource = sp.GetComponent<AudioSource>();
+            if (audioSource != null)
             {
-                speaker.enabled = canHear;
+                audioSource.volume = canHear ? 1f : 0f;
             }
         }
     }
