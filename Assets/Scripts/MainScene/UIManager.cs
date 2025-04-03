@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using Photon.Pun;
-using Photon.Realtime;
 using UnityEngine;
 
 public class UIManager : MonoBehaviourPun
@@ -20,7 +17,7 @@ public class UIManager : MonoBehaviourPun
     {
         EventManager_Main.OnFindGameClicked += FindGame;
         EventManager_Main.OnCustomGameClicked += CustomGame;
-        EventManager_Main.OnSelectClicked += SelectCharacter;
+        EventManager_Main.OnCreditsClicked += Credits;
         EventManager_Main.OnOptionClicked += Option;
         EventManager_Main.OnQuitClicked += Quit;
         EventManager_Main.OnSoloModeClicked += Solo;
@@ -36,7 +33,7 @@ public class UIManager : MonoBehaviourPun
     {
         EventManager_Main.OnFindGameClicked -= FindGame;
         EventManager_Main.OnCustomGameClicked -= CustomGame;
-        EventManager_Main.OnSelectClicked -= SelectCharacter;
+        EventManager_Main.OnCreditsClicked -= Credits;
         EventManager_Main.OnOptionClicked -= Option;
         EventManager_Main.OnQuitClicked -= Quit;
         EventManager_Main.OnSoloModeClicked -= Solo;
@@ -81,15 +78,13 @@ public class UIManager : MonoBehaviourPun
     {
         Debug.Log("CustomGame 버튼 누름");
         PhotonNetwork.LoadLevel("CustomGameScene");
-        //NetworkManager.Instance.JoinRoom();
         PhotonNetwork.JoinLobby();
     }
 
-    void SelectCharacter()
+    void Credits()
     {
-        Debug.Log("Select 버튼 누름");
-        // 캐릭터 설정 로직 구현 필요
-        //NetworkManager.Instance.CreateRoom();
+        SceneManager.LoadScene("CreditScene");
+        Debug.Log("UIManager : Credits Button 누름");
     }
 
     void Option()
