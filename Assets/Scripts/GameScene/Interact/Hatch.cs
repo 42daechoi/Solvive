@@ -1,5 +1,6 @@
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Hatch : MonoBehaviourPun, IInteractableObject
 {
@@ -8,16 +9,44 @@ public class Hatch : MonoBehaviourPun, IInteractableObject
     private float holdDuration = 5f;
     private int interactingPlayerID = -1;
 
+    private GameObject hatchPanel;
+    private Slider holdProgressBar;
+
+    private void Start()
+    {
+        GameObject uiRoot = GameObject.Find("UI");
+        if (uiRoot != null)
+        {
+            hatchPanel = FindChild(uiRoot.transform, "HatchInteractPanel")?.gameObject;
+            if (hatchPanel != null)
+            {
+                holdProgressBar = hatchPanel.GetComponentInChildren<Slider>();
+                hatchPanel.SetActive(false);
+            }
+            else
+            {
+                Debug.LogError("HatchInteractPanelÀ» Ã£À» ¼ö ¾øÀ½!");
+            }
+        }
+        else
+        {
+            Debug.LogError("UI ·çÆ® ¿ÀºêÁ§Æ®¸¦ Ã£À» ¼ö ¾øÀ½!");
+        }
+    }
+
     public void Interact(int playerID)
     {
         GameObject playerObject = FindObjectByViewID(playerID);
         if (playerObject == null) return;
         PlayerRoleDistribution prd = playerObject.GetComponent<PlayerRoleDistribution>();
         if (prd == null) return;
+
         if (!isHolding && prd.role == PlayerRole.Citizen)
         {
             isHolding = true;
             interactingPlayerID = playerID;
+
+            if (hatchPanel != null) hatchPanel.SetActive(true);
         }
     }
 
@@ -26,7 +55,10 @@ public class Hatch : MonoBehaviourPun, IInteractableObject
         if (isHolding)
         {
             holdTime += Time.deltaTime;
-            Debug.Log($"ï¿½ï¿½Ä¡ ï¿½ï¿½È£ ï¿½Û¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ [" + holdTime + "]");
+            Debug.Log($"Hold Hatch Interact time [" + holdTime + "]");
+
+            if (holdProgressBar != null)
+                holdProgressBar.value = holdTime / holdDuration;
 
             if (holdTime >= holdDuration)
             {
@@ -34,6 +66,8 @@ public class Hatch : MonoBehaviourPun, IInteractableObject
                 holdTime = 0f;
 
                 photonView.RPC("Escape", RpcTarget.All, interactingPlayerID);
+
+                if (hatchPanel != null) hatchPanel.SetActive(false);
             }
 
             if (Input.GetKeyUp(KeyCode.F))
@@ -48,6 +82,8 @@ public class Hatch : MonoBehaviourPun, IInteractableObject
         isHolding = false;
         holdTime = 0f;
         interactingPlayerID = -1;
+
+        if (hatchPanel != null) hatchPanel.SetActive(false);
     }
 
     [PunRPC]
@@ -63,4 +99,17 @@ public class Hatch : MonoBehaviourPun, IInteractableObject
         return pv != null ? pv.gameObject : null;
     }
 
+    private Transform FindChild(Transform parent, string childName)
+    {
+        foreach (Transform child in parent)
+        {
+            if (child.name == childName)
+                return child;
+
+            Transform found = FindChild(child, childName);
+            if (found != null)
+                return found;
+        }
+        return null;
+    }
 }
