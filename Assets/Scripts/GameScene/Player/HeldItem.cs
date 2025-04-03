@@ -12,6 +12,7 @@ public class HeldItem : MonoBehaviourPunCallbacks
     [SerializeField] private EquipItem equipItem;
     private float dropOffset = 1f;
     public SlotHighlight slotHighlight;
+    public Transform[] originalPrefabs;
 
 
 
@@ -166,9 +167,11 @@ public class HeldItem : MonoBehaviourPunCallbacks
         {
             PhotonView itemPhotonView = PhotonView.Find(itemViewID);
             GameObject itemObj = itemPhotonView.gameObject;
+            string itemNameWithoutClone = itemObj.name.Replace("(Clone)", "").Trim();
+
 
             itemObj.transform.position = replacePosition;
-            itemObj.transform.rotation = Quaternion.identity;
+            itemObj.transform.rotation = GetRotationFromOriginalPrefab(itemNameWithoutClone);
         }
         catch (NullReferenceException e)
         {
@@ -219,5 +222,19 @@ public class HeldItem : MonoBehaviourPunCallbacks
         ItemData itemData = item.GetItemData();
         Debug.Log($"HeldItem : {item.GetItemData().itemName} 아이템 사용");
         itemData.UseItem();
+    }
+
+    private Quaternion GetRotationFromOriginalPrefab(string itemName)
+    {
+        switch (itemName)
+        {
+            case "Battery": return originalPrefabs[0].localRotation;
+            case "Flashlight": return originalPrefabs[1].localRotation;
+            case "Gun": return originalPrefabs[2].localRotation;
+            case "Knife": return originalPrefabs[3].localRotation;
+            case "PasswordPaper": return originalPrefabs[4].localRotation;
+            case "Keycard": return originalPrefabs[5].localRotation;
+        }
+        return Quaternion.identity;
     }
 }

@@ -322,7 +322,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 561389139830730110}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.73456717, z: 0, w: -0.678536}
+  m_LocalRotation: {x: 0, y: -0.7331752, z: 0, w: -0.6800398}
   m_LocalPosition: {x: 0.32, y: -0.00000011920929, z: -0.9762237}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -428,6 +428,13 @@ MonoBehaviour:
   slotIndex: 0
   equipItem: {fileID: 0}
   slotHighlight: {fileID: 0}
+  originalPrefabs:
+  - {fileID: 8102148760557131915, guid: 89286864a98f2c142a7acfcb13d100d3, type: 3}
+  - {fileID: 4777606630871252, guid: 584aaf70672bd3c4bb9de1c87c18d5e3, type: 3}
+  - {fileID: 2009981683091563211, guid: 471d6b5553069ec44b5bb8a7ff5263eb, type: 3}
+  - {fileID: 8522553559949086445, guid: 779e5fde15e24724992751765b1933fa, type: 3}
+  - {fileID: 8694313736735617137, guid: a289f7e075c54d04ab926d06bdda8475, type: 3}
+  - {fileID: 5149708534001351366, guid: b3f1c24bcdb455241814fd64765f016f, type: 3}
 --- !u!114 &8103383532906522961
 MonoBehaviour:
   m_ObjectHideFlags: 0
