@@ -6,7 +6,6 @@ public class SprintState : IState
     private float footstepTimer = 0f;
     public void EnterState(PlayerController player, PlayerSound playerSound)
     {
-        Debug.Log("Sprint행동 진입");
         playerSound.PlaySprintSound();
         footstepTimer = 0f;
     }
@@ -57,7 +56,6 @@ public class SprintState : IState
 
     public void ExitState(PlayerController player)
     {
-        Debug.Log("Sprint 행동 벗어남");
     }
     
     public bool CanInteraction()

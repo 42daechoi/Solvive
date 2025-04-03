@@ -1,12 +1,21 @@
 using Photon.Pun;
 using System.Collections;
 using Cinemachine;
+using DG.Tweening;
 using RootMotion.FinalIK;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviourPun
 {
     public static PlayerController Instance { get; private set; }
+    
+    /* PlayerController 변수 */
+    private Inventory _inventory;
+    private HeldItem _heldItem;
+    private EquipItem _equipItem;
+    private PlayerHealth _playerHealth;
+    private bool isJump;
+    private bool isDied = false;
     
     /* 참조 내역
      * PlayerMovement, PlayerAnimator, CharacterController, PhotonView, Interaction
@@ -66,7 +75,13 @@ public class PlayerController : MonoBehaviourPun
     public PlayerCamera PlayerCamera => _playerCamera;
     public PlayerAnimator PlayerAnimator => _playerAnimator;
     public GameObject[] IngameUIObjects => ingameUIObjects;
-    
+    public bool IsDied => isDied;
+    public bool IsJump
+    {
+        get => isJump;
+        set => isJump = value;
+    }
+
     private void Awake()
     {
         _photonView = GetComponent<PhotonView>();
@@ -86,25 +101,36 @@ public class PlayerController : MonoBehaviourPun
     
     private void Start()
     {
-        _playerMovement = gameObject.AddComponent<PlayerMovement>();
-        _playerAnimator = gameObject.AddComponent<PlayerAnimator>();
+        if (!TryGetComponent(out _playerMovement))
+            _playerMovement = gameObject.AddComponent<PlayerMovement>();
+    
+        if (!TryGetComponent(out _playerAnimator))
+            _playerAnimator = gameObject.AddComponent<PlayerAnimator>();
         
-        _controller = GetComponent<CharacterController>();
-        _photonView = GetComponent<PhotonView>();
-        _interaction = GetComponent<Interaction>();
-        _playerAnimator = GetComponent<PlayerAnimator>();
+        TryGetComponent(out _controller);
+        TryGetComponent(out _photonView);
+        TryGetComponent(out _interaction);
+        TryGetComponent(out _playerCamera);
+        TryGetComponent(out _playerSound);
+        TryGetComponent(out _playerStamina);
+        TryGetComponent(out _inventory);
+        TryGetComponent(out _heldItem);
+        TryGetComponent(out _equipItem);
+        TryGetComponent(out _playerHealth);
+        
         _currentSpeed = _speedSettings.walkSpeed;
-        _playerMovement = GetComponent<PlayerMovement>();
-        _playerCamera = GetComponent<PlayerCamera>();
-        _playerSound = GetComponent<PlayerSound>();
-        _playerStamina = GetComponent<PlayerStamina>();
-
+        
         IdleState = new IdleState();
         JumpState = new JumpState();
-
-        _computerInputManager = gameObject.AddComponent<InputManager_Computer>();
+        
+        if (!TryGetComponent(out _computerInputManager))
+        {
+            _computerInputManager = gameObject.AddComponent<InputManager_Computer>();
+        }
         _computerInputManager.enabled = false;
+        
         localSpeedSettings = Instantiate(SpeedSettings);
+        
         ingameUIObjects = GameObject.FindGameObjectsWithTag("IngameUI");
         
         if (IdleState != null)
@@ -115,17 +141,18 @@ public class PlayerController : MonoBehaviourPun
         {
             Debug.LogError("IdleState가 초기화되지 않았습니다!");
         }
+        
         StartCoroutine(WaitForInputManager());
-
-        if (_photonView.IsMine)
+        
+        if (_photonView != null && _photonView.IsMine)
         {
-            thirdPersonModel.SetActive(false);
-            firstPersonArms.SetActive(true);
+            if (thirdPersonModel != null) thirdPersonModel.SetActive(false);
+            if (firstPersonArms != null) firstPersonArms.SetActive(true);
         }
         else
         {
-            thirdPersonModel.SetActive(true);
-            firstPersonArms.SetActive(false);
+            if (thirdPersonModel != null) thirdPersonModel.SetActive(true);
+            if (firstPersonArms != null) firstPersonArms.SetActive(false);
         }
     }
 
@@ -168,10 +195,6 @@ public class PlayerController : MonoBehaviourPun
         if (_photonView.IsMine && _playerSound)
         {
             _currentState.UpdateState(this, _playerMovement.InputDirection, _playerMovement.Offset, _playerSound);
-            //if (Time.time % 1f < 0.02f)
-            //{
-            //    SavePlayerPosition();
-            //}
         }
     }
 
@@ -183,16 +206,13 @@ public class PlayerController : MonoBehaviourPun
         }
     }
 
-    //private void SavePlayerPosition()
-    //{
-    //    ExitGames.Client.Photon.Hashtable playerProps = PhotonNetwork.LocalPlayer.CustomProperties;
-    //    playerProps["LastPosition"] = transform.position;
-    //    PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
-    //}
-
-
     public void TransitionToState(IState newState)
     {
+        if (_currentState is ObserverState)
+        {
+            return;
+        }
+
         if (_currentState != null)
         {
             _previousState = _currentState;
@@ -339,23 +359,32 @@ public class PlayerController : MonoBehaviourPun
 
     private void HandleObserverState(int viewID)
     {
-        Debug.Log($"PlayerController: ObserverState 이벤트 수신 - 내 ViewID: {_photonView.ViewID}, 이벤트 ViewID: {viewID}");
         if (_photonView.ViewID == viewID)
         {
             obRender.SetActive(false);
-            TransitionToState(new ObserverState());
-            GetComponent<Inventory>().enabled = false;
-            GetComponent<HeldItem>().enabled = false;
-            GetComponent<EquipItem>().enabled = false;
-            GetComponent<PlayerHealth>().enabled = false;
-            GetComponent<Animator>().enabled = false;
-            GetComponent<PhotonAnimatorView>().enabled = false;
-            GetComponent<PhotonTransformView>().enabled = false;
+            isDied = true;
+            TransitionToStateForce(new ObserverState());
+            _inventory.enabled = false;
+            _heldItem.enabled = false;
+            _equipItem.enabled = false;
+            _playerHealth.enabled = false;
+            _playerStamina.enabled = false;
         }
     }
     
     private void HandlePlayerJump()
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+        
+        if (isDied == true)
+        {
+            isJump = true;
+            return;
+        }
+        
         if (IsGrounded() && _playerStamina.TryToUseStamina(15f))
         {
             TransitionToState(JumpState);
@@ -369,7 +398,7 @@ public class PlayerController : MonoBehaviourPun
         float rayLength = characterHeight * 0.55f;
         Vector3 boxSize = new Vector3(_controller.radius, 0.1f, _controller.radius);
     
-        int layerMask = ~(LayerMask.GetMask("Player", "Hitbox"));
+        int layerMask = ~(LayerMask.GetMask("Player", "Hitbox", "Observer"));
 
         RaycastHit hit;
         return Physics.BoxCast(rayStart, boxSize * 0.5f, Vector3.down, out hit, transform.rotation, rayLength, layerMask);
@@ -428,6 +457,14 @@ public class PlayerController : MonoBehaviourPun
         }
     }
     
+    public void TransitionToStateForce(IState newState)
+    {
+        _previousState = _currentState;
+        _currentState?.ExitState(this);
+        _currentState = newState;
+        _currentState.EnterState(this, _playerSound);
+    }
+
     [PunRPC]
     public void UpdateObserverPosition(Vector3 position, Quaternion rotation)
     {

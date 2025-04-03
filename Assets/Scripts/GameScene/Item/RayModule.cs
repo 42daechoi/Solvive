@@ -55,9 +55,9 @@ public class RayModule : ScriptableObject
 
         // 3) 최종 레이 생성
         Ray finalRay = new Ray(origin, direction);
-
+        int ignoreObserverLayer = ~LayerMask.GetMask("Observer");
         // 4) 레이캐스트
-        RaycastHit[] hits = Physics.RaycastAll(finalRay, 100f);
+        RaycastHit[] hits = Physics.RaycastAll(finalRay, 100f, ignoreObserverLayer);
     
         PhotonView myView = shooterTransform.GetComponentInParent<PhotonView>();
 
@@ -98,8 +98,9 @@ public class RayModule : ScriptableObject
         Vector3 origin = centerRay.origin;
         Vector3 direction = centerRay.direction;
         Ray finalRay = new Ray(origin, direction);
-
-        RaycastHit[] hits = Physics.RaycastAll(finalRay, knifeRange);
+        int ignoreObserverLayer = ~LayerMask.GetMask("Observer");
+        
+        RaycastHit[] hits = Physics.RaycastAll(finalRay, knifeRange, ignoreObserverLayer);
 
         PhotonView myView = shooterTransform.GetComponentInParent<PhotonView>();
 

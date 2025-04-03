@@ -22,9 +22,9 @@ public class SpawnManager : MonoBehaviourPun
         SpawnPlayers();
 		if (PhotonNetwork.IsMasterClient)
 		{
-            //SpawnItemsForDeveloper();
-            //SpawnInteractableObjectsForDeveloper();
-            //SpawnHatch();
+            SpawnItemsForDeveloper();
+            SpawnInteractableObjectsForDeveloper();
+            SpawnHatch();
         }
 	}
 

@@ -4,7 +4,6 @@ public class UseComputerState : IState
 {
     public void EnterState(PlayerController player, PlayerSound playerSound)
     {
-        Debug.Log("UseComputerState에 진입했습니다.");
         player.StartMoveToComputer();
         player.PlayerAnimator.EnterComputerAnim();
     }
