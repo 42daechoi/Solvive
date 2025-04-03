@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 262.1226, g: 324.77786, b: 429.8404, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -446,7 +446,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '    Select'
+  m_text: '    Credits'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1601,7 +1601,7 @@ GameObject:
   - component: {fileID: 667360600}
   - component: {fileID: 667360603}
   m_Layer: 5
-  m_Name: SelectButton
+  m_Name: CreditsButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1673,7 +1673,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 636294461}
         m_TargetAssemblyTypeName: EventManager_Main, Assembly-CSharp
-        m_MethodName: OnClickselect
+        m_MethodName: OnClickCredits
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

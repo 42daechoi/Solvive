@@ -8,7 +8,7 @@ public class EventManager_Main : MonoBehaviour
 {
     public static event Action OnFindGameClicked;
     public static event Action OnCustomGameClicked;
-    public static event Action OnSelectClicked;
+    public static event Action OnCreditsClicked;
     public static event Action OnOptionClicked;
     public static event Action OnQuitClicked;
     public static event Action OnSoloModeClicked;
@@ -50,10 +50,10 @@ public class EventManager_Main : MonoBehaviour
         StartCoroutine(WaitSecond(CustomGameButton));
         OnCustomGameClicked?.Invoke();
     }
-    public void OnClickselect(){
+    public void OnClickCredits(){
         selectButton.interactable=false;
         StartCoroutine(WaitSecond(selectButton));
-        OnSelectClicked?.Invoke();
+        OnCreditsClicked?.Invoke();
                 
     }
     public void OnClickOption(){
