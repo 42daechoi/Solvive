@@ -7,7 +7,6 @@ public class MoveState : IState
 
     public void EnterState(PlayerController player, PlayerSound playerSound)
     {
-        Debug.Log("Move행동 진입");
         playerSound.PlayWalkSound();
         footstepTimer = 0f;
     }
@@ -58,7 +57,6 @@ public class MoveState : IState
 
     public void ExitState(PlayerController player)
     {
-        Debug.Log("Move행동 벗어남");
     }
     
     public bool CanInteraction()

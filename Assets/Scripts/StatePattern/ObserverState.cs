@@ -29,7 +29,6 @@ public class ObserverState : IState
                 ui.SetActive(false);
             }
         }
-        Debug.Log("옵저버상태들어옴");
     }
 
     public void UpdateState(PlayerController player, Vector3 inputDirection, float offset, PlayerSound playerSound)

@@ -4,7 +4,6 @@ public class IdleState : IState
 {
     public void EnterState(PlayerController player, PlayerSound p)
     {
-        Debug.Log("Idle자세");
     }
 
     public void UpdateState(PlayerController player, Vector3 inputDirection, float offset, PlayerSound playerSound)
@@ -30,7 +29,6 @@ public class IdleState : IState
 
     public void ExitState(PlayerController player)
     {
-        Debug.Log("Idle 종료");
     }
 
     public bool CanInteraction()
