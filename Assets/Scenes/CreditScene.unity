@@ -351,37 +351,36 @@ MonoBehaviour:
 
 
     Blood
-    frame : spekulatar
+    frame : spekulatar                                                 Eye Icon :
+    Gregor Cresnar
 
-    Eye Icon : Gregor Cresnar
 
-    Copy Icon : Andrean Prabowo
+    Copy Icon : Andrean Prabowo                                        
+    Hand Icon : Hea Poh Lin
 
 
 
     Sound
 
 
-    Gun
-    miss shot : LuannWepener
+    Battery install, Error biff : freesound_community            
+    Card spawn : EdR
 
-    Battery install, Error biff : freesound_community
 
-    Card
-    spawn : EdR
-
-    Typing computer : irinairinafomicheva
+    Typing computer : irinairinafomicheva                            
+    Gun miss shot : LuannWepener
 
 
 
     Special thanks
 
 
-    Pixabay
-
+    Pixabay                                                                           
     FreeSound
 
-    CGtrader'
+
+    CGtrader                                                                         
+    Freepik'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
