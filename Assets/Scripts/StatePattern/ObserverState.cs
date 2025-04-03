@@ -7,28 +7,29 @@ public class ObserverState : IState
 {
     public void EnterState(PlayerController player, PlayerSound playerSound)
     {
-        CinemachineVirtualCamera fpsCam = player.FPSCam;
-        CinemachineVirtualCamera obCam = player.ObserverCam;
-        Transform observerTarget = player.ObserverTarget;
-        PlayerCamera playerCamera = player.PlayerCamera;
-        player.Controller.detectCollisions = false;
-        
-        int observerLayer = LayerMask.NameToLayer("Observer");
-        player.gameObject.layer = observerLayer;
-        
-        fpsCam.gameObject.SetActive(false);
-        obCam.gameObject.SetActive(true);
-        playerCamera.SetVirtualCamera(obCam);
-        playerCamera.SetCamFollowPos(observerTarget);
-        
         if (player.GetPhotonView().IsMine)
         {
+            CinemachineVirtualCamera fpsCam = player.FPSCam;
+            CinemachineVirtualCamera obCam = player.ObserverCam;
+            Transform observerTarget = player.ObserverTarget;
+            PlayerCamera playerCamera = player.PlayerCamera;
+            player.Controller.detectCollisions = false;
+        
+            int observerLayer = LayerMask.NameToLayer("Observer");
+            player.gameObject.layer = observerLayer;
+        
+            fpsCam.gameObject.SetActive(false);
+            obCam.gameObject.SetActive(true);
+            playerCamera.SetVirtualCamera(obCam);
+            playerCamera.SetCamFollowPos(observerTarget);
+            
             GameObject[] uiObjects = player.IngameUIObjects;
             foreach (GameObject ui in uiObjects)
             {
                 ui.SetActive(false);
             }
         }
+        
     }
 
     public void UpdateState(PlayerController player, Vector3 inputDirection, float offset, PlayerSound playerSound)
