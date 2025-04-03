@@ -45,8 +45,6 @@ public class PlayerHealth : MonoBehaviourPun
 		currentHealth = Mathf.Clamp(currentHealth, 0f, 100f);
 		
 		
-		Debug.Log($"{gameObject.name}가(이) {amount}만큼 데미지를 받음. 현재 체력: {currentHealth} playerhealth.스크립트");
-		
 		if (currentHealth <= 0f)
 		{
 			Die();
