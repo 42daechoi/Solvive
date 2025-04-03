@@ -16,7 +16,7 @@ public class CustomUI_Event : MonoBehaviourPunCallbacks
     public TMP_InputField roomCodeInput;
     public int step = 1;
     public int minValue = 2;  // 최소 인원
-    public int maxValue = 16;  // 최대 인원
+    public int maxValue = 8;  // 최대 인원
     private int currentValue = 0; // 방 인원
     private RoomList.CustomRoomInfo selectedRoom;
     RoomList roomListComponent;

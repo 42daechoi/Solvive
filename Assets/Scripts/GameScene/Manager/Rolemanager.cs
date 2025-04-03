@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
-using Photon.Realtime;
 
 public class RoleManager : MonoBehaviour
 {
     private int citizenCount = 0;
+    [SerializeField] private int mannequinCount = 1;
+    private HashSet<int> mannequinIndexSet = new HashSet<int>();
 
     private IEnumerator WaitForEventManager()
     {
@@ -15,6 +16,14 @@ public class RoleManager : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
         EventManager_Game.Instance.OnAllPlayerSpawned += DistributeRoles;
+    }
+
+    private void Start()
+    {
+        if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("MannequinCount"))
+        {
+            mannequinCount = (int)PhotonNetwork.CurrentRoom.CustomProperties["MannequinCount"];
+        }
     }
 
     private void OnEnable()
@@ -33,20 +42,19 @@ public class RoleManager : MonoBehaviour
     private void DistributeRoles()
     {
         if (!PhotonNetwork.IsMasterClient) return;
-        // 씬에 있는 모든 플레이어 객체(플레이어 프리팹에 붙은 PlayerRoleDistribution 스크립트)를 찾습니다.
+
         PlayerRoleDistribution[] players = FindObjectsOfType<PlayerRoleDistribution>();
+        if (players.Length == 0) return;
 
-        if (players.Length == 0)
+        while (mannequinIndexSet.Count < mannequinCount)
         {
-            return;
+            int randomIndex = Random.Range(0, players.Length);
+            mannequinIndexSet.Add(randomIndex);
         }
-        // 랜덤으로 한 명을 마네킹으로 선택합니다.
-        int mannequinIndex = Random.Range(0, players.Length);
-
 
         for (int i = 0; i < players.Length; i++)
         {
-            if (i == mannequinIndex)
+            if (mannequinIndexSet.Contains(i))
             {
                 players[i].SetRole(PlayerRole.Mannequin);
             }
@@ -56,6 +64,7 @@ public class RoleManager : MonoBehaviour
                 players[i].SetRole(PlayerRole.Citizen);
             }
         }
+
         GameManager.Instance.InitCitizenCount(citizenCount);
     }
 }

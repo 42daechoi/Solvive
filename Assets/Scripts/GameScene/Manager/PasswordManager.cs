@@ -31,22 +31,21 @@ public class PasswordManager : MonoBehaviourPun
     {
         int playerCount = PhotonNetwork.CurrentRoom.PlayerCount;
         pairingCount = playerCount / 2 + 1;
-        if (pairingCount < 1) pairingCount = 1;
         random = new System.Random();
-        passwords = new List<string>(playerCount * 2);
+        passwords = new List<string>();
         validPasswords = new List<string>();
         validatedPassword = "";
 
         if (PhotonNetwork.IsMasterClient)
         {
-            GeneratePasswords();
+            GeneratePasswords(playerCount);
         }
     }
 
-    private void GeneratePasswords()
+    private void GeneratePasswords(int playerCount)
     {
         int count = 0;
-        while (count < passwords.Count)
+        while (count < playerCount * 2)
         {
             string newPassword = GenerateRandomPassword();
             if (!passwords.Contains(newPassword))
