@@ -24,49 +24,43 @@ namespace GameScene.Item
 
             if (rayModule != null && shooterTransform != null)
             {
-                CheckBullet(shooterTransform);
-                RaycastHit? raycastHit = rayModule.ExecuteRayAction(shooterTransform, currentSpeed);
-                // 2) 맞은 대상이 있으면 처리
-                if (raycastHit.HasValue)
+                GunBullet gunBullet = shooterTransform.GetComponentInChildren<GunBullet>();
+                if (gunBullet != null && gunBullet.TryGunShoot())
                 {
-                    RaycastHit hit = raycastHit.Value;
-                    
-                    // 맞은 대상 PhotonView 찾기
-                    string hitTag = hit.collider.gameObject.tag;
-                    
-                    // 각 부위별 데미지 배수 설정
-                    float damageMultiplier = 1f;
-                    switch (hitTag)
+                    ShootEffect(shooterTransform);
+                    EventManager_Game.Instance.InvokeFPSUseItem(itemName);
+
+                    RaycastHit? raycastHit = rayModule.ExecuteRayAction(shooterTransform, currentSpeed);
+
+                    if (raycastHit.HasValue)
                     {
-                        case "Head":
-                            damageMultiplier = 10f;
-                            break;
-                        case "Body":
-                            damageMultiplier = 6f;
-                            break;
-                        case "Arm":
-                            damageMultiplier = 2f;
-                            break;
-                        case "Leg":
-                            damageMultiplier = 2f;
-                            break;
+                        RaycastHit hit = raycastHit.Value;
+                        string hitTag = hit.collider.gameObject.tag;
+
+                        float damageMultiplier = 1f;
+                        switch (hitTag)
+                        {
+                            case "Head": damageMultiplier = 10f; break;
+                            case "Body": damageMultiplier = 6f; break;
+                            case "Arm":  damageMultiplier = 2f; break;
+                            case "Leg":  damageMultiplier = 2f; break;
+                        }
+
+                        PhotonView targetView = hit.collider.GetComponent<PhotonView>();
+                        if (targetView == null)
+                            targetView = hit.collider.transform.root.GetComponent<PhotonView>();
+
+                        if (targetView != null)
+                        {
+                            float finalDamage = damage * damageMultiplier;
+                            Debug.Log($"맞은 부위: {hitTag}, 배수 적용 데미지: {finalDamage}");
+                            targetView.RPC("TakeDamage", RpcTarget.All, finalDamage);
+                        }
                     }
-                    
-                    // PhotonView는 부위 콜라이더가 없을 수 있으므로, 상위 오브젝트에서 찾아봄.
-                    PhotonView targetView = hit.collider.GetComponent<PhotonView>();
-                    if (targetView == null)
-                    {
-                        // 일반적으로 캐릭터의 루트에 PhotonView가 있으므로.
-                        targetView = hit.collider.transform.root.GetComponent<PhotonView>();
-                    }
-                    
-                    if (targetView != null)
-                    {
-                        float finalDamage = damage * damageMultiplier;
-                        Debug.Log($"맞은 부위: {hitTag}, 배수 적용 데미지: {finalDamage}");
-                        // RPC를 이용해 데미지 적용
-                        targetView.RPC("TakeDamage", RpcTarget.All, finalDamage);
-                    }
+                }
+                else
+                {
+                    MissShootEffect(shooterTransform);
                 }
             }
             else

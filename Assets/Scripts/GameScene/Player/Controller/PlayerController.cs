@@ -359,12 +359,10 @@ public class PlayerController : MonoBehaviourPun
 
     private void HandleObserverState(int viewID)
     {
-        Debug.Log($"PlayerController: ObserverState 이벤트 수신 - 내 ViewID: {_photonView.ViewID}, 이벤트 ViewID: {viewID}");
         if (_photonView.ViewID == viewID)
         {
             obRender.SetActive(false);
             isDied = true;
-            Debug.Log($"isDied : {isDied}");
             TransitionToStateForce(new ObserverState());
             _inventory.enabled = false;
             _heldItem.enabled = false;
@@ -378,7 +376,7 @@ public class PlayerController : MonoBehaviourPun
     {
         if (!photonView.IsMine)
         {
-            return; // 로컬 플레이어가 아니면 입력 처리하지 않음
+            return;
         }
         
         if (isDied == true)
@@ -389,8 +387,6 @@ public class PlayerController : MonoBehaviourPun
         
         if (IsGrounded() && _playerStamina.TryToUseStamina(15f))
         {
-            Debug.Log($"[ViewID: {photonView.ViewID}] 점프상태로 들어갑니다잉");
-            Debug.Log($"[ViewID: {photonView.ViewID}] 플레이어 점프로 들어가기전 isDied : {isDied}");
             TransitionToState(JumpState);
         }
     }
