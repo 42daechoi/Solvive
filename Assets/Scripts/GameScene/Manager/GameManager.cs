@@ -92,6 +92,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             if (flag == "Eliminate" || flag == "Escape")
             {
                 EventManager_Game.Instance.InvokeObserverState(viewID);
+                player.SetRole(PlayerRole.Observer);
                 citizenCount--;
             }
         }
@@ -100,6 +101,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             if (flag == "Eliminate")
             {
                 EventManager_Game.Instance.InvokeObserverState(viewID);
+                player.SetRole(PlayerRole.Observer);
             }
         }
         Debug.Log($"GameManager: InvokeObserverState발행요청 - ViewID: {viewID}");

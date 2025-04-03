@@ -17,6 +17,12 @@ public class ObserverState : IState
         obCam.gameObject.SetActive(true);
         playerCamera.SetVirtualCamera(obCam);
         playerCamera.SetCamFollowPos(observerTarget);
+        
+        GameObject[] uiObjects = GameObject.FindGameObjectsWithTag("IngameUI");
+        foreach (GameObject ui in uiObjects)
+        {
+            ui.SetActive(false);
+        }
     }
 
     public void UpdateState(PlayerController player, Vector3 inputDirection, float offset, PlayerSound playerSound)
