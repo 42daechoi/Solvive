@@ -78,7 +78,6 @@ public class PlayerVoice : MonoBehaviourPun
     private void HandleRoleChanged(PlayerRole newRole)
     {
         Role = newRole;
-        Debug.Log($"[VOICE] {photonView.Owner.NickName} role changed to {newRole}");
 
         if (photonView.IsMine)
         {
@@ -138,7 +137,6 @@ public class PlayerVoice : MonoBehaviourPun
             bool canHear = ShouldHearThisPlayer(senderRole, this.Role, distance);
 
             // 디버그 출력
-            Debug.Log($"[VOICE] I({photonView.Owner.NickName}, {Role}) {(canHear ? "CAN" : "CANNOT")} hear {sender.photonView.Owner.NickName}, {senderRole}, Dist={distance:F2}");
 
             AudioSource audioSource = sp.GetComponent<AudioSource>();
             if (audioSource != null)

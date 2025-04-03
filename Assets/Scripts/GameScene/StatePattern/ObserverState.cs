@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using Cinemachine;
 using UnityEngine;
 
@@ -14,9 +15,8 @@ public class ObserverState : IState
             Transform observerTarget = player.ObserverTarget;
             PlayerCamera playerCamera = player.PlayerCamera;
             player.Controller.detectCollisions = false;
-        
-            int observerLayer = LayerMask.NameToLayer("Observer");
-            player.gameObject.layer = observerLayer;
+            
+            player.GetPhotonView().RPC("ChangeToObserverLayer", RpcTarget.All);
         
             fpsCam.gameObject.SetActive(false);
             obCam.gameObject.SetActive(true);

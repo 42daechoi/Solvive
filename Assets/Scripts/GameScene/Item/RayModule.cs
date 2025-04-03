@@ -107,6 +107,7 @@ public class RayModule : ScriptableObject
         foreach (var hit in hits.OrderBy(h => h.distance))
         {
             PhotonView hitView = hit.collider.GetComponentInParent<PhotonView>();
+            Debug.Log($"Hit object: {hit.collider.gameObject.name}, Layer: {LayerMask.LayerToName(hit.collider.gameObject.layer)}");
 
             bool isSelf = hitView != null && myView != null && hitView.ViewID == myView.ViewID;
 

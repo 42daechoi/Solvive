@@ -364,6 +364,21 @@ public class PlayerController : MonoBehaviourPun
     {
         if (_photonView.ViewID == viewID)
         {
+            Transform originalModelTransform = obRender.transform.Find(thirdPersonModel.name);
+            if (originalModelTransform != null)
+            {
+                originalModelTransform.gameObject.SetActive(true);
+            }
+            
+            Vector3 worldPosition = obRender.transform.position;
+            Quaternion worldRotation = obRender.transform.rotation;
+            
+            GameObject corpse = Instantiate(obRender, worldPosition, worldRotation);
+            
+            Animator corpseAnimator = corpse.GetComponentInChildren<Animator>();
+            
+            corpseAnimator.enabled = true;
+            
             obRender.SetActive(false);
             isDied = true;
             TransitionToStateForce(new ObserverState());
@@ -484,5 +499,12 @@ public class PlayerController : MonoBehaviourPun
         {
             cc.enabled = true;
         }
+    }
+
+    [PunRPC]
+    public void ChangeToObserverLayer()
+    {
+        int observerLayer = LayerMask.NameToLayer("Observer");
+        gameObject.layer = observerLayer;
     }
 }
