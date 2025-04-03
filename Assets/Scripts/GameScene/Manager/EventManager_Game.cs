@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 public class EventManager_Game : MonoBehaviour
 {
@@ -119,7 +120,11 @@ public class EventManager_Game : MonoBehaviour
 
     public void InvokeDropItem()
     {
+        if (isChangingWeapon) return;
+
+        isChangingWeapon = true;
         OnDropItem?.Invoke();
+        StartCoroutine(ResetHeldItemCooldown());
     }
 
     public void InvokeUseItem()
