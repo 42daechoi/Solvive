@@ -13,6 +13,9 @@ public class ObserverState : IState
         PlayerCamera playerCamera = player.PlayerCamera;
         player.Controller.detectCollisions = false;
         
+        int observerLayer = LayerMask.NameToLayer("Observer");
+        player.gameObject.layer = observerLayer;
+        
         fpsCam.gameObject.SetActive(false);
         obCam.gameObject.SetActive(true);
         playerCamera.SetVirtualCamera(obCam);
@@ -26,6 +29,7 @@ public class ObserverState : IState
                 ui.SetActive(false);
             }
         }
+        Debug.Log("옵저버상태들어옴");
     }
 
     public void UpdateState(PlayerController player, Vector3 inputDirection, float offset, PlayerSound playerSound)
@@ -34,18 +38,30 @@ public class ObserverState : IState
         {
             return;
         }
-        Vector3 movement = new Vector3(inputDirection.x, 0, inputDirection.z).normalized;
-        movement = player.transform.TransformDirection(movement);
-        movement.y = 0;
-        movement *= player.SpeedSettings.obSpeed;
-        player.Controller.Move(movement * Time.fixedDeltaTime);
-        
     }
     
 
     public void FixedUpdateState(PlayerController player, Vector3 inputDirection, float offset, bool escape, PlayerSound playerSound)
     {
-        
+        player.ApplyGravity();
+        if (player.IsGrounded() && player.IsJump)
+        {
+            player.VerticalVelocity = player.SpeedSettings.jumpForce;
+        }
+
+        Vector3 movement = Vector3.zero;
+
+        if (inputDirection.sqrMagnitude >= 0.1f)
+        {
+            movement = new Vector3(inputDirection.x, 0, inputDirection.z).normalized;
+            movement = player.transform.TransformDirection(movement);
+            movement *= player.SpeedSettings.obSpeed;
+        }
+
+        movement.y = player.VerticalVelocity;
+
+        player.Controller.Move(movement * Time.fixedDeltaTime);
+        player.IsJump = false;
     }
 
     public void ExitState(PlayerController player)
