@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8531372633187768243}
   - component: {fileID: 4135043076251974503}
-  - component: {fileID: 2369348747399028033}
+  - component: {fileID: 561200274528546612}
   m_Layer: 0
   m_Name: Detector
   m_TagString: Untagged
@@ -54,7 +54,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 7.1820755, y: 2.1296408, z: 1.732431}
   m_Center: {x: -0.21034425, y: 0.56481946, z: -1.2669909}
---- !u!114 &2369348747399028033
+--- !u!114 &561200274528546612
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -63,7 +63,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 7635832105060220322}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b3ddbf298fe77a4994f77bd5acdb428, type: 3}
+  m_Script: {fileID: 11500000, guid: 339049aae75429b418e1603a388e2e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnManager: {fileID: 0}
+  detectorIndex: 0
+  Detectors: {fileID: 0}

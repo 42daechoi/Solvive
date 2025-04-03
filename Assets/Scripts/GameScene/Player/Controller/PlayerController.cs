@@ -427,4 +427,21 @@ public class PlayerController : MonoBehaviourPun
             cc.enabled = true;
         }
     }
+    
+    [PunRPC]
+    public void UpdateObserverPosition(Vector3 position, Quaternion rotation)
+    {
+        CharacterController cc = GetComponent<CharacterController>();
+        if (cc != null)
+        {
+            cc.enabled = false;
+        }
+
+        transform.SetPositionAndRotation(position, rotation);
+
+        if (cc != null)
+        {
+            cc.enabled = true;
+        }
+    }
 }

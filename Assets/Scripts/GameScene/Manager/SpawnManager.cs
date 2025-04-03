@@ -8,6 +8,7 @@ public class SpawnManager : MonoBehaviourPun
 {
 	public Transform[] playerSpawnPoints;
     public Transform[] hatchSpawnPoints;
+    public Transform[] ObserverSpawnPoints;
     private bool[] isSpawned;
 
     private void Awake()
@@ -205,5 +206,42 @@ public class SpawnManager : MonoBehaviourPun
 	    }
 	    
 	    photonView.RPC("UsedSpawnPointSync", RpcTarget.All, spawnIdx);
+    }
+
+    public void RespawnObserver(GameObject observer, int detectorIndex)
+    {
+	    int spawnIdx = 0;
+
+	    if (detectorIndex == 0)
+	    {
+		    spawnIdx = 0;
+	    }
+	    else if (detectorIndex >= 1 && detectorIndex <= 3)
+	    {
+		    spawnIdx = 1;
+	    }
+	    else if (detectorIndex == 4)
+	    {
+		    spawnIdx = 2;
+	    }
+
+	    if (spawnIdx < 0 || spawnIdx >= ObserverSpawnPoints.Length)
+	    {
+		    Debug.LogWarning("인덱스가 유효하지 않습니다.");
+		    return;
+	    }
+
+	    Vector3 spawnPosition = ObserverSpawnPoints[spawnIdx].position;
+	    Quaternion spawnRotation = ObserverSpawnPoints[spawnIdx].rotation;
+
+	    PhotonView pv = observer.GetComponent<PhotonView>();
+	    if (pv != null && pv.IsMine)
+	    {
+		    pv.RPC("UpdateObserverPosition", RpcTarget.All, spawnPosition, spawnRotation);
+	    }
+	    else
+	    {
+		    Debug.Log("Observer의 PhotonView가 없거나 소유자가 아님");
+	    }
     }
 }
