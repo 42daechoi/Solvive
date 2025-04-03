@@ -8,6 +8,10 @@ public class FogColorChanger : MonoBehaviour
     private Volume skyAndFogVolume;
     private Fog fog;
 
+    private Color oneCitizenEventColor = new Color(1.0f, 0.572f, 0.596f);
+    private Color allGeneratorsActivatedColor = new Color(77f / 255f, 77f / 255f, 77f / 255f);
+    private bool isOneCitizenAlive = false;
+
     private void Start()
     {
         if (skyAndFogVolume == null)
@@ -16,7 +20,8 @@ public class FogColorChanger : MonoBehaviour
         }
         if (EventManager_Game.Instance != null)
         {
-            EventManager_Game.Instance.OnOneCitizenAlive += ChangeFogColor;
+            EventManager_Game.Instance.OnOneCitizenAlive += ChangeFogColorToOneCitizen;
+            EventManager_Game.Instance.OnAllGeneratorsActivated += ChangeFogColorToAllGeneratorsActivated;
         }
     }
 
@@ -24,15 +29,27 @@ public class FogColorChanger : MonoBehaviour
     {
         if (EventManager_Game.Instance != null)
         {
-            EventManager_Game.Instance.OnOneCitizenAlive -= ChangeFogColor;
+            EventManager_Game.Instance.OnOneCitizenAlive -= ChangeFogColorToOneCitizen;
+            EventManager_Game.Instance.OnAllGeneratorsActivated -= ChangeFogColorToAllGeneratorsActivated;
         }
     }
 
-    public void ChangeFogColor()
+    private void ChangeFogColorToOneCitizen()
+    {
+        ChangeFogColor(oneCitizenEventColor);
+        isOneCitizenAlive = true;
+    }
+
+    private void ChangeFogColorToAllGeneratorsActivated()
+    {
+        if (isOneCitizenAlive == true) return; 
+        ChangeFogColor(allGeneratorsActivatedColor);
+    }
+
+    private void ChangeFogColor(Color targetColor)
     {
         if (skyAndFogVolume.profile.TryGet<Fog>(out fog))
         {
-            Color targetColor = new Color(1.0f, 0.572f, 0.596f);
             StartCoroutine(ChangeFogColorOverTime(targetColor, 5f));
         }
         else
@@ -41,7 +58,7 @@ public class FogColorChanger : MonoBehaviour
         }
     }
 
-    public IEnumerator ChangeFogColorOverTime(Color targetColor, float duration)
+    private IEnumerator ChangeFogColorOverTime(Color targetColor, float duration)
     {
         if (fog == null) yield break;
 
