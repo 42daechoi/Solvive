@@ -13,6 +13,9 @@ public class UIManager : MonoBehaviourPun
     public GameObject ControlPanel;
     public GameObject resolutionPanel;
     public GameObject AudioPanel;
+    
+    public static UIManager Instance;
+    
     void OnEnable()
     {
         EventManager_Main.OnFindGameClicked += FindGame;
@@ -44,13 +47,18 @@ public class UIManager : MonoBehaviourPun
         EventManager_Main.OnOptionConfirmButtonClicked += Option_confirm;
         EventManager_Main.OnGMS_backgroundClicked += GMS_background;
     }
-
-    void Awake(){
+    
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
         DontDestroyOnLoad(gameObject);
     }
-
     
-
     void FindGame()
     { 
         Debug.Log("FindGame 버튼 누름");
