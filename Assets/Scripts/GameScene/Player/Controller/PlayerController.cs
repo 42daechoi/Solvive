@@ -7,504 +7,496 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviourPun
 {
-    public static PlayerController Instance { get; private set; }
-    
-    /* PlayerController 변수 */
-    private Inventory _inventory;
-    private HeldItem _heldItem;
-    private EquipItem _equipItem;
-    private PlayerHealth _playerHealth;
-    private bool isJump;
-    private bool isDied = false;
-    
-    /* 참조 내역
-     * PlayerMovement, PlayerAnimator, CharacterController, PhotonView, Interaction
-     * InputManager_Game, InputManager_Computer, MovementSettings, PlayerCamera
-     */
-    #region Reference
-    private PhotonView _photonView;
-    private PlayerCamera _playerCamera;
-    private PlayerMovement _playerMovement;
-    private PlayerAnimator _playerAnimator;
-    private CharacterController _controller;
-    private Interaction _interaction;
-    private InputManager_Game _defaultInputManager;
-    private InputManager_Computer _computerInputManager;
-    private PlayerSound _playerSound;
-    private PlayerStamina _playerStamina;
-    public MovementSettings localSpeedSettings;
-    
-    [Header("Speed Settings")]
-    [SerializeField] private MovementSettings _speedSettings;
-    #endregion
-    
-    //상태 초기화 변수
-    #region State
-    private IState IdleState { get; set; }
-    private IState JumpState { get; set; }
-    private IState UseComputerState { get; set; }
-    private IState _previousState;
-    private IState _currentState;
-    #endregion
-    
-    [Header("Player Camera")] 
-    [SerializeField] private CinemachineVirtualCamera fpsCam;
-    [SerializeField] private CinemachineVirtualCamera obCam;
-    [SerializeField] private Transform obFollow;
-    
-    [Header("Model")]
-    [SerializeField] private GameObject thirdPersonModel;
-    [SerializeField] private GameObject firstPersonArms;
-    [SerializeField] private GameObject obRender;
+	public static PlayerController Instance { get; private set; }
+	
+	/* PlayerController 변수 */
+	private Inventory _inventory;
+	private HeldItem _heldItem;
+	private EquipItem _equipItem;
+	private PlayerHealth _playerHealth;
+	private bool isJump;
+	private bool isDied = false;
+	
+	/* 참조 내역
+	 * PlayerMovement, PlayerAnimator, CharacterController, PhotonView, Interaction
+	 * InputManager_Game, InputManager_Computer, MovementSettings, PlayerCamera
+	 */
+	#region Reference
+	private PhotonView _photonView;
+	private PlayerCamera _playerCamera;
+	private PlayerMovement _playerMovement;
+	private PlayerAnimator _playerAnimator;
+	private CharacterController _controller;
+	private Interaction _interaction;
+	private InputManager_Game _defaultInputManager;
+	private InputManager_Computer _computerInputManager;
+	private PlayerSound _playerSound;
+	private PlayerStamina _playerStamina;
+	public MovementSettings localSpeedSettings;
+	
+	[Header("Speed Settings")]
+	[SerializeField] private MovementSettings _speedSettings;
+	#endregion
+	
+	//상태 초기화 변수
+	#region State
+	private IState IdleState { get; set; }
+	private IState JumpState { get; set; }
+	private IState UseComputerState { get; set; }
+	private IState _previousState;
+	private IState _currentState;
+	#endregion
+	
+	[Header("Player Camera")] 
+	[SerializeField] private CinemachineVirtualCamera fpsCam;
+	[SerializeField] private CinemachineVirtualCamera obCam;
+	[SerializeField] private Transform obFollow;
+	
+	[Header("Model")]
+	[SerializeField] private GameObject thirdPersonModel;
+	[SerializeField] private GameObject firstPersonArms;
+	[SerializeField] private GameObject obRender;
 
-    [Header("Player UI")]
-    [SerializeField] private GameObject[] ingameUIObjects;
-    public float VerticalVelocity { get; set; }
-    private bool _mannequinEscape = false;
-    
-    private float _currentSpeed;
-    private Vector3 _computerInteractionPoint;
-    private Quaternion _computerInteractionRotation;
-    
-    // 호출부
-    public MovementSettings SpeedSettings => _speedSettings;
-    public CharacterController Controller => _controller;
-    public CinemachineVirtualCamera FPSCam => fpsCam;
-    public CinemachineVirtualCamera ObserverCam => obCam;
-    public Transform ObserverTarget => obFollow;
-    public PlayerCamera PlayerCamera => _playerCamera;
-    public PlayerAnimator PlayerAnimator => _playerAnimator;
-    public GameObject[] IngameUIObjects => ingameUIObjects;
-    public bool IsDied => isDied;
-    public bool IsJump
-    {
-        get => isJump;
-        set => isJump = value;
-    }
+	[Header("Player UI")]
+	[SerializeField] private GameObject[] ingameUIObjects;
+	public float VerticalVelocity { get; set; }
+	private bool _mannequinEscape = false;
+	
+	private float _currentSpeed;
+	private Vector3 _computerInteractionPoint;
+	private Quaternion _computerInteractionRotation;
+	
+	// 호출부
+	public MovementSettings SpeedSettings => _speedSettings;
+	public CharacterController Controller => _controller;
+	public CinemachineVirtualCamera FPSCam => fpsCam;
+	public CinemachineVirtualCamera ObserverCam => obCam;
+	public Transform ObserverTarget => obFollow;
+	public PlayerCamera PlayerCamera => _playerCamera;
+	public PlayerAnimator PlayerAnimator => _playerAnimator;
+	public GameObject[] IngameUIObjects => ingameUIObjects;
+	public bool IsDied => isDied;
+	public bool IsJump
+	{
+		get => isJump;
+		set => isJump = value;
+	}
 
-    private void Awake()
-    {
-        TryGetComponent(out _photonView);
-        if (_photonView.IsMine)
-        {
-            if (Instance == null)
-            {
-                Instance = this;
-            }
-            else
-            {
-                Debug.LogWarning("로컬 PlayerController가 이미 존재.");
-                Destroy(gameObject);
-            }
-        }
-    }
-    
-    private void Start()
-    {
-        if (!TryGetComponent(out _playerMovement))
-            _playerMovement = gameObject.AddComponent<PlayerMovement>();
-    
-        if (!TryGetComponent(out _playerAnimator))
-            _playerAnimator = gameObject.AddComponent<PlayerAnimator>();
-        
-        TryGetComponent(out _controller);
-        TryGetComponent(out _interaction);
-        TryGetComponent(out _playerCamera);
-        TryGetComponent(out _playerSound);
-        TryGetComponent(out _playerStamina);
-        TryGetComponent(out _inventory);
-        TryGetComponent(out _heldItem);
-        TryGetComponent(out _equipItem);
-        TryGetComponent(out _playerHealth);
-        
-        _currentSpeed = _speedSettings.walkSpeed;
-        
-        IdleState = new IdleState();
-        JumpState = new JumpState();
-        
-        if (!TryGetComponent(out _computerInputManager))
-        {
-            _computerInputManager = gameObject.AddComponent<InputManager_Computer>();
-        }
-        _computerInputManager.enabled = false;
-        
-        localSpeedSettings = Instantiate(SpeedSettings);
-        
+	private void Awake()
+	{
+		TryGetComponent(out _photonView);
+		if (_photonView.IsMine)
+		{
+			if (Instance == null)
+			{
+				Instance = this;
+			}
+			else
+			{
+				Debug.LogWarning("로컬 PlayerController가 이미 존재.");
+				Destroy(gameObject);
+			}
+		}
+	}
+	
+	private void Start()
+	{
+		if (!TryGetComponent(out _playerMovement))
+			_playerMovement = gameObject.AddComponent<PlayerMovement>();
+	
+		if (!TryGetComponent(out _playerAnimator))
+			_playerAnimator = gameObject.AddComponent<PlayerAnimator>();
+		
+		TryGetComponent(out _controller);
+		TryGetComponent(out _interaction);
+		TryGetComponent(out _playerCamera);
+		TryGetComponent(out _playerSound);
+		TryGetComponent(out _playerStamina);
+		TryGetComponent(out _inventory);
+		TryGetComponent(out _heldItem);
+		TryGetComponent(out _equipItem);
+		TryGetComponent(out _playerHealth);
+		
+		_currentSpeed = _speedSettings.walkSpeed;
+		
+		IdleState = new IdleState();
+		JumpState = new JumpState();
+		
+		if (!TryGetComponent(out _computerInputManager))
+		{
+			_computerInputManager = gameObject.AddComponent<InputManager_Computer>();
+		}
+		_computerInputManager.enabled = false;
+		
+		localSpeedSettings = Instantiate(SpeedSettings);
+		
 
-        if (IdleState != null)
-        {
-            TransitionToState(IdleState);
-        }
-        else
-        {
-            Debug.LogError("IdleState가 초기화되지 않았습니다!");
-        }
-        
-        if (_photonView != null && _photonView.IsMine)
-        {
-            ingameUIObjects = GameObject.FindGameObjectsWithTag("IngameUI");
-        }
-        
-        StartCoroutine(WaitForInputManager());
-        
-        if (_photonView != null && _photonView.IsMine)
-        {
-            if (thirdPersonModel != null) thirdPersonModel.SetActive(false);
-            if (firstPersonArms != null) firstPersonArms.SetActive(true);
-        }
-        else
-        {
-            if (thirdPersonModel != null) thirdPersonModel.SetActive(true);
-            if (firstPersonArms != null) firstPersonArms.SetActive(false);
-        }
-    }
+		if (IdleState != null)
+		{
+			TransitionToState(IdleState);
+		}
+		else
+		{
+			Debug.LogError("IdleState가 초기화되지 않았습니다!");
+		}
+		
+		if (_photonView != null && _photonView.IsMine)
+		{
+			ingameUIObjects = GameObject.FindGameObjectsWithTag("IngameUI");
+		}
+		
+		StartCoroutine(WaitForInputManager());
+		
+		if (_photonView != null && _photonView.IsMine)
+		{
+			if (thirdPersonModel != null) thirdPersonModel.SetActive(false);
+			if (firstPersonArms != null) firstPersonArms.SetActive(true);
+		}
+		else
+		{
+			if (thirdPersonModel != null) thirdPersonModel.SetActive(true);
+			if (firstPersonArms != null) firstPersonArms.SetActive(false);
+		}
+	}
 
-    private IEnumerator WaitForInputManager()
-    {
-        while (_defaultInputManager == null)
-        {
-            GameObject inputManagerObj = GameObject.Find("InputManager");
-            if (inputManagerObj != null)
-            {
-                _defaultInputManager = inputManagerObj.GetComponent<InputManager_Game>();
-            }
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
+	private IEnumerator WaitForInputManager()
+	{
+		while (_defaultInputManager == null)
+		{
+			GameObject inputManagerObj = GameObject.Find("InputManager");
+			if (inputManagerObj != null)
+			{
+				_defaultInputManager = inputManagerObj.GetComponent<InputManager_Game>();
+			}
+			yield return new WaitForSeconds(0.1f);
+		}
+	}
 
 
-    private void OnEnable()
-    {
-        EventManager_Game.Instance.OnPlayerJump += HandlePlayerJump;
-        EventManager_Game.Instance.OnInteraction += HandleInteraction;
-        EventManager_Game.Instance.OnUseComputer += HandleUseComputer;
-        EventManager_Game.Instance.OnMoveToComputer += HandleMoveToComputer;
-        EventManager_Game.Instance.OnObserverState += HandleObserverState;
-        EventManager_Game.Instance.OnAnimationStateChanged += HandleAnimationStateChange;
-    }
+	private void OnEnable()
+	{
+		EventManager_Game.Instance.OnPlayerJump += HandlePlayerJump;
+		EventManager_Game.Instance.OnInteraction += HandleInteraction;
+		EventManager_Game.Instance.OnUseComputer += HandleUseComputer;
+		EventManager_Game.Instance.OnMoveToComputer += HandleMoveToComputer;
+		EventManager_Game.Instance.OnObserverState += HandleObserverState;
+		EventManager_Game.Instance.OnAnimationStateChanged += HandleAnimationStateChange;
+	}
 
-    private void OnDisable()
-    {
-        EventManager_Game.Instance.OnPlayerJump -= HandlePlayerJump;
-        EventManager_Game.Instance.OnInteraction -= HandleInteraction;
-        EventManager_Game.Instance.OnUseComputer -= HandleUseComputer;
-        EventManager_Game.Instance.OnMoveToComputer -= HandleMoveToComputer;
-        EventManager_Game.Instance.OnObserverState -= HandleObserverState;
-        EventManager_Game.Instance.OnAnimationStateChanged -= HandleAnimationStateChange;
-    }
-    
-    private void Update()
-    {
-        if (_photonView.IsMine && _playerSound)
-        {
-            _currentState.UpdateState(this, _playerMovement.InputDirection, _playerMovement.Offset, _playerSound);
-        }
-    }
+	private void OnDisable()
+	{
+		EventManager_Game.Instance.OnPlayerJump -= HandlePlayerJump;
+		EventManager_Game.Instance.OnInteraction -= HandleInteraction;
+		EventManager_Game.Instance.OnUseComputer -= HandleUseComputer;
+		EventManager_Game.Instance.OnMoveToComputer -= HandleMoveToComputer;
+		EventManager_Game.Instance.OnObserverState -= HandleObserverState;
+		EventManager_Game.Instance.OnAnimationStateChanged -= HandleAnimationStateChange;
+	}
+	
+	private void Update()
+	{
+		if (_photonView.IsMine && _playerSound)
+		{
+			_currentState.UpdateState(this, _playerMovement.InputDirection, _playerMovement.Offset, _playerSound);
+		}
+	}
 
-    private void FixedUpdate()
-    {
-        if (_photonView.IsMine && _playerSound)
-        {
-            _currentState.FixedUpdateState(this, _playerMovement.InputDirection, _playerMovement.Offset, _mannequinEscape, _playerSound);
-        }
-    }
+	private void FixedUpdate()
+	{
+		if (_photonView.IsMine && _playerSound)
+		{
+			_currentState.FixedUpdateState(this, _playerMovement.InputDirection, _playerMovement.Offset, _mannequinEscape, _playerSound);
+		}
+	}
 
-    public void TransitionToState(IState newState)
-    {
-        if (_currentState is ObserverState)
-        {
-            return;
-        }
+	public void TransitionToState(IState newState)
+	{
+		if (_currentState is ObserverState)
+		{
+			return;
+		}
 
-        if (_currentState != null)
-        {
-            _previousState = _currentState;
-            _currentState.ExitState(this);
-        }
+		if (_currentState != null)
+		{
+			_previousState = _currentState;
+			_currentState.ExitState(this);
+		}
 
-        _currentState = newState;
-        _currentState.EnterState(this, _playerSound);
-        
-        if (_previousState is UseComputerState && _currentState is IdleState)
-        {
-            EventManager_Game.Instance.InvokeExitComputer(photonView.ViewID);
-        }
-    }
-    
-    public bool WasInSprintState()
-    {
-        return _previousState is SprintState;
-    }
-    
-    private void HandleInteraction()
-    {
-        if (_currentState.CanInteraction())
-        {
-            _interaction.RunInteraction();
-        }
-        else
-        {
-            Debug.Log("현재 상태에서 Interaction 실행 불가.");
-        }
-    }
+		_currentState = newState;
+		_currentState.EnterState(this, _playerSound);
+		
+		if (_previousState is UseComputerState && _currentState is IdleState)
+		{
+			EventManager_Game.Instance.InvokeExitComputer(photonView.ViewID);
+		}
+	}
+	
+	public bool WasInSprintState()
+	{
+		return _previousState is SprintState;
+	}
+	
+	private void HandleInteraction()
+	{
+		if (_currentState.CanInteraction())
+		{
+			_interaction.RunInteraction();
+		}
+		else
+		{
+			Debug.Log("현재 상태에서 Interaction 실행 불가.");
+		}
+	}
 
-    #region UseComputer Methods
-    private void HandleUseComputer(bool isActComputer)
-    {
-        if (!_photonView.IsMine) return;
+	#region UseComputer Methods
+	private void HandleUseComputer(bool isActComputer)
+	{
+		if (!_photonView.IsMine) return;
 
-        if (EventManager_Game.Instance == null)
-        {
-            Debug.LogError("EventManager_Game 인스턴스가 null입니다.");
-            return;
-        }
+		if (EventManager_Game.Instance == null)
+		{
+			Debug.LogError("EventManager_Game 인스턴스가 null입니다.");
+			return;
+		}
 
-        if (isActComputer)
-        {
-            if (_currentState is UseComputerState) return;
+		if (isActComputer)
+		{
+			if (_currentState is UseComputerState) return;
 
-            if (UseComputerState == null)
-            {
-                UseComputerState = new UseComputerState();
-            }
-            SetInputManager(_computerInputManager);
-            TransitionToState(UseComputerState);
-            
-            EventManager_Game.Instance.InvokeCameraActive(false);
-        }
-        else
-        {
-            if (_currentState is IdleState) return;
+			if (UseComputerState == null)
+			{
+				UseComputerState = new UseComputerState();
+			}
+			SetInputManager(_computerInputManager);
+			TransitionToState(UseComputerState);
+			
+			EventManager_Game.Instance.InvokeCameraActive(false);
+		}
+		else
+		{
+			if (_currentState is IdleState) return;
 
-            SetInputManager(_defaultInputManager);
-            TransitionToState(IdleState);
-            
-            EventManager_Game.Instance.InvokeCameraActive(true);
-        }
-    }
+			SetInputManager(_defaultInputManager);
+			TransitionToState(IdleState);
+			
+			EventManager_Game.Instance.InvokeCameraActive(true);
+		}
+	}
 
-    private void HandleMoveToComputer(int playerId, Vector3 targetPosition, Quaternion targetRotation)
-    {
-        _computerInteractionPoint = targetPosition;
-        _computerInteractionRotation = targetRotation;
-    }
-    
-    public void StartMoveToComputer()
-    {
-        StopAllCoroutines();
-        StartCoroutine(WalkToComputer(_computerInteractionPoint, _computerInteractionRotation));
-    }
-    
-    private IEnumerator WalkToComputer(Vector3 targetPosition, Quaternion targetRotation)
-    {
-        float distanceThreshold = 0.1f;
-        float moveSpeed = _speedSettings.walkSpeed;
-        float rotationSpeed = 1f;
+	private void HandleMoveToComputer(int playerId, Vector3 targetPosition, Quaternion targetRotation)
+	{
+		_computerInteractionPoint = targetPosition;
+		_computerInteractionRotation = targetRotation;
+	}
+	
+	public void StartMoveToComputer()
+	{
+		StopAllCoroutines();
+		StartCoroutine(WalkToComputer(_computerInteractionPoint, _computerInteractionRotation));
+	}
+	
+	private IEnumerator WalkToComputer(Vector3 targetPosition, Quaternion targetRotation)
+	{
+		float distanceThreshold = 0.1f;
+		float moveSpeed = _speedSettings.walkSpeed;
+		float rotationSpeed = 1f;
    
-        Vector3 startPosition = transform.position;
-        Vector3 direction = (targetPosition - startPosition).normalized;
+		Vector3 startPosition = transform.position;
+		Vector3 direction = (targetPosition - startPosition).normalized;
    
-        if (_playerAnimator != null)
-        {
-            _playerAnimator.SetMoveAnim(direction.x, direction.z, 1f);
-        }
+		if (_playerAnimator != null)
+		{
+			_playerAnimator.SetMoveAnim(direction.x, direction.z, 1f);
+		}
 
-        while (Vector3.Distance(transform.position, targetPosition) > distanceThreshold)
-        {
-            Vector3 newPosition = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-            Vector3 movement = newPosition - transform.position;
-       
-            // CharacterController를 사용하여 이동
-            _controller.Move(movement);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+		while (Vector3.Distance(transform.position, targetPosition) > distanceThreshold)
+		{
+			Vector3 newPosition = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+			Vector3 movement = newPosition - transform.position;
+	   
+			// CharacterController를 사용하여 이동
+			_controller.Move(movement);
+			transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
-            yield return null;
-        }
+			yield return null;
+		}
    
-        transform.position = targetPosition;
-        transform.rotation = targetRotation;
+		transform.position = targetPosition;
+		transform.rotation = targetRotation;
    
-        if (_playerAnimator != null)
-        {
-            _playerAnimator.SetMoveAnim(0, 0, 1f);
-        }
-    }
-    
-    private void SetInputManager(MonoBehaviour newInputManager)
-    {
-        if (!_photonView.IsMine) return;
+		if (_playerAnimator != null)
+		{
+			_playerAnimator.SetMoveAnim(0, 0, 1f);
+		}
+	}
+	
+	private void SetInputManager(MonoBehaviour newInputManager)
+	{
+		if (!_photonView.IsMine) return;
 
-        _defaultInputManager.enabled = false;
-        _computerInputManager.enabled = false;
+		_defaultInputManager.enabled = false;
+		_computerInputManager.enabled = false;
 
-        newInputManager.enabled = true;
-    }
-    
-    #endregion
-    public void UpdateAnimator()
-    {
-        if (!_photonView.IsMine) return;
-        bool isGrounded = IsGrounded();
-        bool isJumping = VerticalVelocity > 0.1f;
-        _playerAnimator.SetJumpAnim(isJumping, isGrounded); 
-        _playerAnimator.SetMoveAnim(_playerMovement.InputDirection.x, _playerMovement.InputDirection.z, _playerMovement.Offset, _playerMovement.IsCrouch);
-    }
-    
-    private void HandleAnimationStateChange(string state)
-    {
-        if (!_photonView.IsMine) return;
-        
-        if (_playerAnimator != null)
-        {
-            _playerAnimator.SetAnimationState(state);
-        }
-    }
+		newInputManager.enabled = true;
+	}
+	
+	#endregion
+	public void UpdateAnimator()
+	{
+		if (!_photonView.IsMine) return;
+		bool isGrounded = IsGrounded();
+		bool isJumping = VerticalVelocity > 0.1f;
+		_playerAnimator.SetJumpAnim(isJumping, isGrounded); 
+		_playerAnimator.SetMoveAnim(_playerMovement.InputDirection.x, _playerMovement.InputDirection.z, _playerMovement.Offset, _playerMovement.IsCrouch);
+	}
+	
+	private void HandleAnimationStateChange(string state)
+	{
+		if (!_photonView.IsMine) return;
+		
+		if (_playerAnimator != null)
+		{
+			_playerAnimator.SetAnimationState(state);
+		}
+	}
 
-    private void HandleObserverState(int viewID)
-    {
-        if (_photonView.ViewID == viewID)
-        {
-            Transform originalModelTransform = obRender.transform.Find(thirdPersonModel.name);
-            if (originalModelTransform != null)
-            {
-                originalModelTransform.gameObject.SetActive(true);
-            }
-            
-            Vector3 worldPosition = obRender.transform.position;
-            Quaternion worldRotation = obRender.transform.rotation;
-            
-            GameObject corpse = Instantiate(obRender, worldPosition, worldRotation);
-            
-            Animator corpseAnimator = corpse.GetComponentInChildren<Animator>();
-            
-            corpseAnimator.enabled = true;
-            
-            obRender.SetActive(false);
-            isDied = true;
-            TransitionToStateForce(new ObserverState());
-            _inventory.enabled = false;
-            _heldItem.enabled = false;
-            _equipItem.enabled = false;
-            _playerHealth.enabled = false;
-            _playerStamina.enabled = false;
-        }
-    }
-    
-    private void HandlePlayerJump()
-    {
-        if (!photonView.IsMine)
-        {
-            return;
-        }
-        
-        if (isDied == true)
-        {
-            isJump = true;
-            return;
-        }
-        
-        if (IsGrounded() && _playerStamina.TryToUseStamina(15f))
-        {
-            
-            TransitionToState(JumpState);
-        }
-    }
-    
-    public bool IsGrounded()
-    {
-        float characterHeight = _controller.height;
-        Vector3 rayStart = transform.position + Vector3.up * (characterHeight * 0.5f);
-        float rayLength = characterHeight * 0.55f;
-        Vector3 boxSize = new Vector3(_controller.radius, 0.1f, _controller.radius);
-    
-        int layerMask = ~(LayerMask.GetMask("Player", "Hitbox", "Observer"));
+	private void HandleObserverState(int viewID)
+	{
+		if (_photonView.ViewID == viewID)
+		{						
+			SpawnPointManager spawnPointManager = new SpawnPointManager();
+			Vector3 worldPosition = spawnPointManager.GetGroundPosition(obRender.transform.position);
+			Quaternion worldRotation = obRender.transform.rotation;
+			
+			GameObject corpse = PhotonNetwork.Instantiate("PlayerDeadBody", worldPosition, worldRotation);
+			
 
-        RaycastHit hit;
-        return Physics.BoxCast(rayStart, boxSize * 0.5f, Vector3.down, out hit, transform.rotation, rayLength, layerMask);
-    }
-    
-    public void ApplyGravity()
-    {
-        if (IsGrounded() && VerticalVelocity < 0)
-        {
-            VerticalVelocity = _speedSettings.groundedGravity;
-        }
-        else
-        {
-            VerticalVelocity += _speedSettings.gravity * Time.fixedDeltaTime;
-        }
-    }
+			obRender.SetActive(false);
+			isDied = true;
+			TransitionToStateForce(new ObserverState());
+			_inventory.enabled = false;
+			_heldItem.enabled = false;
+			_equipItem.enabled = false;
+			_playerHealth.enabled = false;
+			_playerStamina.enabled = false;
+		}
+	}
+	
+	private void HandlePlayerJump()
+	{
+		if (!photonView.IsMine)
+		{
+			return;
+		}
+		
+		if (isDied == true)
+		{
+			isJump = true;
+			return;
+		}
+		
+		if (IsGrounded() && _playerStamina.TryToUseStamina(15f))
+		{
+			
+			TransitionToState(JumpState);
+		}
+	}
+	
+	public bool IsGrounded()
+	{
+		float characterHeight = _controller.height;
+		Vector3 rayStart = transform.position + Vector3.up * (characterHeight * 0.5f);
+		float rayLength = characterHeight * 0.55f;
+		Vector3 boxSize = new Vector3(_controller.radius, 0.1f, _controller.radius);
+	
+		int layerMask = ~(LayerMask.GetMask("Player", "Hitbox", "Observer"));
 
-    public IState GetCurrentState()
-    {
-        return _currentState;
-    }
-    public IState GetPreviousState()
-    {
-        return _previousState;
-    }
+		RaycastHit hit;
+		return Physics.BoxCast(rayStart, boxSize * 0.5f, Vector3.down, out hit, transform.rotation, rayLength, layerMask);
+	}
+	
+	public void ApplyGravity()
+	{
+		if (IsGrounded() && VerticalVelocity < 0)
+		{
+			VerticalVelocity = _speedSettings.groundedGravity;
+		}
+		else
+		{
+			VerticalVelocity += _speedSettings.gravity * Time.fixedDeltaTime;
+		}
+	}
 
-    public PhotonView GetPhotonView()
-    {
-        return _photonView;
-    }
-    
-    public void MannequinEscapeTrigger()
-    {
-        Debug.Log("MannequinEscapeTrigger");
-        if(!_photonView.IsMine)
-            return;
-        localSpeedSettings.walkSpeed += 1f;
-        localSpeedSettings.sprintSpeed += 1f;
-        _mannequinEscape = true;
-    }
-    
-    [PunRPC]
-    public void UpdateMannequinPosition(Vector3 newPosition, Quaternion newRotation)
-    {
-        CharacterController cc = GetComponent<CharacterController>();
-        if (cc != null)
-        {
-            cc.enabled = false;
-        }
+	public IState GetCurrentState()
+	{
+		return _currentState;
+	}
+	public IState GetPreviousState()
+	{
+		return _previousState;
+	}
 
-        transform.position = newPosition;
-        transform.rotation = newRotation;
-        if (cc != null)
-        {
-            cc.enabled = true;
-        }
-    }
-    
-    public void TransitionToStateForce(IState newState)
-    {
-        _previousState = _currentState;
-        _currentState?.ExitState(this);
-        _currentState = newState;
-        _currentState.EnterState(this, _playerSound);
-    }
+	public PhotonView GetPhotonView()
+	{
+		return _photonView;
+	}
+	
+	public void MannequinEscapeTrigger()
+	{
+		Debug.Log("MannequinEscapeTrigger");
+		if(!_photonView.IsMine)
+			return;
+		localSpeedSettings.walkSpeed += 1f;
+		localSpeedSettings.sprintSpeed += 1f;
+		_mannequinEscape = true;
+	}
+	
+	[PunRPC]
+	public void UpdateMannequinPosition(Vector3 newPosition, Quaternion newRotation)
+	{
+		CharacterController cc = GetComponent<CharacterController>();
+		if (cc != null)
+		{
+			cc.enabled = false;
+		}
 
-    [PunRPC]
-    public void UpdateObserverPosition(Vector3 position, Quaternion rotation)
-    {
-        CharacterController cc = GetComponent<CharacterController>();
-        if (cc != null)
-        {
-            cc.enabled = false;
-        }
+		transform.position = newPosition;
+		transform.rotation = newRotation;
+		if (cc != null)
+		{
+			cc.enabled = true;
+		}
+	}
+	
+	public void TransitionToStateForce(IState newState)
+	{
+		_previousState = _currentState;
+		_currentState?.ExitState(this);
+		_currentState = newState;
+		_currentState.EnterState(this, _playerSound);
+	}
 
-        transform.SetPositionAndRotation(position, rotation);
+	[PunRPC]
+	public void UpdateObserverPosition(Vector3 position, Quaternion rotation)
+	{
+		CharacterController cc = GetComponent<CharacterController>();
+		if (cc != null)
+		{
+			cc.enabled = false;
+		}
 
-        if (cc != null)
-        {
-            cc.enabled = true;
-        }
-    }
+		transform.SetPositionAndRotation(position, rotation);
 
-    [PunRPC]
-    public void ChangeToObserverLayer()
-    {
-        int observerLayer = LayerMask.NameToLayer("Observer");
-        gameObject.layer = observerLayer;
-    }
+		if (cc != null)
+		{
+			cc.enabled = true;
+		}
+	}
+
+	[PunRPC]
+	public void ChangeToObserverLayer()
+	{
+		int observerLayer = LayerMask.NameToLayer("Observer");
+		gameObject.layer = observerLayer;
+	}
 }
