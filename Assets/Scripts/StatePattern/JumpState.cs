@@ -9,6 +9,7 @@ public class JumpState : IState
         shouldMove = player.GetPreviousState() is MoveState || player.GetPreviousState() is SprintState;
         player.VerticalVelocity = player.SpeedSettings.jumpForce;
         playerSound.PlayJumpSound();
+        Debug.Log("점프상태 들어감");
     }
 
     public void UpdateState(PlayerController player, Vector3 inputDirection, float offset, PlayerSound playerSound)
@@ -42,6 +43,7 @@ public class JumpState : IState
             player.TransitionToState(player.WasInSprintState() ? new SprintState() : new IdleState());
             playerSound.PlayJumpLandSound();
         }
+        Debug.Log("점프상태에서의 점프종료");
     }
 
     public void ExitState(PlayerController player)
