@@ -63,6 +63,9 @@ public class RayModule : ScriptableObject
 
         foreach (var hit in hits.OrderBy(h => h.distance))
         {
+            if (hit.collider.CompareTag("Player"))
+                continue;
+            
             PhotonView hitView = hit.collider.GetComponentInParent<PhotonView>();
 
             bool isSelf = hitView != null && myView != null && hitView.ViewID == myView.ViewID;
@@ -106,6 +109,8 @@ public class RayModule : ScriptableObject
 
         foreach (var hit in hits.OrderBy(h => h.distance))
         {
+            if (hit.collider.CompareTag("Player"))
+                continue;
             PhotonView hitView = hit.collider.GetComponentInParent<PhotonView>();
             Debug.Log($"Hit object: {hit.collider.gameObject.name}, Layer: {LayerMask.LayerToName(hit.collider.gameObject.layer)}");
 
