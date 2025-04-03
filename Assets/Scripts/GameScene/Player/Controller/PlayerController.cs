@@ -364,6 +364,35 @@ public class PlayerController : MonoBehaviourPun
     {
         if (_photonView.ViewID == viewID)
         {
+            Vector3 spawnPosition;
+            Quaternion spawnRotation = obRender.transform.rotation;
+    
+            if (IsGrounded())
+            {
+                // 지면에 있으면 현재 위치 사용
+                spawnPosition = obRender.transform.position;
+            }
+            else
+            {
+                // 지면에 없으면 레이캐스트로 바닥 찾기
+                RaycastHit hit;
+                float characterHeight = _controller.height;
+                Vector3 rayStart = transform.position + Vector3.up * (characterHeight * 0.5f);
+                Vector3 boxSize = new Vector3(_controller.radius, 0.1f, _controller.radius);
+                int layerMask = ~(LayerMask.GetMask("Player", "Hitbox", "Observer"));
+        
+                if (Physics.BoxCast(rayStart, boxSize * 0.5f, Vector3.down, out hit, transform.rotation, 100f, layerMask))
+                {
+                    // 바닥을 찾으면 그 위치에 생성
+                    spawnPosition = new Vector3(transform.position.x, hit.point.y, transform.position.z);
+                }
+                else
+                {
+                    // 바닥을 찾지 못하면 현재 위치 사용
+                    spawnPosition = obRender.transform.position;
+                }
+            }
+            
             Transform originalModelTransform = obRender.transform.Find(thirdPersonModel.name);
             if (originalModelTransform != null)
             {
