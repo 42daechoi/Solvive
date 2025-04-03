@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Battery
   m_EditorClassIdentifier: 
   itemName: Battery
-  icon: {fileID: 21300000, guid: 6fede148265bb8b48858eb97ccc29773, type: 3}
+  icon: {fileID: 21300000, guid: 55cb1b7fab4bfec4a8575b286e118438, type: 3}
   equipPosition: {x: -0.24, y: -0.04, z: 0}
   equipRotation: {x: 81.95, y: -9.15, z: -123.87}
   animationState: Battery
