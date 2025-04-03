@@ -42,7 +42,7 @@ public class SpawnManager : MonoBehaviourPun
 		if (spawnIdx < 0) return;
 		Vector3 spawnPosition = playerSpawnPoints[spawnIdx].position;
 		Quaternion spawnRotation = playerSpawnPoints[spawnIdx].rotation;
-		GameObject player = PhotonNetwork.Instantiate("CowBoy", spawnPosition, spawnRotation);
+		GameObject player = PhotonNetwork.Instantiate("Player", spawnPosition, spawnRotation);
         Debug.Log("Player spawned: " + player.name + " for player: " + PhotonNetwork.LocalPlayer.NickName);
         photonView.RPC("UsedPlayerSpawnPointSync", RpcTarget.All, spawnIdx);
 		
