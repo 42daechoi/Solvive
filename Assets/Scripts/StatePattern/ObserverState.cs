@@ -18,10 +18,13 @@ public class ObserverState : IState
         playerCamera.SetVirtualCamera(obCam);
         playerCamera.SetCamFollowPos(observerTarget);
         
-        GameObject[] uiObjects = GameObject.FindGameObjectsWithTag("IngameUI");
-        foreach (GameObject ui in uiObjects)
+        if (player.GetPhotonView().IsMine)
         {
-            ui.SetActive(false);
+            GameObject[] uiObjects = player.IngameUIObjects;
+            foreach (GameObject ui in uiObjects)
+            {
+                ui.SetActive(false);
+            }
         }
     }
 

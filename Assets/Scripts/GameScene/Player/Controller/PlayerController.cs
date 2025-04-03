@@ -47,7 +47,9 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] private GameObject thirdPersonModel;
     [SerializeField] private GameObject firstPersonArms;
     [SerializeField] private GameObject obRender;
-    
+
+    [Header("Player UI")]
+    [SerializeField] private GameObject[] ingameUIObjects;
     public float VerticalVelocity { get; set; }
     private bool _mannequinEscape = false;
     
@@ -63,6 +65,7 @@ public class PlayerController : MonoBehaviourPun
     public Transform ObserverTarget => obFollow;
     public PlayerCamera PlayerCamera => _playerCamera;
     public PlayerAnimator PlayerAnimator => _playerAnimator;
+    public GameObject[] IngameUIObjects => ingameUIObjects;
     
     private void Awake()
     {
@@ -102,6 +105,7 @@ public class PlayerController : MonoBehaviourPun
         _computerInputManager = gameObject.AddComponent<InputManager_Computer>();
         _computerInputManager.enabled = false;
         localSpeedSettings = Instantiate(SpeedSettings);
+        ingameUIObjects = GameObject.FindGameObjectsWithTag("IngameUI");
         
         if (IdleState != null)
         {
