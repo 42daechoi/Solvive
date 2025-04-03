@@ -183,7 +183,6 @@ public class HeldItem : MonoBehaviourPunCallbacks
         ReplaceItem(GetDropPosition(), true);
         if (item == null) Raticle.Instance.UpdateCrosshairByItemDelayed(null);
         else Raticle.Instance.UpdateCrosshairByItemDelayed(item.GetItemData());
-
     }
 
     private Vector3 GetDropPosition()
