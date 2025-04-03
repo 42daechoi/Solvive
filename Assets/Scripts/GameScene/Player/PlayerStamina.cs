@@ -17,24 +17,34 @@ public class PlayerStamina : MonoBehaviour
 
     private void Start()
     {
-        if (EventManager_Game.Instance != null)
-        {
-            EventManager_Game.Instance.OnPlayerSprint += HandleStamina;
-        }
-        if (staminaBar == null)
-        {
-            GameObject obj = GameObject.Find("StaminaSlider");
-            if (obj != null) staminaBar = obj.GetComponent<Slider>();
-        }
         playerController = GetComponent<PlayerController>();
+        
+        if (playerController && playerController.GetPhotonView().IsMine)
+        {
+            if (EventManager_Game.Instance != null)
+            {
+                EventManager_Game.Instance.OnPlayerSprint += HandleStamina;
+            }
+            
+            if (staminaBar == null)
+            {
+                GameObject obj = GameObject.Find("StaminaSlider");
+                if (obj != null) staminaBar = obj.GetComponent<Slider>();
+            }
+        }
+        
         playerSound = GetComponent<PlayerSound>();
         currentStamina = maxStamina;
-        if (staminaBar) staminaBar.maxValue = maxStamina;
+        
+        if (playerController && playerController.GetPhotonView().IsMine)
+        {
+            UpdateStaminaUI();
+        }
     }
 
     private void OnDisable()
     {
-        if (EventManager_Game.Instance != null)
+        if (playerController && playerController.GetPhotonView().IsMine && EventManager_Game.Instance != null)
         {
             EventManager_Game.Instance.OnPlayerSprint -= HandleStamina;
         }
@@ -42,10 +52,12 @@ public class PlayerStamina : MonoBehaviour
 
     private void HandleStamina(bool isSprint)
     {
+        if (!playerController || !playerController.GetPhotonView().IsMine) return;
+        
         if (isSprint && PlayerController.Instance.GetCurrentState() is not CrouchState)
         {
             currentStamina -= staminaDrainRate * Time.deltaTime;
-            if (currentStamina <= 0) playerSound.PlayPantingSound();
+            if (currentStamina <= 0 && playerSound) playerSound.PlayPantingSound();
 
             if (recoveryCoroutine != null)
             {
@@ -59,7 +71,7 @@ public class PlayerStamina : MonoBehaviour
         }
 
         currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
-        if (staminaBar) staminaBar.value = currentStamina;
+        UpdateStaminaUI();
 
         EventManager_Game.Instance.InvokeOnPlayerSprintWithStamina(isSprint && currentStamina > 0);
     }
@@ -72,7 +84,7 @@ public class PlayerStamina : MonoBehaviour
         {
             currentStamina += staminaRecoveryRate * Time.deltaTime;
             currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
-            if (staminaBar) staminaBar.value = currentStamina;
+            UpdateStaminaUI();
             yield return null;
         }
 
@@ -81,6 +93,8 @@ public class PlayerStamina : MonoBehaviour
 
     public bool TryToUseStamina(float requiredStamina)
     {
+        if (!playerController || !playerController.GetPhotonView().IsMine) return true;
+        
         if (currentStamina < requiredStamina) return false;
 
         if (recoveryCoroutine != null)
@@ -88,7 +102,24 @@ public class PlayerStamina : MonoBehaviour
             StopCoroutine(recoveryCoroutine);
             recoveryCoroutine = null;
         }
+        
         currentStamina -= requiredStamina;
+        currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
+        UpdateStaminaUI();
+        
+        recoveryCoroutine = StartCoroutine(WaitForRecoverStamina());
+        
         return true;
+    }
+    
+    private void UpdateStaminaUI()
+    {
+        if (!playerController || !playerController.GetPhotonView().IsMine) return;
+        
+        if (staminaBar != null)
+        {
+            staminaBar.maxValue = maxStamina;
+            staminaBar.value = currentStamina;
+        }
     }
 }

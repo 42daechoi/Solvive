@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviourPun
 
     private void Awake()
     {
-        _photonView = GetComponent<PhotonView>();
+        TryGetComponent(out _photonView);
         if (_photonView.IsMine)
         {
             if (Instance == null)
@@ -108,7 +108,6 @@ public class PlayerController : MonoBehaviourPun
             _playerAnimator = gameObject.AddComponent<PlayerAnimator>();
         
         TryGetComponent(out _controller);
-        TryGetComponent(out _photonView);
         TryGetComponent(out _interaction);
         TryGetComponent(out _playerCamera);
         TryGetComponent(out _playerSound);
@@ -131,8 +130,7 @@ public class PlayerController : MonoBehaviourPun
         
         localSpeedSettings = Instantiate(SpeedSettings);
         
-        ingameUIObjects = GameObject.FindGameObjectsWithTag("IngameUI");
-        
+
         if (IdleState != null)
         {
             TransitionToState(IdleState);
@@ -140,6 +138,11 @@ public class PlayerController : MonoBehaviourPun
         else
         {
             Debug.LogError("IdleState가 초기화되지 않았습니다!");
+        }
+        
+        if (_photonView != null && _photonView.IsMine)
+        {
+            ingameUIObjects = GameObject.FindGameObjectsWithTag("IngameUI");
         }
         
         StartCoroutine(WaitForInputManager());
@@ -387,6 +390,7 @@ public class PlayerController : MonoBehaviourPun
         
         if (IsGrounded() && _playerStamina.TryToUseStamina(15f))
         {
+            
             TransitionToState(JumpState);
         }
     }
