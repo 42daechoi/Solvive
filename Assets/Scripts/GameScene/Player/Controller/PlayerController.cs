@@ -468,4 +468,21 @@ public class PlayerController : MonoBehaviourPun
         _currentState = newState;
         _currentState.EnterState(this, _playerSound);
     }
+
+    [PunRPC]
+    public void UpdateObserverPosition(Vector3 position, Quaternion rotation)
+    {
+        CharacterController cc = GetComponent<CharacterController>();
+        if (cc != null)
+        {
+            cc.enabled = false;
+        }
+
+        transform.SetPositionAndRotation(position, rotation);
+
+        if (cc != null)
+        {
+            cc.enabled = true;
+        }
+    }
 }
