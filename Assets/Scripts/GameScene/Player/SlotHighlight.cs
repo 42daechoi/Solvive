@@ -1,45 +1,21 @@
-using System;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class SlotHighlight : MonoBehaviour
 {
-    public Transform[] slotTransforms;
-    public Vector3 defaultScale = Vector3.one;
-    public Vector3 highlightScale = Vector3.one * 1.2f;
-
-    private void Awake()
-    {
-        slotTransforms = new Transform[5];
-        
-        GameObject slotContainer = GameObject.Find("SlotContainer");
-        if (slotContainer != null)
-        {
-            slotTransforms[0] = slotContainer.transform.Find("Slot01");
-            slotTransforms[1] = slotContainer.transform.Find("Slot02");
-            slotTransforms[2] = slotContainer.transform.Find("Slot03");
-            slotTransforms[3] = slotContainer.transform.Find("Slot04");
-            slotTransforms[4] = slotContainer.transform.Find("Slot05");
-        }
-        else
-        {
-            Debug.LogError("SlotContainer가 업씀");
-        }
-    }
-
-    private void Start()
-    {
-        
-    }
+    public Image[] slotImages;
+    public float defaultAlpha = 0.5f;
+    public float highlightAlpha = 1.0f;
 
     public void UpdateSlotHighlight(int selectedSlot)
     {
-        for (int i = 0; i < slotTransforms.Length; i++)
+        for (int i = 0; i < slotImages.Length; i++)
         {
-            if (slotTransforms[i] != null)
+            if (slotImages[i] != null)
             {
-                slotTransforms[i].localScale = (i == selectedSlot)
-                    ? highlightScale
-                    : defaultScale;
+                Color color = slotImages[i].color;
+                color.a = (i == selectedSlot) ? highlightAlpha : defaultAlpha;
+                slotImages[i].color = color;
             }
         }
     }
