@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using Cinemachine;
 using UnityEngine;
+using Photon.Voice.Unity;
 
 public class ObserverState : IState
 {
