@@ -865,6 +865,7 @@ GameObject:
   - component: {fileID: 8110286787209426462}
   - component: {fileID: 7420082799361674399}
   - component: {fileID: 4489098025353871454}
+  - component: {fileID: 7377154136724922256}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -924,6 +925,19 @@ MonoBehaviour:
   - {fileID: 8796245974418869534}
   defaultAlpha: 0.5
   highlightAlpha: 1
+--- !u!114 &7377154136724922256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2735535398468717796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f713b7ab0558ffe47bf5ea635a8680ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  micDropdown: {fileID: 3714085538105349993}
 --- !u!1 &3103331596485193205
 GameObject:
   m_ObjectHideFlags: 0
@@ -4112,6 +4126,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3714085538105349993 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6389344015184923859, guid: fdab65fb14de44244bee8648f16792c3, type: 3}
+  m_PrefabInstance: {fileID: 7719336448875486138}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &4500894477098150507 stripped
