@@ -76,11 +76,15 @@ public class EscUI : MonoBehaviourPunCallbacks
         {
             escCanvas.SetActive(true);
             esctoogle = false;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
         else
         {
             escCanvas.SetActive(false);
             esctoogle = true;
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 
@@ -138,5 +142,6 @@ public class EscUI : MonoBehaviourPunCallbacks
     public void OptionConfirmButton()
     {
         OptionUI.SetActive(false);
+        
     }
 }
