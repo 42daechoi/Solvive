@@ -322,7 +322,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 561389139830730110}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.7096209, z: 0, w: -0.70458376}
+  m_LocalRotation: {x: 0, y: -0.7065529, z: 0, w: -0.7076602}
   m_LocalPosition: {x: 0.32, y: -0.00000011920929, z: -0.9762237}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -961,6 +961,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbb3f38ffbaa60d489f1b6b954b8a657, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  voiceMixer: {fileID: 24100000, guid: e296f62d20eaa774bb4380025ad1da97, type: 2}
+  voiceMixerGroup: {fileID: 24300002, guid: e296f62d20eaa774bb4380025ad1da97, type: 2}
 --- !u!114 &4539271005484956625
 MonoBehaviour:
   m_ObjectHideFlags: 0
