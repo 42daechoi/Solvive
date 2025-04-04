@@ -38,7 +38,7 @@ public class VolumeSittings : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("AudioManager 또는 bgmSource가 없습니다.");
+            Debug.LogWarning("VolumeSetting: AudioManager 또는 bgmSource가 없습니다.");
         }
 
         PlayerPrefs.SetFloat("MainBGM", volume);
