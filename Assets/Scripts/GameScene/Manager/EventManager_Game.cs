@@ -43,7 +43,7 @@ public class EventManager_Game : MonoBehaviour
     public event Action<int> OnChangeUnlockedComputerCount;
     public event Action OnAllComputerUnlocked;
     public event Action OnOneCitizenAlive;
-    public event Action<int> OnObserverState;
+    public event Action<int, bool> OnObserverState;
     public event Action<PlayerRole> OnEndGame;
     public static event Action OnEscButton;
     public event Action<string> OnEliminateOrEscape;
@@ -210,10 +210,10 @@ public class EventManager_Game : MonoBehaviour
         OnAllComputerUnlocked?.Invoke();
     }
 
-    public void InvokeObserverState(int viewID)
+    public void InvokeObserverState(int viewID, bool escape)
     {
         Debug.Log($"EventManager_Game: ObserverState 이벤트 발행 - ViewID: {viewID}");
-        OnObserverState?.Invoke(viewID);
+        OnObserverState?.Invoke(viewID, escape);
     }
 
     public void InvokeOneCitizenAlive()
