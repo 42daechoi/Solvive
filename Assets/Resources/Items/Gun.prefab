@@ -252,22 +252,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9006617052217139458}
     m_Modifications:
-    - target: {fileID: -4771566734637846227, guid: 471d6b5553069ec44b5bb8a7ff5263eb, type: 3}
-      propertyPath: sceneViewId
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1580940003175037754, guid: 471d6b5553069ec44b5bb8a7ff5263eb, type: 3}
       propertyPath: m_Name
       value: Gun_Model (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 1891961268502032786, guid: 471d6b5553069ec44b5bb8a7ff5263eb, type: 3}
-      propertyPath: m_Size.x
-      value: 0.010464555
+    - target: {fileID: 1700420564729626164, guid: 471d6b5553069ec44b5bb8a7ff5263eb, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1891961268502032786, guid: 471d6b5553069ec44b5bb8a7ff5263eb, type: 3}
-      propertyPath: m_Center.x
-      value: 0.004505443
-      objectReference: {fileID: 0}
+    - target: {fileID: 1700420564729626164, guid: 471d6b5553069ec44b5bb8a7ff5263eb, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: f1a87e4f61c01f34a9c1a421e3f204b5, type: 2}
     - target: {fileID: 2009981683091563211, guid: 471d6b5553069ec44b5bb8a7ff5263eb, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.1
@@ -308,15 +304,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: -4771566734637846227, guid: 471d6b5553069ec44b5bb8a7ff5263eb, type: 3}
-    - {fileID: 5414782535051793315, guid: 471d6b5553069ec44b5bb8a7ff5263eb, type: 3}
-    - {fileID: 7238216705114214577, guid: 471d6b5553069ec44b5bb8a7ff5263eb, type: 3}
-    - {fileID: 5598958514751526879, guid: 471d6b5553069ec44b5bb8a7ff5263eb, type: 3}
-    - {fileID: 4150487224395912633, guid: 471d6b5553069ec44b5bb8a7ff5263eb, type: 3}
-    - {fileID: 4842437637527050525, guid: 471d6b5553069ec44b5bb8a7ff5263eb, type: 3}
-    - {fileID: 4104939599844459327, guid: 471d6b5553069ec44b5bb8a7ff5263eb, type: 3}
-    - {fileID: 1891961268502032786, guid: 471d6b5553069ec44b5bb8a7ff5263eb, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
