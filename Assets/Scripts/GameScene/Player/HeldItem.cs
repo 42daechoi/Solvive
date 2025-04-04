@@ -68,6 +68,13 @@ public class HeldItem : MonoBehaviourPunCallbacks
             }
             else
             {
+                int newSlotIndex = keyCode - 2;
+                
+                if (newSlotIndex == slotIndex && item != null)
+                {
+                    return;
+                }
+                
                 if (item != null)
                 {
                     equipItem.UnEquip(itemObject, true, true);
