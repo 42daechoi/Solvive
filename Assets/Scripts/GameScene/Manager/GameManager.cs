@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         bool escape = flag == "Escape";
 
         if (player == null) return;
-
+        
         if (player.role == PlayerRole.Citizen)
         {
             if (flag == "Eliminate")

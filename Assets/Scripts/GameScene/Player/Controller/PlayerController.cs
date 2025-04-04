@@ -56,6 +56,7 @@ public class PlayerController : MonoBehaviourPun
 	[SerializeField] private GameObject thirdPersonModel;
 	[SerializeField] private GameObject firstPersonArms;
 	[SerializeField] private GameObject obRender;
+	[SerializeField] private GameObject playerDeadBody;
 
 	[Header("Player UI")]
 	[SerializeField] private GameObject[] ingameUIObjects;
@@ -373,7 +374,7 @@ public class PlayerController : MonoBehaviourPun
 				Vector3 worldPosition = spawnPointManager.GetGroundPosition(obRender.transform.position);
 				Quaternion worldRotation = obRender.transform.rotation;
 			
-				photonView.RPC("spawnDeadBody", RpcTarget.Others, worldPosition, worldRotation);
+				Instantiate(playerDeadBody, worldPosition, worldRotation);
 			}
 			
 			isDied = true;
@@ -504,9 +505,4 @@ public class PlayerController : MonoBehaviourPun
 		gameObject.layer = observerLayer;
 	}
 	
-	[PunRPC]
-	public void spawnDeadBody(Vector3 pos, Quaternion rot)
-	{
-		PhotonNetwork.Instantiate("PlayerDeadBody", pos, rot);
-	}
 }
