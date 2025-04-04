@@ -47,6 +47,7 @@ public class EventManager_Game : MonoBehaviour
     public event Action<PlayerRole> OnEndGame;
     public static event Action OnEscButton;
     public event Action<string> OnEliminateOrEscape;
+    public event Action<PlayerRole> OnSetRoleComplete;
 
     // UI Button
     public static event Action OnControlPanelButtonClicked;
@@ -278,5 +279,10 @@ public class EventManager_Game : MonoBehaviour
     public void InvokeVoiceOn(bool voiceOn)
     {
         OnVoice?.Invoke(voiceOn);
+    }
+
+    public void InvokeSetRoleComplete(PlayerRole role)
+    {
+        OnSetRoleComplete?.Invoke(role);
     }
 }
