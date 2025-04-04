@@ -366,16 +366,16 @@ public class PlayerController : MonoBehaviourPun
 	{
 		if (_photonView.ViewID == viewID)
 		{
+			obRender.SetActive(false);
 			if (!escape)
 			{
 				SpawnPointManager spawnPointManager = new SpawnPointManager();
 				Vector3 worldPosition = spawnPointManager.GetGroundPosition(obRender.transform.position);
 				Quaternion worldRotation = obRender.transform.rotation;
 			
-				GameObject corpse = PhotonNetwork.Instantiate("PlayerDeadBody", worldPosition, worldRotation);
+				photonView.RPC("spawnDeadBody", RpcTarget.Others, worldPosition, worldRotation);
 			}
 			
-			obRender.SetActive(false);
 			isDied = true;
 			TransitionToStateForce(new ObserverState());
 			_inventory.enabled = false;
@@ -502,5 +502,11 @@ public class PlayerController : MonoBehaviourPun
 	{
 		int observerLayer = LayerMask.NameToLayer("Observer");
 		gameObject.layer = observerLayer;
+	}
+	
+	[PunRPC]
+	public void spawnDeadBody(Vector3 pos, Quaternion rot)
+	{
+		PhotonNetwork.Instantiate("PlayerDeadBody", pos, rot);
 	}
 }

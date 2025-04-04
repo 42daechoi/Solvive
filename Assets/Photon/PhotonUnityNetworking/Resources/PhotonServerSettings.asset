@@ -93,6 +93,8 @@ MonoBehaviour:
   - UsedPlayerSpawnPointSync
   - UpdateObserverPosition
   - ChangeToObserverLayer
+  - RPC_SpawnDeadBody
+  - spawnDeadBody
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

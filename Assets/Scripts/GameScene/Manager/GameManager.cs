@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviourPunCallbacks
                 player.SetRole(PlayerRole.Observer);
                 citizenCount--;
             }
-            else
+            else if (flag == "Escape")
             {
                 EventManager_Game.Instance.InvokeObserverState(viewID, escape);
                 player.SetRole(PlayerRole.Observer);
