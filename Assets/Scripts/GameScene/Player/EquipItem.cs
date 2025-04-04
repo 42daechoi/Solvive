@@ -24,6 +24,7 @@ public class EquipItem : MonoBehaviourPunCallbacks
 
     public GameObject Equip(FarmingObject item)
     {
+        
         if (photonView.IsMine)
         {
             if (item == null)
