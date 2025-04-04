@@ -171,7 +171,8 @@ public class HeldItem : MonoBehaviourPunCallbacks
 
 
             itemObj.transform.position = replacePosition;
-            itemObj.transform.rotation = GetRotationFromOriginalPrefab(itemNameWithoutClone);
+            itemObj.transform.rotation = Quaternion.identity;
+            //GetRotationFromOriginalPrefab(itemNameWithoutClone);
         }
         catch (NullReferenceException e)
         {

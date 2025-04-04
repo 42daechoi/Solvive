@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf8d1b5380d73194e8195ebe0f10d5a9, type: 3}
-  m_Name: Flashlight
+  m_Name: FlashLight
   m_EditorClassIdentifier: 
   itemName: Flashlight
   icon: {fileID: 21300000, guid: 76dcbacaea1a68e43b96ba13c450eb8a, type: 3}
-  equipPosition: {x: 0, y: 0.02, z: 0}
-  equipRotation: {x: -244.43, y: -106.2, z: 185.2}
+  equipPosition: {x: 0.03, y: 0.076, z: -0.01}
+  equipRotation: {x: 160.37, y: 76.22, z: 1.2}
   animationState: Flashlight

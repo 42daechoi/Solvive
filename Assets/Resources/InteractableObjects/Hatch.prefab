@@ -156,7 +156,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a85d8ecbf00aca44588f36a031f718df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holdProgressBar: {fileID: 0}
 --- !u!65 &2012555470174052467
 BoxCollider:
   m_ObjectHideFlags: 0
