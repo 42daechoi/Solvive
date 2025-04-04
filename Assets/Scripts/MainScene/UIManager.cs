@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
 using UnityEngine;
@@ -27,6 +28,7 @@ public class UIManager : MonoBehaviourPun
         EventManager_Main.OnAudioPanelButtonClicked += Audio_P;
         EventManager_Main.OnOptionConfirmButtonClicked += Option_confirm;
         EventManager_Main.OnGMS_backgroundClicked += GMS_background;
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     void OnDisable()
@@ -43,6 +45,7 @@ public class UIManager : MonoBehaviourPun
         EventManager_Main.OnAudioPanelButtonClicked -= Audio_P;
         EventManager_Main.OnOptionConfirmButtonClicked += Option_confirm;
         EventManager_Main.OnGMS_backgroundClicked += GMS_background;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
     
     void Awake()
@@ -134,4 +137,40 @@ public class UIManager : MonoBehaviourPun
     void Option_confirm(){
         OptionUI.SetActive(false);
     }
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MainScene")
+        {
+            StartCoroutine(AssignUIDelayed());
+        }
+    }
+    
+    IEnumerator AssignUIDelayed()
+    {
+        yield return null;
+
+        OptionUI = FindFromSceneByName("Option UI");
+        ControlPanel = FindFromSceneByName("ControlPanel");
+        resolutionPanel = FindFromSceneByName("resolutionPanel");
+        AudioPanel = FindFromSceneByName("AudioPanel");
+    }
+
+    GameObject FindFromSceneByName(string name)
+    {
+        Transform[] allTransforms = Resources.FindObjectsOfTypeAll<Transform>();
+
+        foreach (var t in allTransforms)
+        {
+            if (t.name == name &&
+                t.hideFlags == HideFlags.None &&
+                t.gameObject.scene.IsValid() &&
+                t.gameObject.scene.name == "MainScene")
+            {
+                return t.gameObject;
+            }
+        }
+
+        return null;
+    }
+    
 }
