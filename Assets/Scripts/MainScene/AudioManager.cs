@@ -13,6 +13,10 @@ public class AudioManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            if (bgmSource == null)
+            {
+                bgmSource = GetComponent<AudioSource>();
+            }
         }
         else
         {

@@ -31,7 +31,16 @@ public class VolumeSittings : MonoBehaviour
     public void SetMusicVolume()
     {
         float volume = MusicSlider.value;
-        audioSource.volume = volume;
+
+        if (AudioManager.Instance != null && AudioManager.Instance.bgmSource != null)
+        {
+            AudioManager.Instance.bgmSource.volume = volume;
+        }
+        else
+        {
+            Debug.LogWarning("VolumeSetting: AudioManager 또는 bgmSource가 없습니다.");
+        }
+
         PlayerPrefs.SetFloat("MainBGM", volume);
     }
 
