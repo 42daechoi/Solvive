@@ -24,6 +24,7 @@ public class AudioManager_Game : MonoBehaviour
         {
             EventManager_Game.Instance.OnOneCitizenAlive += PlayOneCitizenAloneClip;
             EventManager_Game.Instance.OnAllGeneratorsActivated += PlayComputerPhaseClip;
+            EventManager_Game.Instance.OnOnePasswordValid += PlayComputerPhaseClip;
         }
     }
 
@@ -33,6 +34,7 @@ public class AudioManager_Game : MonoBehaviour
         {
             EventManager_Game.Instance.OnOneCitizenAlive -= PlayOneCitizenAloneClip;
             EventManager_Game.Instance.OnAllGeneratorsActivated -= PlayComputerPhaseClip;
+            EventManager_Game.Instance.OnOnePasswordValid -= PlayComputerPhaseClip;
         }
     }
 

@@ -116,6 +116,7 @@ public class PasswordManager : MonoBehaviourPun
 	private void SyncValidatedPassword(string _validatedPassword)
 	{
 		validatedPassword = _validatedPassword;
+		EventManager_Game.Instance.InvokeOnePasswordValid();
 	}
 
 	public bool SecondValidatePassword(string inputPassword)
