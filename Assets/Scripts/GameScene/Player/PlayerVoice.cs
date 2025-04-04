@@ -3,12 +3,25 @@ using Photon.Pun;
 using Photon.Voice.Unity;
 using Photon.Voice;
 using Photon.Voice.PUN;
+using UnityEngine.Audio;
 
 public class PlayerVoice : MonoBehaviourPun
 {
     Recorder recorder;
     PunVoiceClient punVoiceClient;
     bool groupChanged = false;
+    [SerializeField] private AudioMixer voiceMixer;
+    [SerializeField] private AudioMixerGroup voiceMixerGroup;
+    
+    public static PlayerVoice Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (photonView.IsMine)
+        {
+            Instance = this;
+        }
+    }
 
     private void OnEnable()
     {
@@ -29,8 +42,16 @@ public class PlayerVoice : MonoBehaviourPun
 
     void Start()
     {
-        if (!photonView.IsMine) return;
-
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+        if (photonView.IsMine)
+        {
+            SetOutputVolume(+20f);
+        }
+        
+        
         punVoiceClient = GameObject.Find("VoiceManager")?.GetComponent<PunVoiceClient>();
         Debug.Log($"PlayerVoice: PunvoiceClient - {punVoiceClient}");
 
@@ -96,5 +117,24 @@ public class PlayerVoice : MonoBehaviourPun
         punVoiceClient.Client.OpChangeGroups(null, receiveGroups);
 
         Debug.Log("PlayerVoice: Group 2로 송신, Group 1,2 수신 설정됨");
+    }
+    
+    private void SetOutputVolume(float dB)
+    {
+        voiceMixer.SetFloat("Volume", dB);
+    }
+    
+    public void SetMicrophone(string micName)
+    {
+        if (recorder == null)
+        {
+            Debug.LogWarning("PlayerVoice : Recorder가 없습니다.");
+            return;
+        }
+
+        recorder.MicrophoneDevice = new DeviceInfo(micName, micName);
+        recorder.RestartRecording();
+
+        Debug.Log($"PlayerVoice : 마이크 변경됨 => {micName}");
     }
 }
