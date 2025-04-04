@@ -360,17 +360,19 @@ public class PlayerController : MonoBehaviourPun
 		}
 	}
 
-	private void HandleObserverState(int viewID)
+	private void HandleObserverState(int viewID, bool escape)
 	{
 		if (_photonView.ViewID == viewID)
-		{						
-			SpawnPointManager spawnPointManager = new SpawnPointManager();
-			Vector3 worldPosition = spawnPointManager.GetGroundPosition(obRender.transform.position);
-			Quaternion worldRotation = obRender.transform.rotation;
+		{
+			if (!escape)
+			{
+				SpawnPointManager spawnPointManager = new SpawnPointManager();
+				Vector3 worldPosition = spawnPointManager.GetGroundPosition(obRender.transform.position);
+				Quaternion worldRotation = obRender.transform.rotation;
 			
-			GameObject corpse = PhotonNetwork.Instantiate("PlayerDeadBody", worldPosition, worldRotation);
+				GameObject corpse = PhotonNetwork.Instantiate("PlayerDeadBody", worldPosition, worldRotation);
+			}
 			
-
 			obRender.SetActive(false);
 			isDied = true;
 			TransitionToStateForce(new ObserverState());

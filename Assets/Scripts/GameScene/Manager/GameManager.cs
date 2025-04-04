@@ -85,13 +85,21 @@ public class GameManager : MonoBehaviourPunCallbacks
     private void SyncEliminateOrEscapeCitizen(int viewID, string flag)
     {
         var player = PhotonView.Find(viewID)?.GetComponent<PlayerRoleDistribution>();
+        bool escape = flag == "Escape";
+
         if (player == null) return;
 
         if (player.role == PlayerRole.Citizen)
         {
-            if (flag == "Eliminate" || flag == "Escape")
+            if (flag == "Eliminate")
             {
-                EventManager_Game.Instance.InvokeObserverState(viewID);
+                EventManager_Game.Instance.InvokeObserverState(viewID, escape);
+                player.SetRole(PlayerRole.Observer);
+                citizenCount--;
+            }
+            else
+            {
+                EventManager_Game.Instance.InvokeObserverState(viewID, escape);
                 player.SetRole(PlayerRole.Observer);
                 citizenCount--;
             }
@@ -100,7 +108,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             if (flag == "Eliminate")
             {
-                EventManager_Game.Instance.InvokeObserverState(viewID);
+                EventManager_Game.Instance.InvokeObserverState(viewID, escape);
                 player.SetRole(PlayerRole.Observer);
             }
         }
