@@ -21,7 +21,7 @@ public class ItemSpawner : MonoBehaviourPun
         itemNameCountMap["Gun"] = playerCount;
         itemNameCountMap["Knife"] = playerCount * 2;
         itemNameCountMap["Battery"] = 15;
-        itemNameCountMap["Flashlight"] = playerCount;
+        itemNameCountMap["Flashlight"] = playerCount * 2;
         itemNameCountMap["PasswordPaper"] = playerCount * 2;
     }
 

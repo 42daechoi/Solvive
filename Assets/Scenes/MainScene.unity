@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 262.1226, g: 324.77786, b: 429.8404, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -322,8 +322,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4290967807
-  m_fontColor: {r: 1, g: 0.972549, b: 0.7607843, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -456,8 +456,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4290967551
-  m_fontColor: {r: 1, g: 0.9688633, b: 0.759434, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -601,8 +601,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4290967807
-  m_fontColor: {r: 1, g: 0.972549, b: 0.7607843, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1258,7 +1258,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f713b7ab0558ffe47bf5ea635a8680ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  micDropdown: {fileID: 970143905}
 --- !u!1 &667360598
 GameObject:
   m_ObjectHideFlags: 0
@@ -1659,17 +1658,6 @@ MonoBehaviour:
   playerBody: {fileID: 1332784042215467423, guid: 79e8127878cc2af40b117c1fba97dbde, type: 3}
   sensitivitySlider: {fileID: 1111443039}
   sensitivityInput: {fileID: 1592514021}
---- !u!114 &970143905 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6389344015184923859, guid: fdab65fb14de44244bee8648f16792c3, type: 3}
-  m_PrefabInstance: {fileID: 9004835809728642258}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1027463731
 GameObject:
   m_ObjectHideFlags: 0
@@ -1736,8 +1724,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4290967807
-  m_fontColor: {r: 1, g: 0.972549, b: 0.7607843, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
