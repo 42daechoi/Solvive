@@ -44,11 +44,15 @@ namespace GameScene.Item
                             case "Body": damageMultiplier = 6f; break;
                             case "Arm":  damageMultiplier = 2f; break;
                             case "Leg":  damageMultiplier = 2f; break;
+                            default: return;
                         }
 
                         PhotonView targetView = hit.collider.GetComponent<PhotonView>();
                         if (targetView == null)
                             targetView = hit.collider.transform.root.GetComponent<PhotonView>();
+                        
+                        if (targetView == null || !targetView.gameObject.CompareTag("Player"))
+                            return;
 
                         if (targetView != null)
                         {
