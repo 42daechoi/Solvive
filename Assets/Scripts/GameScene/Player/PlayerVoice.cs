@@ -1,180 +1,100 @@
-using System;
-using System.Collections;
-using System.Linq;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Voice.Unity;
 using Photon.Voice;
-using UnityEngine.Audio;
-using ExitGames.Client.Photon;
-using Hashtable = ExitGames.Client.Photon.Hashtable;
+using Photon.Voice.PUN;
 
 public class PlayerVoice : MonoBehaviourPun
 {
-    public static PlayerVoice Instance { get; private set; }
-
-    private Recorder recorder;
-    private Speaker speaker;
-    private PlayerRoleDistribution roleDist;
-
-    [SerializeField] private AudioMixer voiceMixer;
-    [SerializeField] private AudioMixerGroup voiceMixerGroup;
-
-    public PlayerRole Role { get; private set; }
-
-    private void Awake()
-    {
-        if (photonView.IsMine && Instance == null)
-        {
-            Instance = this;
-        }
-
-        recorder = GetComponent<Recorder>();
-        speaker = GetComponent<Speaker>();
-        roleDist = GetComponent<PlayerRoleDistribution>();
-
-        if (!photonView.IsMine) return;
-        if (recorder == null || roleDist == null) return;
-
-        string[] micDevices = Microphone.devices;
-        if (micDevices.Length == 0) return;
-
-        SetMicrophone(micDevices[0]);
-        recorder.TransmitEnabled = false;
-
-        roleDist.OnRoleChanged += HandleRoleChanged;
-    }
+    Recorder recorder;
+    PunVoiceClient punVoiceClient;
+    bool groupChanged = false;
 
     private void OnEnable()
     {
         EventManager_Game.Instance.OnVoice += HandleVoice;
+        EventManager_Game.Instance.OnEliminateOrEscape += HandleVoiceGroup;
     }
 
     private void OnDisable()
     {
-        if (roleDist != null)
-        {
-            roleDist.OnRoleChanged -= HandleRoleChanged;
-        }
-
         EventManager_Game.Instance.OnVoice -= HandleVoice;
-    }
+        EventManager_Game.Instance.OnEliminateOrEscape -= HandleVoiceGroup;
 
-    private void Start()
-    {
-        if (photonView.IsMine)
+        if (punVoiceClient != null)
         {
-            HandleRoleChanged(roleDist.role); // 강제 초기화
-            SetOutputVolume(+30f);
-            StartCoroutine(CheckVoice());
+            punVoiceClient.Client.StateChanged -= OnVoiceStateChanged;
         }
     }
 
-    private void SetOutputVolume(float dB)
+    void Start()
     {
-        voiceMixer.SetFloat("Volume", dB);
-    }
+        if (!photonView.IsMine) return;
 
-    private void HandleRoleChanged(PlayerRole newRole)
-    {
-        Role = newRole;
+        punVoiceClient = GameObject.Find("VoiceManager")?.GetComponent<PunVoiceClient>();
+        Debug.Log($"PlayerVoice: PunvoiceClient - {punVoiceClient}");
 
-        if (photonView.IsMine)
-        {
-            Hashtable props = new Hashtable();
-            props["Role"] = (int)newRole;
-            PhotonNetwork.LocalPlayer.SetCustomProperties(props);
-        }
-    }
-
-    public void SetMicrophone(string micName)
-    {
+        recorder = GetComponent<Recorder>();
         if (recorder == null)
         {
-            Debug.LogWarning("⚠️ Recorder 초기화 안 됨");
+            Debug.LogError("PlayerVoice : Recorder 컴포넌트 없음!");
             return;
         }
+
+        recorder.InterestGroup = 1;
+        recorder.TransmitEnabled = false;
+
+        string[] micDevices = Microphone.devices;
+        if (micDevices.Length == 0)
+        {
+            Debug.LogError("PlayerVoice : 마이크 디바이스가 없습니다.");
+            return;
+        }
+
+        string micName = micDevices[0];
+        Debug.Log("PlayerVoice :  마이크 선택됨: " + micName);
 
         recorder.SourceType = Recorder.InputSourceType.Microphone;
         recorder.MicrophoneType = Recorder.MicType.Unity;
         recorder.MicrophoneDevice = new DeviceInfo(micName, micName);
         recorder.RestartRecording();
+
+        // 🔥 상태 변화 감지 시작
+        punVoiceClient.Client.StateChanged += OnVoiceStateChanged;
+    }
+
+    private void OnVoiceStateChanged(Photon.Realtime.ClientState fromState, Photon.Realtime.ClientState toState)
+    {
+        if (toState == Photon.Realtime.ClientState.Joined && !groupChanged)
+        {
+            byte[] receiveGroups = new byte[] { 1 };
+            punVoiceClient.Client.OpChangeGroups(null, receiveGroups);
+            groupChanged = true;
+
+            Debug.Log("PlayerVoice: 그룹 변경 완료 (Group 1 수신)");
+        }
     }
 
     void HandleVoice(bool value)
     {
-        if (recorder == null) return;
+        if (!photonView.IsMine) return;
+        if (recorder == null)
+        {
+            Debug.LogWarning("PlayerVoice : Recorder 아직 초기화되지 않음, Transmit 설정 스킵됨");
+            return;
+        }
 
         recorder.TransmitEnabled = value;
     }
 
-    private IEnumerator CheckVoice()
+    private void HandleVoiceGroup(string flag)
     {
-        while (true)
-        {
-            UpdateCanHear();
-            yield return new WaitForSeconds(0.5f);
-        }
-    }
+        if (!photonView.IsMine) return;
+        recorder.InterestGroup = 2;
 
-    private void UpdateCanHear()
-    {
-        var allPlayers = FindObjectsOfType<PlayerVoice>();
-        var allSpeakers = FindObjectsOfType<Speaker>();
+        byte[] receiveGroups = new byte[] { 1, 2 };
+        punVoiceClient.Client.OpChangeGroups(null, receiveGroups);
 
-        foreach (var sp in allSpeakers)
-        {
-            if (sp.RemoteVoice == null) continue;
-
-            int senderId = sp.RemoteVoice.PlayerId;
-            var sender = allPlayers.FirstOrDefault(p => p.photonView.OwnerActorNr == senderId);
-            if (sender == null) continue;
-
-            float distance = Vector3.Distance(transform.position, sender.transform.position);
-
-            // ✅ sender.Role 대신 CustomProperties에서 역할 가져오기
-            PlayerRole senderRole = GetRoleOfPlayer(sender.photonView.Owner);
-            bool canHear = ShouldHearThisPlayer(senderRole, this.Role, distance);
-
-            // 디버그 출력
-
-            AudioSource audioSource = sp.GetComponent<AudioSource>();
-            if (audioSource != null)
-            {
-                audioSource.outputAudioMixerGroup = voiceMixerGroup;
-                audioSource.volume = canHear ? 1f : 0f;
-                audioSource.mute = !canHear;
-            }
-
-            sp.enabled = canHear;
-
-            // 💥 연결 강제 해제
-            if (!canHear)
-            {
-                var unlinkMethod = typeof(Speaker).GetMethod("Unlink", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                unlinkMethod?.Invoke(sp, null);
-            }
-        }
-    }
-
-    private PlayerRole GetRoleOfPlayer(Photon.Realtime.Player player)
-    {
-        if (player.CustomProperties.TryGetValue("Role", out object roleValue))
-        {
-            return (PlayerRole)(int)roleValue;
-        }
-
-        return PlayerRole.Citizen; // 기본값
-    }
-
-    private bool ShouldHearThisPlayer(PlayerRole senderRole, PlayerRole listenerRole, float distance)
-    {
-        if (senderRole == PlayerRole.Observer && listenerRole != PlayerRole.Observer)
-            return false;
-
-        if (senderRole == PlayerRole.Observer && listenerRole == PlayerRole.Observer)
-            return true;
-
-        return distance <= 10f;
+        Debug.Log("PlayerVoice: Group 2로 송신, Group 1,2 수신 설정됨");
     }
 }

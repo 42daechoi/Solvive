@@ -47,6 +47,7 @@ public class EventManager_Game : MonoBehaviour
     public event Action<PlayerRole> OnEndGame;
     public static event Action OnEscButton;
     public event Action<string> OnEliminateOrEscape;
+
     // UI Button
     public static event Action OnControlPanelButtonClicked;
     public static event Action OnResolutionPanelButtonClicked;
