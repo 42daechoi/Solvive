@@ -8,7 +8,6 @@ public class ItemSpawner : MonoBehaviourPun
     private Dictionary<string, int> itemNameCountMap = new Dictionary<string, int>();
 
     public GameObject ItemSpawnPointsObject;
-    public Transform[] originalPrefabs;
 
     private void Start()
     {
@@ -50,22 +49,9 @@ public class ItemSpawner : MonoBehaviourPun
         PhotonNetwork.InstantiateRoomObject(
             "Items/" + itemName,
             spawnPointManager.GetGroundPosition(selectedSpawnPoint.position),
-            GetRotationFromOriginalPrefab(itemName)
+            Quaternion.identity
         );
 
         spawnPointManager.MarkOccupied(selectedSpawnPoint);
-    }
-
-    private Quaternion GetRotationFromOriginalPrefab(string itemName)
-    {
-        switch (itemName)
-        {
-            case "Battery": return originalPrefabs[0].localRotation;
-            case "Flashlight": return originalPrefabs[1].localRotation;
-            case "Gun": return originalPrefabs[2].localRotation;
-            case "Knife": return originalPrefabs[3].localRotation;
-            case "PasswordPaper": return originalPrefabs[4].localRotation;
-        }
-        return Quaternion.identity;
     }
 }
