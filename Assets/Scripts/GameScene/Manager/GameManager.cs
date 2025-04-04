@@ -39,6 +39,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         activeGeneratorCount = 0;
         maxGeneratorCount = 1;
         StartCoroutine(WaitForAllPlayersSpawned());
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void InitCitizenCount(int count)

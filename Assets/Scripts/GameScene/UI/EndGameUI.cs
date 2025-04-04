@@ -48,7 +48,7 @@ public class EndGameUI : MonoBehaviour
 
     private void ActiveEndGameUI(PlayerRole playerRole)
     {
-        Debug.Log("EndGameUI : °ÔÀÓ Á¾·á UI È°¼ºÈ­");
+        Debug.Log("EndGameUI : ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ UI È°ï¿½ï¿½È­");
         if (playerRole == PlayerRole.Mannequin)
         {
             winnerText.text = "Mannequin Win!";
@@ -59,6 +59,8 @@ public class EndGameUI : MonoBehaviour
         }
         inventoryCanvasObject.SetActive(false);
         endGameCanvasObject.SetActive(true);
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public void OnClickBackToLobby()
