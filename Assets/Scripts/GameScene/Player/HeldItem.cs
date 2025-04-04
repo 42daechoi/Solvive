@@ -10,6 +10,7 @@ public class HeldItem : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject itemObject;
     [SerializeField] private int slotIndex;
     [SerializeField] private EquipItem equipItem;
+    private SpawnPointManager spawnPointManager = new SpawnPointManager();
     private float dropOffset = 1f;
     public SlotHighlight slotHighlight;
     public Transform[] originalPrefabs;
@@ -172,7 +173,6 @@ public class HeldItem : MonoBehaviourPunCallbacks
 
             itemObj.transform.position = replacePosition;
             itemObj.transform.rotation = Quaternion.identity;
-            //GetRotationFromOriginalPrefab(itemNameWithoutClone);
         }
         catch (NullReferenceException e)
         {
@@ -184,20 +184,10 @@ public class HeldItem : MonoBehaviourPunCallbacks
     public void DropItem()
     {
         if (!photonView.IsMine) return;
-        ReplaceItem(GetDropPosition(), true);
+        
+        ReplaceItem(spawnPointManager.GetGroundPosition(transform.position), true);
         if (item == null) Raticle.Instance.UpdateCrosshairByItemDelayed(null);
         else Raticle.Instance.UpdateCrosshairByItemDelayed(item.GetItemData());
-    }
-
-    private Vector3 GetDropPosition()
-    {
-        Vector3 dropPosition = transform.position + transform.forward * dropOffset;
-        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, dropOffset))
-        {
-            // 충돌이 발생하면 드롭 위치를 충돌 지점 바로 앞에 설정
-            dropPosition = hit.point - transform.forward * 0.5f;
-        }
-        return dropPosition;
     }
 
     public FarmingObject GetItem()
@@ -225,17 +215,4 @@ public class HeldItem : MonoBehaviourPunCallbacks
         itemData.UseItem();
     }
 
-    private Quaternion GetRotationFromOriginalPrefab(string itemName)
-    {
-        switch (itemName)
-        {
-            case "Battery": return originalPrefabs[0].localRotation;
-            case "Flashlight": return originalPrefabs[1].localRotation;
-            case "Gun": return originalPrefabs[2].localRotation;
-            case "Knife": return originalPrefabs[3].localRotation;
-            case "PasswordPaper": return originalPrefabs[4].localRotation;
-            case "Keycard": return originalPrefabs[5].localRotation;
-        }
-        return Quaternion.identity;
-    }
 }
