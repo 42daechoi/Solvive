@@ -354,6 +354,7 @@ MonoBehaviour:
   thirdPersonModel: {fileID: 3867941542964493806}
   firstPersonArms: {fileID: 4663169730745261485}
   obRender: {fileID: 6609563297385897960}
+  playerDeadBody: {fileID: 7611470955456794927, guid: b1a3d39a361338145a27a539290ff473, type: 3}
   ingameUIObjects: []
 --- !u!114 &1459528134989640662
 MonoBehaviour:
