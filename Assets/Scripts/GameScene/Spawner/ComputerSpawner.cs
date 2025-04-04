@@ -35,6 +35,7 @@ public class ComputerSpawner : MonoBehaviour
             selectedSpawnPoint.position,
             selectedSpawnPoint.localRotation
         );
+        Debug.Log($"ComputerSpawner : {selectedSpawnPoint.name} :{selectedSpawnPoint.position}");
 
         spawnPointManager.MarkOccupied(selectedSpawnPoint);
     }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SpawnPointManager
@@ -9,7 +10,9 @@ public class SpawnPointManager
 
     public void InitializeSpawnPoints(GameObject spawnPointsObject)
     {
-        SpawnPoints = spawnPointsObject.GetComponentsInChildren<Transform>();
+        SpawnPoints = spawnPointsObject.GetComponentsInChildren<Transform>()
+                              .Where(t => t != spawnPointsObject.transform)
+                              .ToArray();
     }
 
     public Transform GetRandomAvailableSpawnPoint()
