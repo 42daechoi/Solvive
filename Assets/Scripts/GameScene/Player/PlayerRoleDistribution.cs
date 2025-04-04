@@ -36,13 +36,15 @@ public class PlayerRoleDistribution : MonoBehaviourPunCallbacks, IPunObservable
         role = (PlayerRole)roleInt;
         OnRoleChanged?.Invoke(role);
         Debug.Log("플레이어의 역할: " + role + photonView.ViewID);
-        if (photonView.IsMine) RoleUI.Instance.UpdateRoleUI(role);
+        if (photonView.IsMine) 
+        {
+            RoleUI.Instance.UpdateRoleUI(role);
+            EventManager_Game.Instance.InvokeSetRoleComplete(role);
+        }
     }
 
-    // 로컬에서 호출할 수 있는 편의 메서드
     public void SetRole(PlayerRole newRole)
     {
-        // 모든 클라이언트에 변경 사항을 전파
         photonView.RPC("SetRoleRPC", RpcTarget.All, (int)newRole);
     }
 }
