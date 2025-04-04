@@ -48,6 +48,7 @@ public class EventManager_Game : MonoBehaviour
     public static event Action OnEscButton;
     public event Action<string> OnEliminateOrEscape;
     public event Action<PlayerRole> OnSetRoleComplete;
+    public event Action OnOnePasswordValid;
 
     // UI Button
     public static event Action OnControlPanelButtonClicked;
@@ -284,5 +285,10 @@ public class EventManager_Game : MonoBehaviour
     public void InvokeSetRoleComplete(PlayerRole role)
     {
         OnSetRoleComplete?.Invoke(role);
+    }
+
+    public void InvokeOnePasswordValid()
+    {
+        OnOnePasswordValid?.Invoke();
     }
 }
