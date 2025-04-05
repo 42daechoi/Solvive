@@ -54,7 +54,7 @@ public class HeldItem : MonoBehaviourPunCallbacks
         {
             if (keyCode == 1)
             {
-                equipItem.UnEquip(itemObject, true, true);
+                equipItem.UnEquip(itemObject, true, true, false);
                 photonView.RPC("InitItemInfo", RpcTarget.All, photonView.ViewID);
                 if (slotHighlight != null)
                 {
@@ -77,7 +77,7 @@ public class HeldItem : MonoBehaviourPunCallbacks
                 
                 if (item != null)
                 {
-                    equipItem.UnEquip(itemObject, true, true);
+                    equipItem.UnEquip(itemObject, true, true, true);
                 }
                 slotIndex = keyCode - 2;
                 if (slotHighlight != null)
@@ -220,10 +220,7 @@ public class HeldItem : MonoBehaviourPunCallbacks
         ItemData itemData = item.GetItemData();
         Debug.Log($"HeldItem : {item.GetItemData().itemName} 아이템 사용");
         itemData.UseItem();
-        if (item == null)
-        {
-            EventManager_Game.Instance.InvokeAnimationStateChange("Default");
-        }
+        
     }
 
 }
