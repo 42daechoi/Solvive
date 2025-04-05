@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 3
   sprintSpeed: 6
-  obSpeed: 7
+  obSpeed: 5
   jumpForce: 4
   gravity: -9.81
   groundedGravity: -1
