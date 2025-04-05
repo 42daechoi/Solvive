@@ -7,6 +7,7 @@ using System.Collections;
 
 public class EndGameUI : MonoBehaviour
 {
+    public static EndGameUI Instance;
     public GameObject endGameCanvasObject;
     public TextMeshProUGUI winnerText;
     public GameObject inventoryCanvasObject;
@@ -14,6 +15,19 @@ public class EndGameUI : MonoBehaviour
     public Button backToLobby;
     public Button leaveGame;
     public TextMeshProUGUI waitForMasterText;
+    public bool EndGameToggle = false;
+    
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
@@ -61,6 +75,7 @@ public class EndGameUI : MonoBehaviour
         endGameCanvasObject.SetActive(true);
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+        EndGameToggle = true;
     }
 
     public void OnClickBackToLobby()
