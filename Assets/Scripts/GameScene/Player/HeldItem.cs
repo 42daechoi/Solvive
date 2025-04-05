@@ -220,6 +220,10 @@ public class HeldItem : MonoBehaviourPunCallbacks
         ItemData itemData = item.GetItemData();
         Debug.Log($"HeldItem : {item.GetItemData().itemName} 아이템 사용");
         itemData.UseItem();
+        if (item == null)
+        {
+            EventManager_Game.Instance.InvokeAnimationStateChange("Default");
+        }
     }
 
 }
