@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 8016274572150069547}
   - component: {fileID: 2877293432338449186}
   - component: {fileID: 5084453229594631101}
-  - component: {fileID: 4986071674784779858}
+  - component: {fileID: 6522935697201740237}
   m_Layer: 0
   m_Name: CardReader
-  m_TagString: Untagged
+  m_TagString: Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3177247523032000526}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0018972458, y: -0.049179755, z: 0.99836224, w: 0.029163929}
+  m_LocalRotation: {x: -0.0018951156, y: -0.049179133, z: 0.9983624, w: 0.029161438}
   m_LocalPosition: {x: 0.25, y: 0.58, z: -0.38}
   m_LocalScale: {x: 499.9999, y: 500, z: 499.99997}
   m_ConstrainProportionsScale: 0
@@ -123,13 +123,13 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.0028999997, y: 0.0050999993, z: 0.00005000012}
-  m_Center: {x: 0.000000039113313, y: -2.914696e-13, z: 0.000025059602}
---- !u!114 &4986071674784779858
+  m_Size: {x: 0.0028999997, y: 0.0050999993, z: 0.0023554135}
+  m_Center: {x: 0.000000039047958, y: 1.7765225e-13, z: -0.00010311346}
+--- !u!114 &6522935697201740237
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
