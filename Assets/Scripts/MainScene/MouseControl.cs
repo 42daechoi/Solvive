@@ -12,38 +12,40 @@ public class MouseControl : MonoBehaviour
     // 슬라이더와 인풋 필드를 연결할 변수
     public Slider sensitivitySlider;
     public TMP_InputField sensitivityInput;
-
     private float xRotation = 0f;
+    private const string SensitivityKey = "MouseSensitivity";
 
     void Start()
     {
-        // 슬라이더와 인풋 필드에 초기 감도 설정
-        sensitivitySlider.value = mouseSensitivity;
-        sensitivityInput.text = mouseSensitivity.ToString();
-
-        // 이벤트 리스너 추가
-        sensitivitySlider.onValueChanged.AddListener(UpdateSensitivityFromSlider);
-        sensitivityInput.onEndEdit.AddListener(UpdateSensitivityFromInput);
+        mouseSensitivity = PlayerPrefs.GetFloat(SensitivityKey, 1f);
+        
+        // // 슬라이더와 인풋 필드에 초기 감도 설정
+        // sensitivitySlider.value = mouseSensitivity;
+        // sensitivityInput.text = mouseSensitivity.ToString();
+        //
+        // // 이벤트 리스너 추가
+        // sensitivitySlider.onValueChanged.AddListener(UpdateSensitivityFromSlider);
+        // sensitivityInput.onEndEdit.AddListener(UpdateSensitivityFromInput);
 
         if (sensitivitySlider != null)
-    {
-        sensitivitySlider.value = mouseSensitivity;
-        sensitivitySlider.onValueChanged.AddListener(UpdateSensitivityFromSlider);
-    }
-    else
-    {
-        Debug.LogWarning("sensitivitySlider가 할당되지 않았습니다!");
-    }
+        {
+            sensitivitySlider.value = mouseSensitivity;
+            sensitivitySlider.onValueChanged.AddListener(UpdateSensitivityFromSlider);
+        }
+        else
+        {
+            Debug.LogWarning("sensitivitySlider가 할당되지 않았습니다!");
+        }
 
-    if (sensitivityInput != null)
-    {
-        sensitivityInput.text = mouseSensitivity.ToString();
-        sensitivityInput.onEndEdit.AddListener(UpdateSensitivityFromInput);
-    }
-    else
-    {
-        Debug.LogWarning("sensitivityInput이 할당되지 않았습니다!");
-    }
+        if (sensitivityInput != null)
+        {
+            sensitivityInput.text = mouseSensitivity.ToString("F2");
+            sensitivityInput.onEndEdit.AddListener(UpdateSensitivityFromInput);
+        }
+        else
+        {
+            Debug.LogWarning("sensitivityInput이 할당되지 않았습니다!");
+        }
     }
 
     void Update()
@@ -62,7 +64,9 @@ public class MouseControl : MonoBehaviour
     public void UpdateSensitivityFromSlider(float value)
     {
         mouseSensitivity = value;
-        sensitivityInput.text = value.ToString("F2"); // 소수점 1자리까지 표시
+        sensitivityInput.text = value.ToString("F2");
+        PlayerPrefs.SetFloat(SensitivityKey, mouseSensitivity);
+        PlayerPrefs.Save();
     }
 
     // 입력 필드에 값이 입력되었을 때 호출되는 함수
@@ -71,7 +75,9 @@ public class MouseControl : MonoBehaviour
         if (float.TryParse(value, out float newSensitivity))
         {
             mouseSensitivity = newSensitivity;
-            sensitivitySlider.value = newSensitivity; // 슬라이더 값도 업데이트
+            sensitivitySlider.value = newSensitivity;
+            PlayerPrefs.SetFloat(SensitivityKey, mouseSensitivity);
+            PlayerPrefs.Save();
         }
     }
 }

@@ -11,20 +11,7 @@ public class BrightnessController : MonoBehaviour
     public Volume postProcessVolume;
     public Slider brightnessSlider;
     private Exposure exposure;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            // = this;
-            //DontDestroyOnLoad(gameObject);
-        }
-        else if (Instance != this)
-        {
-            //Destroy(gameObject);
-            //return;
-        }
-    }
+    private const string BrightnessPrefKey = "BrightnessValue";
 
     private void Start()
     {
@@ -44,7 +31,10 @@ public class BrightnessController : MonoBehaviour
         
         if (postProcessVolume != null && postProcessVolume.profile.TryGet(out exposure))
         {
+            float savedBrightness = PlayerPrefs.GetFloat(BrightnessPrefKey, 0f);
             exposure.compensation.value = 0f;
+            if (brightnessSlider != null)
+                brightnessSlider.value = savedBrightness;
         }
         else
         {
@@ -57,6 +47,8 @@ public class BrightnessController : MonoBehaviour
         if (exposure != null)
         {
             exposure.compensation.value = value;
+            PlayerPrefs.SetFloat(BrightnessPrefKey, value);  // 저장
+            PlayerPrefs.Save();
         }
     }
 }
