@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using Photon.Pun;
 using Photon.Realtime;
+using Photon.Voice.PUN;
 using UnityEngine.SceneManagement;
 using TMPro;
 
@@ -82,6 +83,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("NetworkManager : 방에서 나갔습니다.");
         SceneManager.LoadScene("MainScene");
+        if (PunVoiceClient.Instance.Client.IsConnected)
+        {
+            PunVoiceClient.Instance.Client.Disconnect();
+        }
     }
 
 
