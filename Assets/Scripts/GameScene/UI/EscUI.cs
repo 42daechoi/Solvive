@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class EscUI : MonoBehaviourPunCallbacks
 {
+    public static EscUI Instance;
     public static event Action OnBackGameClicked;
     public static event Action OnExitGameClicked;
     public static event Action OnSettingClicked;
@@ -21,10 +22,23 @@ public class EscUI : MonoBehaviourPunCallbacks
     public Button exitGameButton; // 게임 종료 버튼 참조
     public Button SettingButton;
     public GameObject OptionUI;
-    private bool esctoogle = false;
+    public bool esctoogle = false;
+    public bool escUI = false;
     public GameObject ControlPanel;
     public GameObject resolutionPanel;
     public GameObject AudioPanel;
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
@@ -75,14 +89,14 @@ public class EscUI : MonoBehaviourPunCallbacks
         if (esctoogle == true)
         {
             escCanvas.SetActive(true);
-            esctoogle = false;
+            escUI = true;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
         }
         else
         {
             escCanvas.SetActive(false);
-            esctoogle = true;
+            escUI = false;
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
@@ -92,6 +106,8 @@ public class EscUI : MonoBehaviourPunCallbacks
     public void BackGame()
     {
         escCanvas.SetActive(false);
+        esctoogle = false;
+        escUI = false;
         OnBackGameClicked?.Invoke();
     }
 
@@ -142,6 +158,6 @@ public class EscUI : MonoBehaviourPunCallbacks
     public void OptionConfirmButton()
     {
         OptionUI.SetActive(false);
-        
+        esctoogle = false;
     }
 }

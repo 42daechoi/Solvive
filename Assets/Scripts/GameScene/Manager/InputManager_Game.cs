@@ -98,12 +98,15 @@ public class InputManager_Game : MonoBehaviour
         }
         else if (Input.GetMouseButtonDown(0))
         {
-            EventManager_Game.Instance.InvokeUseItem();
+            if (EscUI.Instance.escUI == false && EndGameUI.Instance.EndGameToggle == false)
+            {
+                EventManager_Game.Instance.InvokeUseItem();
+            }
         }
-
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             EventManager_Game.Instance.InvokeEscUI();
+            EscUI.Instance.esctoogle = !EscUI.Instance.esctoogle;
         }
         if (Input.GetKeyDown(KeyCode.G))
         {
