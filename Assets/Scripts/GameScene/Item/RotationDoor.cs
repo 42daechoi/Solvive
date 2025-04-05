@@ -72,7 +72,7 @@ public class RotationDoor : MonoBehaviourPunCallbacks
         if (isDoorOpen) return;
         switch (buttonName)
         {
-            case "Button1":
+            case "CardReader1":
                 door1Animator?.ResetTrigger("CloseDoor1");
                 door1Animator?.SetTrigger("OpenDoor1");
 
@@ -80,7 +80,7 @@ public class RotationDoor : MonoBehaviourPunCallbacks
                 door2Animator?.SetTrigger("OpenDoor2");
                 break;
 
-            case "Button2":
+            case "CardReader2":
                 door3Animator?.ResetTrigger("CloseDoor3");
                 door3Animator?.SetTrigger("OpenDoor3");
 
@@ -88,7 +88,7 @@ public class RotationDoor : MonoBehaviourPunCallbacks
                 door4Animator?.SetTrigger("OpenDoor4");
                 break;
 
-            case "Button3":
+            case "CardReader3":
                 door5Animator?.ResetTrigger("CloseDoor5");
                 door5Animator?.SetTrigger("OpenDoor5");
 
@@ -113,7 +113,7 @@ public class RotationDoor : MonoBehaviourPunCallbacks
     
     private IEnumerator DelayedClose()
     {
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(2f);
         photonView.RPC(nameof(RPC_CloseBothDoors), RpcTarget.All);
     }
 
