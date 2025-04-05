@@ -20,9 +20,9 @@ public class EquipItem : MonoBehaviourPunCallbacks
     private GameObject currentFPSWeapon;
     
     private bool isProcessing = false;
-    
 
-    public GameObject Equip(FarmingObject item)
+
+    public GameObject Equip(FarmingObject item, bool isSwitching = false)
     {
         
         if (photonView.IsMine)
@@ -172,7 +172,7 @@ public class EquipItem : MonoBehaviourPunCallbacks
         }
     }
 
-    public void UnEquip(GameObject itemObject, bool isReturnPool, bool needCollider)
+    public void UnEquip(GameObject itemObject, bool isReturnPool, bool needCollider, bool isSwitching = false)
     {
         if (itemObject)
         {
@@ -187,7 +187,10 @@ public class EquipItem : MonoBehaviourPunCallbacks
         {
             UnequipArmRotation(() =>
             {
-                // EventManager_Game.Instance.InvokeAnimationStateChange("Default");
+                if (!isSwitching)
+                {
+                    EventManager_Game.Instance.InvokeAnimationStateChange("Default");
+                }
             });
         }
     }
