@@ -8,6 +8,7 @@ using UnityEngine.Audio;
 public class PlayerVoice : MonoBehaviourPun
 {
     Recorder recorder;
+    AudioSource audioSource;
     PunVoiceClient punVoiceClient;
     bool groupChanged = false;
     [SerializeField] private AudioMixer voiceMixer;
@@ -54,8 +55,9 @@ public class PlayerVoice : MonoBehaviourPun
         
         punVoiceClient = GameObject.Find("VoiceManager")?.GetComponent<PunVoiceClient>();
         Debug.Log($"PlayerVoice: PunvoiceClient - {punVoiceClient}");
-
+        
         recorder = GetComponent<Recorder>();
+        audioSource = GetComponent<AudioSource>();
         if (recorder == null)
         {
             Debug.LogError("PlayerVoice : Recorder 컴포넌트 없음!");
@@ -82,6 +84,8 @@ public class PlayerVoice : MonoBehaviourPun
 
         // 🔥 상태 변화 감지 시작
         punVoiceClient.Client.StateChanged += OnVoiceStateChanged;
+        
+        
     }
 
     private void OnVoiceStateChanged(Photon.Realtime.ClientState fromState, Photon.Realtime.ClientState toState)
@@ -98,6 +102,10 @@ public class PlayerVoice : MonoBehaviourPun
 
     void HandleVoice(bool value)
     {
+        recorder = GetComponent<Recorder>();
+        audioSource = GetComponent<AudioSource>();
+        punVoiceClient = GameObject.Find("VoiceManager")?.GetComponent<PunVoiceClient>();
+        
         if (!photonView.IsMine) return;
         if (recorder == null)
         {
@@ -110,13 +118,24 @@ public class PlayerVoice : MonoBehaviourPun
 
     private void HandleVoiceGroup(string flag)
     {
-        if (!photonView.IsMine) return;
-        recorder.InterestGroup = 2;
+        if (!photonView.IsMine)
+        {
+            recorder.InterestGroup = 2;
+        }
+        else
+        {
+            recorder.InterestGroup = 1;
+        }
+        
 
         byte[] receiveGroups = new byte[] { 1, 2 };
         punVoiceClient.Client.OpChangeGroups(null, receiveGroups);
 
         Debug.Log("PlayerVoice: Group 2로 송신, Group 1,2 수신 설정됨");
+        if (recorder.InterestGroup == 2)
+        {
+            audioSource.spatialBlend = 0f;
+        }
     }
     
     private void SetOutputVolume(float dB)
