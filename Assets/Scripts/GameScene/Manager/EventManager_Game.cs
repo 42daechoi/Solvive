@@ -247,7 +247,7 @@ public class EventManager_Game : MonoBehaviour
         OnEliminateOrEscape?.Invoke(flag);
     }
 
-    public void InvokeTakeDamageUI()
+    public void InvokeTakeDamage()
     {
         OnTakeDamage?.Invoke();
     }

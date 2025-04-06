@@ -9,7 +9,8 @@ public class PlayerSound : MonoBehaviourPun
     public AudioClip jumpClip;
     public AudioClip jumpLandClip;
     public AudioClip pantingClip;
-    private bool isPantingPlaying = false;
+    public AudioClip hitClip;
+    private bool isMouthPlaying = false;
 
 
     void Awake()
@@ -22,6 +23,16 @@ public class PlayerSound : MonoBehaviourPun
             audioSource.maxDistance = 10.0f;
             audioSource.rolloffMode = AudioRolloffMode.Linear;
         }
+    }
+
+    private void Start()
+    {
+        EventManager_Game.Instance.OnTakeDamage += PlayHitSound;
+    }
+
+    private void Disable()
+    {
+        EventManager_Game.Instance.OnTakeDamage -= PlayHitSound;
     }
 
 
@@ -69,11 +80,11 @@ public class PlayerSound : MonoBehaviourPun
 
     public void PlayPantingSound()
     {
-        if (!isPantingPlaying)
+        if (!isMouthPlaying)
         {
             photonView.RPC("SyncPlayPantingSound", RpcTarget.All);
-            isPantingPlaying = true;
-            Invoke(nameof(ResetPantingFlag), pantingClip.length);
+            isMouthPlaying = true;
+            Invoke(nameof(ResetMouthFlag), pantingClip.length);
         }
     }
 
@@ -84,11 +95,27 @@ public class PlayerSound : MonoBehaviourPun
         audioSource.PlayOneShot(pantingClip);
     }
 
-    private void ResetPantingFlag()
+    private void ResetMouthFlag()
     {
-        isPantingPlaying = false;
+        isMouthPlaying = false;
     }
 
+    public void PlayHitSound()
+    {
+        if (!isMouthPlaying)
+        {
+            photonView.RPC("SyncPlayHitSound", RpcTarget.All);
+            isMouthPlaying = true;
+            Invoke(nameof(ResetMouthFlag), hitClip.length);
+        }
+    }
+
+    [PunRPC]
+    private void SyncPlayHitSound()
+    {
+        audioSource.maxDistance = 10.0f;
+        audioSource.PlayOneShot(hitClip);
+    }
 
     public void PlayJumpSound()
     {
