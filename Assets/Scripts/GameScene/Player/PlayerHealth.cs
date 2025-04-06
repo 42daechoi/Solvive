@@ -49,7 +49,10 @@ public class PlayerHealth : MonoBehaviourPun
 		{
 			Die();
 		}
-		EventManager_Game.Instance.InvokeTakeDamageUI();
+		else
+		{
+            EventManager_Game.Instance.InvokeTakeDamage();
+        }
 		UpdateHPbar();
 	}
 				
