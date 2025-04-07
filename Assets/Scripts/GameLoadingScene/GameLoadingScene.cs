@@ -42,7 +42,10 @@ public class GameLoadingScene : MonoBehaviourPunCallbacks
         if (PhotonNetwork.CountOfPlayers > 100) {
             ShowOverCapacityUI();
         } else {
-            gameLoadingScenePanel.SetActive(false);
+            if (gameLoadingScenePanel != null)
+            {
+                gameLoadingScenePanel.SetActive(false);
+            }
             PhotonNetwork.LoadLevel("MainScene");
         }
     }
