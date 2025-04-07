@@ -5,7 +5,7 @@ using UnityEngine;
 public class AudioManager_Game : MonoBehaviour
 {
     public AudioSource audioSource;
-    public AudioClip oneCitizenAloneClip;
+    //public AudioClip oneCitizenAloneClip;
     public AudioClip computerPhaseClip;
 
     private void Start()
@@ -22,7 +22,7 @@ public class AudioManager_Game : MonoBehaviour
 
         if (EventManager_Game.Instance != null)
         {
-            EventManager_Game.Instance.OnOneCitizenAlive += PlayOneCitizenAloneClip;
+            //EventManager_Game.Instance.OnOneCitizenAlive += PlayOneCitizenAloneClip;
             EventManager_Game.Instance.OnAllGeneratorsActivated += PlayComputerPhaseClip;
             EventManager_Game.Instance.OnOnePasswordValid += PlayComputerPhaseClip;
         }
@@ -32,19 +32,19 @@ public class AudioManager_Game : MonoBehaviour
     {
         if (EventManager_Game.Instance != null)
         {
-            EventManager_Game.Instance.OnOneCitizenAlive -= PlayOneCitizenAloneClip;
+            //EventManager_Game.Instance.OnOneCitizenAlive -= PlayOneCitizenAloneClip;
             EventManager_Game.Instance.OnAllGeneratorsActivated -= PlayComputerPhaseClip;
             EventManager_Game.Instance.OnOnePasswordValid -= PlayComputerPhaseClip;
         }
     }
 
-    private void PlayOneCitizenAloneClip()
-    {
-        if (audioSource.clip == oneCitizenAloneClip) return;
+    //private void PlayOneCitizenAloneClip()
+    //{
+    //    if (audioSource.clip == oneCitizenAloneClip) return;
 
-        audioSource.clip = oneCitizenAloneClip;
-        audioSource.Play();
-    }
+    //    audioSource.clip = oneCitizenAloneClip;
+    //    audioSource.Play();
+    //}
 
     private void PlayComputerPhaseClip()
     {
