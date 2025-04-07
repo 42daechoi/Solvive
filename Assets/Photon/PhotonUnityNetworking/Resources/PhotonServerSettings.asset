@@ -97,6 +97,9 @@ MonoBehaviour:
   - spawnDeadBody
   - SyncResetValidPasswords
   - SyncPlayHitSound
+  - ReceivePickup
+  - RequestPickup
+  - SyncToMasterIsPickUp
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

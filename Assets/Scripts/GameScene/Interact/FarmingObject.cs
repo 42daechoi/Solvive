@@ -4,15 +4,54 @@ using UnityEngine;
 public class FarmingObject : MonoBehaviourPun, IInteractableObject
 {
     public ItemData itemData;
-    private int viewID;
+    private bool isPickedUp = false;
 
     public void Interact(int playerID)
     {
-        GameObject player = PhotonView.Find(playerID).gameObject;
-        Inventory playerInventory = player.GetComponent<Inventory>();
-        viewID = photonView.ViewID;
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC(nameof(RequestPickup), RpcTarget.MasterClient, playerID);
+        }
+        else
+        {
+            HandlePickup(playerID);
+        }
+    }
 
-        if (playerInventory.AddItem(this))
+    [PunRPC]
+    private void RequestPickup(int playerID)
+    {
+        HandlePickup(playerID);
+    }
+
+    private void HandlePickup(int playerID)
+    {
+        if (isPickedUp) return;
+
+        isPickedUp = true;
+
+        photonView.RPC(nameof(ReceivePickup), RpcTarget.All, playerID);
+    }
+
+    public void SetIsPickUp(bool flag)
+    {
+        photonView.RPC(nameof(SyncToMasterIsPickUp), RpcTarget.MasterClient, flag);
+    }
+
+    [PunRPC]
+    private void SyncToMasterIsPickUp(bool flag)
+    {
+        isPickedUp = flag;
+    }
+
+    [PunRPC]
+    private void ReceivePickup(int playerID)
+    {
+        PhotonView playerPV = PhotonView.Find(playerID);
+        GameObject player = playerPV.gameObject;
+        Inventory inventory = player.GetComponent<Inventory>();
+
+        if (inventory.AddItem(this))
         {
             ObjectPool.instance.ReturnObject(gameObject);
         }
@@ -25,6 +64,6 @@ public class FarmingObject : MonoBehaviourPun, IInteractableObject
 
     public int GetViewID()
     {
-        return viewID;
+        return photonView.ViewID;
     }
 }

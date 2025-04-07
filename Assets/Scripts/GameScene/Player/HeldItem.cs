@@ -1,8 +1,6 @@
 using System;
-using GameScene.Item;
 using Photon.Pun;
 using UnityEngine;
-using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 public class HeldItem : MonoBehaviourPunCallbacks
 {
@@ -162,6 +160,7 @@ public class HeldItem : MonoBehaviourPunCallbacks
             equipItem.UnEquip(itemObject, false, needCollider);
 
             int viewID = itemObject.GetPhotonView().ViewID;
+            item.SetIsPickUp(false);
             photonView.RPC("SyncReplaceItem", RpcTarget.All, replacePosition, viewID);
             EventManager_Game.Instance.InvokeRemoveItem(slotIndex);
             photonView.RPC("InitItemInfo", RpcTarget.All, photonView.ViewID);

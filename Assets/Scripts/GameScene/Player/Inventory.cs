@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
-using Photon.Pun;
-using Photon.Realtime;
+ using Photon.Pun;
 using UnityEngine;
 
 public class Inventory : MonoBehaviourPunCallbacks
@@ -44,25 +42,6 @@ public class Inventory : MonoBehaviourPunCallbacks
         Debug.Log("인벤토리가 가득 찼습니다.");
         return false;
     }
-
-    //private void AddProperties(int itemViewID)
-    //{
-    //    ExitGames.Client.Photon.Hashtable playerProps = PhotonNetwork.LocalPlayer.CustomProperties;
-
-    //    if (!playerProps.ContainsKey("Inventory"))
-    //    {
-    //        playerProps["Inventory"] = new int[0];
-    //    }
-
-    //    int[] inventoryArray = (int[])playerProps["Inventory"];
-
-    //    List<int> inventoryList = new List<int>(inventoryArray);
-    //    inventoryList.Add(itemViewID);
-    //    playerProps["Inventory"] = inventoryList.ToArray();
-
-
-    //    PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
-    //}
 
     [PunRPC]
     private void SyncInventory(int playerID, int idx, int farmingObjectViewID)
@@ -121,25 +100,6 @@ public class Inventory : MonoBehaviourPunCallbacks
         }
     }
 
-    //private void RemoveProperties(int itemViewID)
-    //{
-    //    ExitGames.Client.Photon.Hashtable playerProps = PhotonNetwork.LocalPlayer.CustomProperties;
-
-    //    if (!playerProps.ContainsKey("Inventory"))
-    //    {
-    //        return;
-    //    }
-
-    //    int[] inventoryArray = (int[])playerProps["Inventory"];
-    //    List<int> inventoryList = new List<int>(inventoryArray);
-
-    //    if (inventoryList.Contains(itemViewID))
-    //    {
-    //        inventoryList.Remove(itemViewID);
-    //    }
-    //    playerProps["Inventory"] = inventoryList.ToArray();
-    //    PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
-    //}
 
 
 
@@ -174,34 +134,6 @@ public class Inventory : MonoBehaviourPunCallbacks
         return itemSlots;
     }
 
-    //public override void OnPlayerLeftRoom(Player otherPlayer)
-    //{
-    //    if (!PhotonNetwork.IsMasterClient) return;
-    //    Vector3 playerPosition = new Vector3(-29.77029f, 20.269f, 21.33452f);
-    //    if (otherPlayer.CustomProperties.TryGetValue("LastPosition", out object posData))
-    //    {
-    //        float[] posArray = (float[])posData;
-    //        if (posArray != null)
-    //        {
-    //            playerPosition = new Vector3(posArray[0], posArray[1], posArray[2]);
-    //            Debug.Log("Inventory : " + playerPosition);
-    //        }
-    //    }
-    //    if (otherPlayer.CustomProperties.TryGetValue("Inventory", out object inventoryData))
-    //    {
-    //        List<int> inventory = inventoryData as List<int>;
-    //        if (inventory != null)
-    //        {
-    //            foreach (int itemID in inventory)
-    //            {
-
-    //                Vector3 dropPosition = GetRandomDropPosition(playerPosition);
-    //                GameObject dropItem = ObjectPool.instance.GetObject(itemID, dropPosition, Quaternion.identity);
-    //                Debug.Log("Inventory : 아이템 아이디" + itemID);
-    //            }
-    //        }
-    //    }
-    //}
 
     private Vector3 GetRandomDropPosition(Vector3 TargetPosition)
     {
