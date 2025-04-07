@@ -32,11 +32,13 @@ public class RoleNoticeUI : MonoBehaviour
         {
             mannequinText.SetActive(true);
             citizenText.SetActive(false);
+            Debug.Log("bb");
         }
         else if (playerRole == PlayerRole.Citizen)
         {
             mannequinText.SetActive(false);
             citizenText.SetActive(true);
+            Debug.Log("aa");
         }
 
         roleNoticePanel.SetActive(true);

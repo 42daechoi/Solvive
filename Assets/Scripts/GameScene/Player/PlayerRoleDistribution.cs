@@ -38,13 +38,16 @@ public class PlayerRoleDistribution : MonoBehaviourPunCallbacks, IPunObservable
         role = (PlayerRole)roleInt;
         OnRoleChanged?.Invoke(role);
         Debug.Log("플레이어의 역할: " + role + photonView.ViewID);
-        if (photonView.IsMine) 
+        if (photonView.IsMine)
         {
             RoleUI.Instance.UpdateRoleUI(role);
-            EventManager_Game.Instance.InvokeSetRoleComplete(role);
+            if (role != PlayerRole.Observer)
+            {
+                EventManager_Game.Instance.InvokeSetRoleComplete(role);
+            }
             RetryUpdateRole(0.4f, 3);
         }
-        
+
     }
 
     public void SetRole(PlayerRole newRole)
