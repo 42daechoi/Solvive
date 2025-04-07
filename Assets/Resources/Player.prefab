@@ -968,8 +968,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbb3f38ffbaa60d489f1b6b954b8a657, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  voiceMixer: {fileID: 0}
-  voiceMixerGroup: {fileID: 0}
+  voiceMixer: {fileID: 24100000, guid: e296f62d20eaa774bb4380025ad1da97, type: 2}
+  voiceMixerGroup: {fileID: 24300002, guid: e296f62d20eaa774bb4380025ad1da97, type: 2}
 --- !u!114 &4539271005484956625
 MonoBehaviour:
   m_ObjectHideFlags: 0
