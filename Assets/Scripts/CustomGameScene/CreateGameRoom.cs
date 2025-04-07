@@ -24,19 +24,18 @@ public class CreateGameRoom : MonoBehaviourPunCallbacks
 		if (!PhotonNetwork.IsConnected)
 		{
 			PhotonNetwork.ConnectUsingSettings(); // Photon 서버에 연결
-			Debug.Log("Photon 서버에 연결 시도 중...");
 		}
 		confirmButton.onClick.AddListener(CreateRoom);
 	}
 	
 	public override void OnJoinRoomFailed(short returnCode, string message)
 	{
-		Debug.LogError($"방 참가 실패: {message}");
+		
 	}
 
 	public override void OnDisconnected(DisconnectCause cause)
 	{
-		Debug.LogError($"포톤 서버 연결 끊김: {cause}");
+		
 	}
 
 	public void CreateRoom()
@@ -91,7 +90,6 @@ public class CreateGameRoom : MonoBehaviourPunCallbacks
 	public override void OnRoomListUpdate(List<RoomInfo> roomList)
 	{
 		cachedRoomList = roomList;
-		Debug.Log("CreateGameRoom : 룸인포 업데이트됨");
 	}
 
 	private string GenerateRoomCode()
@@ -120,18 +118,15 @@ public class CreateGameRoom : MonoBehaviourPunCallbacks
 		SendOptions sendOptions = new SendOptions { Reliability = true };
 
 		PhotonNetwork.RaiseEvent(ROOM_INFO_EVENT, roomData, raiseEventOptions, sendOptions);
-		Debug.Log("방 정보 업로드 이벤트 전송 완료");
 	}
 
 	public override void OnCreateRoomFailed(short returnCode, string message)
 	{
-		Debug.LogError($"방 생성 실패: {message}");
 	}
 
 	public override void OnJoinedRoom()
 	{
-		Debug.Log($"방 참가 성공: {PhotonNetwork.CurrentRoom.Name}");
-		PhotonNetwork.LoadLevel("GameLobby"); // 방 참가 성공 시 GameLobby로 이동
+		PhotonNetwork.LoadLevel("GameLobby");
 	}
 	
 }

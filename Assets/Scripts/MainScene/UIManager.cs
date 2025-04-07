@@ -81,7 +81,7 @@ public class UIManager : MonoBehaviourPun
     {
         Debug.Log("CustomGame 버튼 누름");
         PhotonNetwork.LoadLevel("CustomGameScene");
-        PhotonNetwork.JoinLobby();
+        //PhotonNetwork.JoinLobby();
     }
 
     void Credits()
