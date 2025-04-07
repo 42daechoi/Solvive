@@ -34,13 +34,23 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         Debug.Log("NetworkManager : 포톤 마스터 서버 접속 완료");
-        PhotonNetwork.JoinLobby();
+        if (!PhotonNetwork.InLobby)
+        {
+            PhotonNetwork.JoinLobby();
+        }
     }
 
     public override void OnJoinedLobby()
     {
         Debug.Log("NetworkManager : 로비 접속 완료");
-        // 방 생성 또는 입장에 필요한 준비 코드 필요
+        GameLoadingScene.Instance.CheckCountOfPlayer();
+        //여기서 스팀 닉네임을 들고 와야 할듯
+        // if (SteamManager.Initialized)
+        // {
+        //     string steamNickname = SteamFriends.GetPersonaName();
+        //     Debug.Log("스팀 닉네임: " + steamNickname);
+        //     PhotonNetwork.NickName = steamNickname;
+        // }
     }
 
     // public void CreateRoom()
@@ -62,8 +72,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("NetworkManager : 방 입장 완료");
-        //PhotonNetwork.LoadLevel("GameLobby");
-        //PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     public void BackToLobby()

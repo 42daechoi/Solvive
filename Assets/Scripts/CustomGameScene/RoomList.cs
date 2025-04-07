@@ -52,7 +52,10 @@ public class RoomList : MonoBehaviourPunCallbacks
 	public override void OnConnectedToMaster()
 	{
 		base.OnConnectedToMaster();
-		PhotonNetwork.JoinLobby();
+		if (!PhotonNetwork.InLobby)
+		{
+			//PhotonNetwork.JoinLobby();
+		}
 	}
 
 	// 로비에 있을 때 자동으로 호출되는 콜백
