@@ -66,7 +66,6 @@ public class PlayerHealth : MonoBehaviourPun
 	private void Die()
 	{
 		Debug.Log($"{gameObject.name} 사망");
-		EventManager_Game.Instance.InvokeEliminateOrEscape("Eliminate");
 		GameManager.Instance.EliminateOrEscapeCitizen(photonView.ViewID, "Eliminate");
 	}
 

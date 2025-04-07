@@ -114,21 +114,15 @@ public class PlayerVoice : MonoBehaviourPun
     private void HandleVoiceGroup(string flag)
     {
         FindComponents();
-        if (!photonView.IsMine)
-        {
-            recorder.InterestGroup = 2;
-        }
-        else
-        {
-            recorder.InterestGroup = 1;
-        }
+        bool isObserver = flag == "Eliminate" || flag == "Escape";
+
+        recorder.InterestGroup = isObserver ? (byte)2 : (byte)1;
+        byte[] receiveGroups = isObserver ? new byte[] { 1, 2 } : new byte[] { 1 };
+
+        punVoiceClient.Client.OpChangeGroups(null, receiveGroups);
         
 
-        byte[] receiveGroups = new byte[] { 1, 2 };
-        punVoiceClient.Client.OpChangeGroups(null, receiveGroups);
-
-        Debug.Log("PlayerVoice: Group 2로 송신, Group 1,2 수신 설정됨");
-        if (recorder.InterestGroup == 2)
+        if (isObserver)
         {
             audioSource.spatialBlend = 0f;
         }

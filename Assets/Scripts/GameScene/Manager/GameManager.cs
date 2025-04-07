@@ -91,6 +91,11 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         if (player == null) return;
         
+        if (player.photonView.IsMine)
+        {
+            EventManager_Game.Instance.InvokeEliminateOrEscape(flag);
+        }
+        
         if (player.role == PlayerRole.Citizen)
         {
             if (flag == "Eliminate")
