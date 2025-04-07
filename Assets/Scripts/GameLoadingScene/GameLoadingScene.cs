@@ -46,7 +46,10 @@ public class GameLoadingScene : MonoBehaviourPunCallbacks
             {
                 gameLoadingScenePanel.SetActive(false);
             }
-            PhotonNetwork.LoadLevel("MainScene");
+            if (SceneManager.GetActiveScene().name == "LoadingScene")
+            {
+                PhotonNetwork.LoadLevel("MainScene");
+            }
         }
     }
 
