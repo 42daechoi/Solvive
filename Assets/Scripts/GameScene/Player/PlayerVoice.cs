@@ -51,13 +51,9 @@ public class PlayerVoice : MonoBehaviourPun
         {
             SetOutputVolume(+20f);
         }
-        
-        
-        punVoiceClient = GameObject.Find("VoiceManager")?.GetComponent<PunVoiceClient>();
+
+        FindComponents();
         Debug.Log($"PlayerVoice: PunvoiceClient - {punVoiceClient}");
-        
-        recorder = GetComponent<Recorder>();
-        audioSource = GetComponent<AudioSource>();
         if (recorder == null)
         {
             Debug.LogError("PlayerVoice : Recorder 컴포넌트 없음!");
@@ -102,21 +98,7 @@ public class PlayerVoice : MonoBehaviourPun
 
     void HandleVoice(bool value)
     {
-        if (recorder == null)
-        {
-            recorder = GetComponent<Recorder>();
-        }
-
-        if (audioSource == null)
-        {
-            audioSource = GetComponent<AudioSource>();
-        }
-
-        if (punVoiceClient == null)
-        {
-            punVoiceClient = GameObject.Find("VoiceManager")?.GetComponent<PunVoiceClient>();
-        }
-        
+        FindComponents();
         if (!photonView.IsMine) return;
         if (recorder == null)
         {
@@ -129,21 +111,7 @@ public class PlayerVoice : MonoBehaviourPun
 
     private void HandleVoiceGroup(string flag)
     {
-        if (recorder == null)
-        {
-            recorder = GetComponent<Recorder>();
-        }
-
-        if (audioSource == null)
-        {
-            audioSource = GetComponent<AudioSource>();
-        }
-
-        if (punVoiceClient == null)
-        {
-            punVoiceClient = GameObject.Find("VoiceManager")?.GetComponent<PunVoiceClient>();
-        }
-        
+        FindComponents();
         if (!photonView.IsMine)
         {
             recorder.InterestGroup = 2;
@@ -181,5 +149,23 @@ public class PlayerVoice : MonoBehaviourPun
         recorder.RestartRecording();
 
         Debug.Log($"PlayerVoice : 마이크 변경됨 => {micName}");
+    }
+
+    private void FindComponents()
+    {
+        if (recorder == null)
+        {
+            recorder = GetComponent<Recorder>();
+        }
+        
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
+        
+        if (punVoiceClient == null)
+        {
+            punVoiceClient = GameObject.Find("VoiceManager")?.GetComponent<PunVoiceClient>();
+        }
     }
 }
