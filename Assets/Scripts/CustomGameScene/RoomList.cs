@@ -54,7 +54,7 @@ public class RoomList : MonoBehaviourPunCallbacks
 		base.OnConnectedToMaster();
 		if (!PhotonNetwork.InLobby)
 		{
-			//PhotonNetwork.JoinLobby();
+			PhotonNetwork.JoinLobby();
 		}
 	}
 
