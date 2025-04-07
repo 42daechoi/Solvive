@@ -8,6 +8,7 @@ public class RoleManager : MonoBehaviour
     private int citizenCount = 0;
     [SerializeField] private int mannequinCount = 1;
     private HashSet<int> mannequinIndexSet = new HashSet<int>();
+    
 
     private IEnumerator WaitForEventManager()
     {
