@@ -102,9 +102,20 @@ public class PlayerVoice : MonoBehaviourPun
 
     void HandleVoice(bool value)
     {
-        recorder = GetComponent<Recorder>();
-        audioSource = GetComponent<AudioSource>();
-        punVoiceClient = GameObject.Find("VoiceManager")?.GetComponent<PunVoiceClient>();
+        if (recorder == null)
+        {
+            recorder = GetComponent<Recorder>();
+        }
+
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
+
+        if (punVoiceClient == null)
+        {
+            punVoiceClient = GameObject.Find("VoiceManager")?.GetComponent<PunVoiceClient>();
+        }
         
         if (!photonView.IsMine) return;
         if (recorder == null)
@@ -118,6 +129,21 @@ public class PlayerVoice : MonoBehaviourPun
 
     private void HandleVoiceGroup(string flag)
     {
+        if (recorder == null)
+        {
+            recorder = GetComponent<Recorder>();
+        }
+
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
+
+        if (punVoiceClient == null)
+        {
+            punVoiceClient = GameObject.Find("VoiceManager")?.GetComponent<PunVoiceClient>();
+        }
+        
         if (!photonView.IsMine)
         {
             recorder.InterestGroup = 2;
