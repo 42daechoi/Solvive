@@ -14,6 +14,12 @@ public class EquipItem : MonoBehaviourPunCallbacks
     [SerializeField] private Transform l_ArmStrech;
     [SerializeField] private Transform l_Forearm;
     [SerializeField] private Transform l_Hand;
+    [SerializeField] private Transform index_r;
+    [SerializeField] private Transform index_r2;
+    [SerializeField] private Transform middle_r;
+    [SerializeField] private Transform pinky_r;
+    [SerializeField] private Transform ring_r;
+    [SerializeField] private Transform thumb_r;
     
     [SerializeField] private WeaponPoseDatabase weaponPoseDB;
     [SerializeField] private GameObject[] firstPersonWeapons;
@@ -129,6 +135,13 @@ public class EquipItem : MonoBehaviourPunCallbacks
         seq.Join(l_ArmStrech.DOLocalRotateQuaternion(Quaternion.Euler(poseData.l_ArmStrech), duration));
         seq.Join(l_Forearm.DOLocalRotateQuaternion(Quaternion.Euler(poseData.l_ForearmRotation), duration));
         seq.Join(l_Hand.DOLocalRotateQuaternion(Quaternion.Euler(poseData.l_HandRotation), duration));
+        
+        seq.Join(index_r.DOLocalRotateQuaternion(Quaternion.Euler(poseData.index_r), duration));
+        seq.Join(index_r2.DOLocalRotateQuaternion(Quaternion.Euler(poseData.index_r2), duration));
+        seq.Join(middle_r.DOLocalRotateQuaternion(Quaternion.Euler(poseData.middle_r), duration));
+        seq.Join(pinky_r.DOLocalRotateQuaternion(Quaternion.Euler(poseData.pinky_r), duration));
+        seq.Join(ring_r.DOLocalRotateQuaternion(Quaternion.Euler(poseData.ring_r), duration));
+        seq.Join(thumb_r.DOLocalRotateQuaternion(Quaternion.Euler(poseData.thumb_r), duration));
 
         seq.SetEase(Ease.OutSine).OnComplete(() => onComplete?.Invoke());
     }

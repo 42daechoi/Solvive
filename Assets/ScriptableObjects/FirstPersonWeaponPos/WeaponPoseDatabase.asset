@@ -17,6 +17,12 @@ MonoBehaviour:
     r_ArmStrech: {x: -45.05, y: 15, z: -24.1}
     r_ForearmRotation: {x: 55.15, y: -3.35, z: -84.3}
     r_HandRotation: {x: -2.5, y: -89.7, z: -3.7}
+    index_r: {x: 1.188, y: 4.387, z: 12.255}
+    index_r2: {x: -63.127, y: -16.66, z: 13.007}
+    middle_r: {x: -62.09, y: -138.34, z: 137.29}
+    pinky_r: {x: -58.93, y: -104.32, z: 102}
+    ring_r: {x: -61.87, y: -125.3, z: 121.41}
+    thumb_r: {x: 60.87, y: 65.74, z: -8.84}
     l_ArmStrech: {x: 0, y: 0, z: 0}
     l_ForearmRotation: {x: 0, y: 0, z: 0}
     l_HandRotation: {x: 0, y: 0, z: 0}
@@ -24,6 +30,12 @@ MonoBehaviour:
     r_ArmStrech: {x: -15.05, y: -5.25, z: -47.3}
     r_ForearmRotation: {x: 0.53, y: 7.2, z: -123.65}
     r_HandRotation: {x: -4.95, y: 18.6, z: -1.7}
+    index_r: {x: -14.085, y: 0, z: 0}
+    index_r2: {x: -52.94, y: 0, z: 0}
+    middle_r: {x: -24.278, y: 0, z: 0}
+    pinky_r: {x: -19.867, y: 0, z: 0}
+    ring_r: {x: -29.4, y: 0, z: 0}
+    thumb_r: {x: 38.367, y: 99.548, z: -12.451}
     l_ArmStrech: {x: -36.5, y: -80.4, z: 83.8}
     l_ForearmRotation: {x: 3.9, y: 45.35, z: 106.45}
     l_HandRotation: {x: -3.1, y: 14.3, z: 15}
@@ -31,6 +43,12 @@ MonoBehaviour:
     r_ArmStrech: {x: -45.05, y: 15, z: -24.1}
     r_ForearmRotation: {x: 55.15, y: -3.35, z: -84.3}
     r_HandRotation: {x: -2.5, y: -89.7, z: -3.7}
+    index_r: {x: -7.658, y: -5.866, z: 23.463}
+    index_r2: {x: -57.825, y: 10.96, z: 39.341}
+    middle_r: {x: 0, y: 0, z: 9.584}
+    pinky_r: {x: 0, y: 0, z: 0}
+    ring_r: {x: 0, y: 0, z: 0}
+    thumb_r: {x: 41.314, y: 93.23, z: -52.312}
     l_ArmStrech: {x: 0, y: 0, z: 0}
     l_ForearmRotation: {x: 0, y: 0, z: 0}
     l_HandRotation: {x: 0, y: 0, z: 0}
@@ -38,6 +56,12 @@ MonoBehaviour:
     r_ArmStrech: {x: -37.5, y: 34.6, z: -37.7}
     r_ForearmRotation: {x: 59.8, y: -171.15, z: -241.1}
     r_HandRotation: {x: 19.1, y: -162, z: -24.8}
+    index_r: {x: -45.695, y: 31.345, z: 0}
+    index_r2: {x: 0, y: 0, z: 0}
+    middle_r: {x: -49.444, y: 0, z: 0}
+    pinky_r: {x: -65.37, y: 0, z: 0}
+    ring_r: {x: -42.747, y: -7.324, z: 0}
+    thumb_r: {x: 45.92, y: 96.98, z: -64.133}
     l_ArmStrech: {x: 0, y: 0, z: 0}
     l_ForearmRotation: {x: 0, y: 0, z: 0}
     l_HandRotation: {x: 0, y: 0, z: 0}
@@ -45,6 +69,12 @@ MonoBehaviour:
     r_ArmStrech: {x: -43.36, y: -2.41, z: -2.33}
     r_ForearmRotation: {x: -64.68, y: 84.07, z: -175.26}
     r_HandRotation: {x: -6.7, y: 132.06, z: 19.55}
+    index_r: {x: -39.29, y: 0, z: 0}
+    index_r2: {x: -26.142, y: 106.471, z: -79.304}
+    middle_r: {x: -64.192, y: 48.174, z: -12.826}
+    pinky_r: {x: -30.988, y: 12.617, z: 0}
+    ring_r: {x: -45.174, y: 39.331, z: 14.874}
+    thumb_r: {x: 10.392, y: 79.142, z: -35.639}
     l_ArmStrech: {x: 0, y: 0, z: 0}
     l_ForearmRotation: {x: 0, y: 0, z: 0}
     l_HandRotation: {x: 0, y: 0, z: 0}
@@ -52,6 +82,12 @@ MonoBehaviour:
     r_ArmStrech: {x: -64.6, y: -3.27, z: 3.512}
     r_ForearmRotation: {x: -55.888, y: 90.658, z: -180.545}
     r_HandRotation: {x: -12.762, y: 42.858, z: 45.088}
+    index_r: {x: 0, y: 0, z: 0}
+    index_r2: {x: 0, y: 0, z: 0}
+    middle_r: {x: 0, y: 0, z: 0}
+    pinky_r: {x: 0, y: 0, z: 0}
+    ring_r: {x: 0, y: 0, z: 0}
+    thumb_r: {x: 48.54, y: 154.157, z: -30.933}
     l_ArmStrech: {x: 0, y: 0, z: 0}
     l_ForearmRotation: {x: 0, y: 0, z: 0}
     l_HandRotation: {x: 0, y: 0, z: 0}
