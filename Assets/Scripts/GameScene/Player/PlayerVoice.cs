@@ -88,11 +88,13 @@ public class PlayerVoice : MonoBehaviourPun
     {
         if (toState == Photon.Realtime.ClientState.Joined && !groupChanged)
         {
-            byte[] receiveGroups = new byte[] { 1 };
-            punVoiceClient.Client.OpChangeGroups(null, receiveGroups);
-            groupChanged = true;
-
-            Debug.Log("PlayerVoice: 그룹 변경 완료 (Group 1 수신)");
+            if (punVoiceClient.Client.IsConnected && punVoiceClient.Client.InRoom)
+            {
+                byte[] receiveGroups = new byte[] { 1 };
+                punVoiceClient.Client.OpChangeGroups(null, receiveGroups);
+                groupChanged = true;
+                Debug.Log("PlayerVoice: 그룹 변경 완료 (Group 1 수신)");
+            }
         }
     }
 
