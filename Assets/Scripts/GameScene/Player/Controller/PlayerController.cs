@@ -9,6 +9,9 @@ public class PlayerController : MonoBehaviourPun
 {
 	public static PlayerController Instance { get; private set; }
 	
+	private Material bodyMaterial;
+	private Color originalBodyColor;
+	
 	/* PlayerController 변수 */
 	private Inventory _inventory;
 	private HeldItem _heldItem;
@@ -500,4 +503,51 @@ public class PlayerController : MonoBehaviourPun
 		gameObject.layer = observerLayer;
 	}
 	
+	public void MannequineDivide(PlayerRole myRole)
+	{
+		PlayerRole otherRole = GetComponent<PlayerRoleDistribution>().role;
+
+		if (myRole == PlayerRole.Mannequin && otherRole == PlayerRole.Mannequin)
+		{
+			SetBodyColor(Color.yellow);
+		}
+		else
+		{
+			ResetBodyColor();
+		}
+	}
+	private void InitializeBodyMaterial()
+	{
+		if (thirdPersonModel != null)
+		{
+			var renderers = thirdPersonModel.GetComponentsInChildren<Renderer>(true);
+			foreach (var renderer in renderers)
+			{
+				if (renderer.name.Contains("Body"))
+				{
+					bodyMaterial = renderer.material;
+					originalBodyColor = bodyMaterial.GetColor("_BaseColor");
+					break;
+				}
+			}
+		}
+	}
+	
+	public void SetBodyColor(Color color)
+	{
+		if (bodyMaterial == null)
+			InitializeBodyMaterial();
+
+		if (bodyMaterial != null)
+			bodyMaterial.SetColor("_BaseColor", color);
+	}
+
+	public void ResetBodyColor()
+	{
+		if (bodyMaterial == null)
+			InitializeBodyMaterial();
+
+		if (bodyMaterial != null)
+			bodyMaterial.SetColor("_BaseColor", originalBodyColor);
+	}
 }
