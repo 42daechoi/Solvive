@@ -292,47 +292,42 @@ public class PlayerController : MonoBehaviourPun
 	
 	public void StartMoveToComputer()
 	{
-		StopAllCoroutines();
-		StartCoroutine(WalkToComputer(_computerInteractionPoint, _computerInteractionRotation));
+		WalkToComputer(_computerInteractionPoint, _computerInteractionRotation);
 	}
-	
-	private IEnumerator WalkToComputer(Vector3 targetPosition, Quaternion targetRotation)
+
+	private void WalkToComputer(Vector3 targetPosition, Quaternion targetRotation)
 	{
 		float distanceThreshold = 0.1f;
 		float moveSpeed = _speedSettings.walkSpeed;
 		float rotationSpeed = 1f;
 
-		Vector3 startPosition = transform.position;
-		Vector3 direction = (targetPosition - startPosition).normalized;
+		Vector3 direction = (targetPosition - transform.position).normalized;
 
 		if (_playerAnimator != null)
 		{
 			_playerAnimator.SetMoveAnim(direction.x, direction.z, 1f);
 		}
 
-		while (Vector2.Distance(
-			       new Vector2(transform.position.x, transform.position.z),
-			       new Vector2(targetPosition.x, targetPosition.z)
-		       ) > distanceThreshold)
-		{
-			Vector3 newPosition = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-			Vector3 movement = newPosition - transform.position;
+		float distance = Vector3.Distance(transform.position, targetPosition);
+		float duration = distance / moveSpeed;
 
-			_controller.Move(movement);
-			transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+		transform.DOMove(new Vector3(targetPosition.x, transform.position.y, targetPosition.z), duration)
+			.SetEase(Ease.Linear);
 
-			yield return null;
-		}
-		
-		transform.position = new Vector3(targetPosition.x, transform.position.y, targetPosition.z);
-		transform.rotation = targetRotation;
+		transform.DORotateQuaternion(targetRotation, duration)
+			.SetEase(Ease.Linear)
+			.OnComplete(() =>
+			{
+				transform.position = new Vector3(targetPosition.x, transform.position.y, targetPosition.z);
+				transform.rotation = targetRotation;
 
-		if (_playerAnimator != null)
-		{
-			_playerAnimator.SetMoveAnim(0, 0, 1f);
-		}
+				if (_playerAnimator != null)
+				{
+					_playerAnimator.SetMoveAnim(0, 0, 1f);
+				}
+			});
 	}
-	
+
 	private void SetInputManager(MonoBehaviour newInputManager)
 	{
 		if (!_photonView.IsMine) return;
