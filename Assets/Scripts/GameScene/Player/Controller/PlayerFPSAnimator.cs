@@ -134,5 +134,18 @@ public class PlayerFPSAnimator : MonoBehaviour
 		seq.Append(r_ArmStrech.DOLocalRotateQuaternion(defaultArmRot, returnDuration).SetEase(Ease.OutQuad));
 		seq.Join(r_Forearm.DOLocalRotateQuaternion(defaultForearmRot, returnDuration).SetEase(Ease.OutQuad));
 		seq.Join(r_Hand.DOLocalRotateQuaternion(defaultHandRot, returnDuration).SetEase(Ease.OutQuad));
+		
+		seq.OnComplete(() =>
+		{
+			GameObject currentWeapon = GetComponentInParent<EquipItem>()?.GetCurrentFPSWeapon();
+			if (currentWeapon != null && currentWeapon.name.Contains("Keycard"))
+			{
+				currentWeapon.SetActive(false);
+				EventManager_Game.Instance.InvokeAnimationStateChange("Default");
+				float duration = 0.25f;
+				r_ArmStrech.DOLocalRotateQuaternion(Quaternion.Euler(-0.84f, 73.5f, -51.11f), duration);
+				l_ArmStrech.DOLocalRotateQuaternion(Quaternion.Euler(25.05f, -84.53f, 63.9f), duration);
+			}
+		});
 	}
 }
