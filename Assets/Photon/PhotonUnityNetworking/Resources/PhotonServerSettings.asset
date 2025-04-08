@@ -102,6 +102,7 @@ MonoBehaviour:
   - SyncToMasterIsPickUp
   - UninstallBattery
   - BatterySync
+  - RPC_Destroy
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
