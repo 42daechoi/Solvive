@@ -102,7 +102,12 @@ public class GameLobbyManager : MonoBehaviourPunCallbacks
             if (readyStatusText != null)
             {
                 object isReady;
-                if (player.CustomProperties.TryGetValue("IsReady", out isReady) && (bool)isReady)
+                
+                if (player.IsMasterClient)
+                {
+                    readyStatusText.text = "RoomMaster";
+                }
+                else if (player.CustomProperties.TryGetValue("IsReady", out isReady) && (bool)isReady)
                 {
                     readyStatusText.text = "Ready";
                 }
