@@ -53,6 +53,7 @@ public class Keycard : ItemData
                 if (destroyScript != null)
                 {
                     destroyScript.RequestDestroy();
+                    holder.RemoveItemInventory();
                 }
                 else
                 {
