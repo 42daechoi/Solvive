@@ -958,6 +958,7 @@ MonoBehaviour:
   jumpLandClip: {fileID: 8300000, guid: baf90d315c62c1648ba2901ff92db065, type: 3}
   pantingClip: {fileID: 8300000, guid: 75f688f449b918c4cae39b81ba93de2c, type: 3}
   hitClip: {fileID: 8300000, guid: 165e2099368410145b67100d98dfbd81, type: 3}
+  observerSighClip: {fileID: 8300000, guid: f949b42929345334bafd7e3200b3d84e, type: 3}
 --- !u!114 &5057798506719051796
 MonoBehaviour:
   m_ObjectHideFlags: 0

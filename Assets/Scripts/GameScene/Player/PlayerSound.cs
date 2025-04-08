@@ -10,6 +10,7 @@ public class PlayerSound : MonoBehaviourPun
     public AudioClip jumpLandClip;
     public AudioClip pantingClip;
     public AudioClip hitClip;
+    public AudioClip observerSighClip;
     private bool isMouthPlaying = false;
 
 
@@ -138,5 +139,18 @@ public class PlayerSound : MonoBehaviourPun
     private void SyncPlayJumpLandSound()
     {
         audioSource.PlayOneShot(jumpLandClip);
+    }
+
+    public void PlayObserverSighSound()
+    {
+        photonView.RPC("SyncPlayObserverSighSound", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void SyncPlayObserverSighSound()
+    {
+        audioSource.maxDistance = 20.0f;
+        audioSource.volume = 1f;
+        audioSource.PlayOneShot(observerSighClip);
     }
 }
