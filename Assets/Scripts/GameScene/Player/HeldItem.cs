@@ -162,7 +162,7 @@ public class HeldItem : MonoBehaviourPunCallbacks
             int viewID = itemObject.GetPhotonView().ViewID;
             item.SetIsPickUp(false);
             photonView.RPC("SyncReplaceItem", RpcTarget.All, replacePosition, viewID);
-            EventManager_Game.Instance.InvokeRemoveItem(slotIndex);
+            RemoveItemInventory();
             photonView.RPC("InitItemInfo", RpcTarget.All, photonView.ViewID);
         }
     }
@@ -222,4 +222,8 @@ public class HeldItem : MonoBehaviourPunCallbacks
         
     }
 
+    public void RemoveItemInventory()
+    {
+        EventManager_Game.Instance.InvokeRemoveItem(slotIndex);
+    }
 }
