@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviourPun
 	private PlayerSound _playerSound;
 	private PlayerStamina _playerStamina;
 	public MovementSettings localSpeedSettings;
+	private ObserverRender _observerRender;
 	
 	[Header("Speed Settings")]
 	[SerializeField] private MovementSettings _speedSettings;
@@ -61,7 +62,7 @@ public class PlayerController : MonoBehaviourPun
 	[SerializeField] private GameObject obRender;
 	[SerializeField] private GameObject playerDeadBody;
 
-	[Header("Player UI")]
+    [Header("Player UI")]
 	[SerializeField] private GameObject[] ingameUIObjects;
 	public float VerticalVelocity { get; set; }
 	private bool _mannequinEscape = false;
@@ -120,6 +121,7 @@ public class PlayerController : MonoBehaviourPun
 		TryGetComponent(out _heldItem);
 		TryGetComponent(out _equipItem);
 		TryGetComponent(out _playerHealth);
+		TryGetComponent(out _observerRender);
 		
 		_currentSpeed = _speedSettings.walkSpeed;
 		
@@ -366,6 +368,7 @@ public class PlayerController : MonoBehaviourPun
 		if (_photonView.ViewID == viewID)
 		{
 			obRender.SetActive(false);
+			_observerRender.SetActiveRender();
 			if (!escape)
 			{
 				SpawnPointManager spawnPointManager = new SpawnPointManager();
