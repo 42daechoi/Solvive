@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class UIManager : MonoBehaviourPun
 {
@@ -11,6 +12,7 @@ public class UIManager : MonoBehaviourPun
     public GameObject ControlPanel;
     public GameObject resolutionPanel;
     public GameObject AudioPanel;
+    public GameObject HowToPlayPanel;
     
     public static UIManager Instance;
     
@@ -29,6 +31,8 @@ public class UIManager : MonoBehaviourPun
         EventManager_Main.OnOptionConfirmButtonClicked += Option_confirm;
         EventManager_Main.OnGMS_backgroundClicked += GMS_background;
         SceneManager.sceneLoaded += OnSceneLoaded;
+        EventManager_Main.OnHowToPlayClicked += HowToPlay;
+        EventManager_Main.OnBackClicked += Back;
     }
 
     void OnDisable()
@@ -46,6 +50,8 @@ public class UIManager : MonoBehaviourPun
         EventManager_Main.OnOptionConfirmButtonClicked += Option_confirm;
         EventManager_Main.OnGMS_backgroundClicked += GMS_background;
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        EventManager_Main.OnHowToPlayClicked -= HowToPlay;
+        EventManager_Main.OnBackClicked -= Back;
     }
     
     void Awake()
@@ -171,6 +177,17 @@ public class UIManager : MonoBehaviourPun
         }
 
         return null;
+    }
+
+    void HowToPlay()
+    {
+        Debug.Log("HowToPlay");
+        HowToPlayPanel.SetActive(true);
+    }
+
+    void Back()
+    {
+        HowToPlayPanel.SetActive(false);
     }
     
 }
