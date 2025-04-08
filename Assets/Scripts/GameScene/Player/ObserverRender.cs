@@ -27,7 +27,7 @@ public class ObserverRender : MonoBehaviourPun
 
         if (photonView.IsMine)
         {
-            ActiveOthersWhenIChangeToObserver();
+            ActiveOthersWhenLocalChangeToObserver();
         }
         else
         {
@@ -50,7 +50,7 @@ public class ObserverRender : MonoBehaviourPun
     }
 
 
-    private void ActiveOthersWhenIChangeToObserver()
+    private void ActiveOthersWhenLocalChangeToObserver()
     {
         // 옵저버가 될 사람이 나일 때 이미 옵저버가 되어있던 사람들의 렌더를 내 로컬에서 키는 역할
 
