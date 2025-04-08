@@ -61,7 +61,7 @@ public class PlayerLookSync : MonoBehaviourPun, IPunObservable
         {
             if (_playerCamera != null)
             {
-                short compressedYRot = (short)(_playerCamera.yAxis.Value * 100);
+                short compressedYRot = (short)(_playerCamera.YRotation * 100);
                 stream.SendNext(compressedYRot);
             }
             else

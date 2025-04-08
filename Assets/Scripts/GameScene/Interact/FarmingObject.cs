@@ -66,4 +66,9 @@ public class FarmingObject : MonoBehaviourPun, IInteractableObject
     {
         return photonView.ViewID;
     }
+
+    public bool GetIsPickUp()
+    {
+        return isPickedUp;
+    }
 }

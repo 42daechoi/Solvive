@@ -3,11 +3,14 @@ using System.Collections;
 using Photon.Pun;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.InputSystem;
 
 public class PlayerCamera : MonoBehaviour
 {
-    public Cinemachine.AxisState xAxis, yAxis;
+    private float xRotation;
+    private float yRotation;
     private PhotonView _photonView;
+    private MouseControl mouseControl;
     private bool _isCameraActive = true;
 
     [SerializeField] Transform camFollowPos;
@@ -16,7 +19,11 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField] Transform targetObject;
     
     public Transform TargetObject => targetObject;
+    public float YRotation => yRotation;
     
+    [SerializeField] private float mouseSensitivity = 1.0f;
+    [SerializeField] private float minY = -80f;
+    [SerializeField] private float maxY = 80f;
     private void OnEnable()
     {
         if (EventManager_Game.Instance != null)
@@ -36,7 +43,7 @@ public class PlayerCamera : MonoBehaviour
     void Start()
     {
         _photonView = GetComponent<PhotonView>();
-
+        mouseControl = FindObjectOfType<MouseControl>();
         if (_photonView.IsMine)
         {
             if (virtualCamera != null && camFollowPos != null)
@@ -44,10 +51,6 @@ public class PlayerCamera : MonoBehaviour
                 virtualCamera.Follow = camFollowPos;
                 virtualCamera.LookAt = camFollowPos;
                 virtualCamera.gameObject.SetActive(true);
-
-                // Axis 초기화
-                xAxis.Reset();
-                yAxis.Reset();
             }
         }
         else
@@ -59,37 +62,33 @@ public class PlayerCamera : MonoBehaviour
         }
     }
 
-    void Update()
+    /*void Update()
     {
-        if (_photonView.IsMine && _isCameraActive)
-        {
-            xAxis.Update(Time.deltaTime);
-            yAxis.Update(Time.deltaTime);
-        }
-    }
+        
+    }*/
 
     private void LateUpdate()
     {
         if (!_photonView.IsMine || !_isCameraActive) return;
+
+        if (mouseControl == null) return;
+
+        float sensitivity = mouseControl.mouseSensitivity;
         
-        if (virtualCamera.Follow == null || virtualCamera.LookAt == null)
-        {
-            virtualCamera.Follow = camFollowPos;
-            virtualCamera.LookAt = camFollowPos;
-        }
+        float mouseX = Input.GetAxisRaw("Mouse X") * sensitivity;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * sensitivity;
 
-        Vector3 cameraRotation = virtualCamera.transform.localEulerAngles;
-        cameraRotation.x = yAxis.Value;
-        virtualCamera.transform.localEulerAngles = cameraRotation;
-        transform.eulerAngles = new Vector3(0f, xAxis.Value, 0f);
-
+        xRotation += mouseX;
+        yRotation -= mouseY;
+        yRotation = Mathf.Clamp(yRotation, minY, maxY);
+        
+        transform.rotation = Quaternion.Euler(0f, xRotation, 0f);
+        virtualCamera.transform.localEulerAngles = new Vector3(yRotation, 0f, 0f);
+        
         if (targetObject != null)
         {
-            float xRotation = yAxis.Value;
-            if (xRotation > 180f) xRotation -= 360f;
-            
             Vector3 pos = targetObject.position;
-            pos.y = -xRotation;
+            pos.y = -yRotation;
             targetObject.position = pos;
         }
     }
