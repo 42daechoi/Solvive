@@ -103,6 +103,7 @@ MonoBehaviour:
   - UninstallBattery
   - BatterySync
   - RPC_Destroy
+  - SyncPlayObserverSighSound
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

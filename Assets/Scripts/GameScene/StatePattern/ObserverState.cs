@@ -7,6 +7,8 @@ using Photon.Voice.Unity;
 
 public class ObserverState : IState
 {
+    private float sighCooldown = 5f;
+    private float lastSighTime = -Mathf.Infinity;
     public void EnterState(PlayerController player, PlayerSound playerSound)
     {
         if (player.GetPhotonView().IsMine)
@@ -35,12 +37,18 @@ public class ObserverState : IState
 
     public void UpdateState(PlayerController player, Vector3 inputDirection, float offset, PlayerSound playerSound)
     {
+        if (Input.GetMouseButtonDown(0) && Time.time >= lastSighTime + sighCooldown)
+        {
+            lastSighTime = Time.time;
+            playerSound.PlayObserverSighSound();
+        }
+
         if (inputDirection.sqrMagnitude < 0.1f)
         {
             return;
         }
     }
-    
+
 
     public void FixedUpdateState(PlayerController player, Vector3 inputDirection, float offset, bool escape, PlayerSound playerSound)
     {

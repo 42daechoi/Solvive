@@ -323,7 +323,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 561389139830730110}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.85403866, z: 0, w: 0.5202096}
+  m_LocalRotation: {x: 0, y: -0.8723157, z: 0, w: 0.4889431}
   m_LocalPosition: {x: 0.32, y: -0.00000011920929, z: -0.9762237}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -958,6 +958,7 @@ MonoBehaviour:
   jumpLandClip: {fileID: 8300000, guid: baf90d315c62c1648ba2901ff92db065, type: 3}
   pantingClip: {fileID: 8300000, guid: 75f688f449b918c4cae39b81ba93de2c, type: 3}
   hitClip: {fileID: 8300000, guid: 165e2099368410145b67100d98dfbd81, type: 3}
+  observerSighClip: {fileID: 8300000, guid: f949b42929345334bafd7e3200b3d84e, type: 3}
 --- !u!114 &5057798506719051796
 MonoBehaviour:
   m_ObjectHideFlags: 0
