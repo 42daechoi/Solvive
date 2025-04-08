@@ -40,6 +40,7 @@ public class GeneratorSound : MonoBehaviour
 
     public void PlayEndSound()
     {
+        CancelInvoke(nameof(PlayLoopSound));
         audioSource.Stop();
         audioSource.clip = endClip;
         audioSource.loop = false;
