@@ -24,6 +24,7 @@ public class EquipItem : MonoBehaviourPunCallbacks
     [SerializeField] private WeaponPoseDatabase weaponPoseDB;
     [SerializeField] private GameObject[] firstPersonWeapons;
     private GameObject currentFPSWeapon;
+    public GameObject GetCurrentFPSWeapon() => currentFPSWeapon;
     
     private bool isProcessing = false;
 
