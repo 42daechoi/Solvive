@@ -37,8 +37,6 @@ public class ObserverState : IState
 
     public void UpdateState(PlayerController player, Vector3 inputDirection, float offset, PlayerSound playerSound)
     {
-        if (!player.GetPhotonView().IsMine) return;
-
         if (Input.GetMouseButtonDown(0) && Time.time >= lastSighTime + sighCooldown)
         {
             lastSighTime = Time.time;
