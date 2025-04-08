@@ -84,7 +84,7 @@ public class PasswordManager : MonoBehaviourPun
 	{
 		if (setterIdx >= passwords.Count)
 		{
-			throw new InvalidOperationException("PasswordGenerator¿¡¼­ ´õ ÀÌ»ó °¡Á®¿Ã ¼ö ÀÖ´Â ÆÐ½º¿öµå°¡ ¾ø½À´Ï´Ù.");
+			throw new InvalidOperationException("PasswordGeneratorï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½Ð½ï¿½ï¿½ï¿½ï¿½å°¡ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 		}
 		return passwords[setterIdx++];
 	}
@@ -124,10 +124,22 @@ public class PasswordManager : MonoBehaviourPun
 		int validatedIndex = validPasswords.IndexOf(validatedPassword);
 		int inputPasswordIndex = validPasswords.IndexOf(inputPassword);
 
-		if (inputPasswordIndex < 0) return false;
-
-		validPasswords.RemoveAt(validatedIndex);
-		validPasswords.RemoveAt(inputPasswordIndex);
+		if (validatedIndex < 0 || inputPasswordIndex < 0) return false;
+		
+		if (validatedIndex > inputPasswordIndex)
+		{
+			validPasswords.RemoveAt(validatedIndex);
+			validPasswords.RemoveAt(inputPasswordIndex);
+		}
+		else if (validatedIndex < inputPasswordIndex)
+		{
+			validPasswords.RemoveAt(inputPasswordIndex);
+			validPasswords.RemoveAt(validatedIndex);
+		}
+		else
+		{
+			validPasswords.RemoveAt(validatedIndex);
+		}
 
 		if (validPasswords.Count == 0)
 		{
@@ -137,9 +149,9 @@ public class PasswordManager : MonoBehaviourPun
 		{
 			photonView.RPC("SyncRemovePassword", RpcTarget.All, validPasswords.ToArray());
 		}
+
 		ResetValidatedPassword();
 		return true;
-
 	}
 
 	[PunRPC]

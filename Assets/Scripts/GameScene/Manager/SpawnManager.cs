@@ -114,7 +114,7 @@ public class SpawnManager : MonoBehaviourPun
         List<Transform> spawnPoints = GetKeycardSpawnPoints();
         foreach (Transform spawnPoint in spawnPoints)
         {
-            GameObject keycard = PhotonNetwork.InstantiateRoomObject("Items/Keycard", spawnPoint.position, Quaternion.Euler(-90, 0, 0));
+            GameObject keycard = PhotonNetwork.InstantiateRoomObject("Items/Keycard", spawnPoint.position, Quaternion.identity);
             StartCoroutine(MoveKeycard(keycard.transform, spawnPoint));
         }
 
