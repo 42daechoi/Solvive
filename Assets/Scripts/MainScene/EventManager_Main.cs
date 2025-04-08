@@ -18,6 +18,8 @@ public class EventManager_Main : MonoBehaviour
     public static event Action OnAudioPanelButtonClicked;
     public static event Action OnOptionConfirmButtonClicked;
     public static event Action OnGMS_backgroundClicked;
+    public static event Action OnHowToPlayClicked;
+    public static event Action OnBackClicked;
     
     public Button FindGameButton;
     public Button CustomGameButton;
@@ -27,9 +29,9 @@ public class EventManager_Main : MonoBehaviour
     public Button ResolutionPanelButton;
     public Button AudioPanelButton;
     public Button OptionConfirmButton;
-    public Button SoloModeButton;
-    public Button MutiModeButton;
+    public Button HowToPlayButton;
     public Button GMS_background;
+    public Button Back;
 
     IEnumerator WaitSecond(Button button)
         {
@@ -101,7 +103,16 @@ public class EventManager_Main : MonoBehaviour
         OnMultiModeClicked?.Invoke();
     }
     public void OnGMS_background(){
-        Debug.Log("있음");
         OnGMS_backgroundClicked?.Invoke();
+    }
+
+    public void OnClickHowToPlayButton()
+    {
+        OnHowToPlayClicked?.Invoke();
+    }
+
+    public void OnClickBackButton()
+    {
+        OnBackClicked?.Invoke();
     }
 }
