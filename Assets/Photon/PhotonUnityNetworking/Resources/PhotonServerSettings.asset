@@ -104,6 +104,8 @@ MonoBehaviour:
   - BatterySync
   - RPC_Destroy
   - SyncPlayObserverSighSound
+  - RequestSpawnSync
+  - SyncUsedSpawnPoints
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
