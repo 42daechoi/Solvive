@@ -8,9 +8,11 @@ using Photon.Realtime;
 
 public class PlayerVoice : MonoBehaviourPun
 {
-    Recorder recorder;
-    AudioSource audioSource;
-    PunVoiceClient punVoiceClient;
+    public Recorder recorder;
+    public AudioSource audioSource;
+    public PunVoiceClient punVoiceClient;
+    public Speaker speaker;
+    public PhotonVoiceView voiceView;
     bool groupChanged = false;
     [SerializeField] private AudioMixer voiceMixer;
     [SerializeField] private AudioMixerGroup voiceMixerGroup;
@@ -29,13 +31,14 @@ public class PlayerVoice : MonoBehaviourPun
     {
         EventManager_Game.Instance.OnVoice += HandleVoice;
         EventManager_Game.Instance.OnEliminateOrEscape += HandleVoiceGroup;
+        EventManager_Game.Instance.OnAllPlayerSpawned += FindComponents;
     }
 
     private void OnDisable()
     {
         EventManager_Game.Instance.OnVoice -= HandleVoice;
         EventManager_Game.Instance.OnEliminateOrEscape -= HandleVoiceGroup;
-
+        EventManager_Game.Instance.OnAllPlayerSpawned -= FindComponents;
         if (punVoiceClient != null)
         {
             punVoiceClient.Client.StateChanged -= OnVoiceStateChanged;
@@ -51,15 +54,6 @@ public class PlayerVoice : MonoBehaviourPun
 
         SetOutputVolume(+20f);
 
-
-        FindComponents();
-        Debug.Log($"PlayerVoice: PunvoiceClient - {punVoiceClient}");
-        if (recorder == null)
-        {
-            Debug.LogError("PlayerVoice : Recorder 컴포넌트 없음!");
-            return;
-        }
-
         recorder.InterestGroup = 1;
         recorder.TransmitEnabled = false;
 
@@ -67,21 +61,20 @@ public class PlayerVoice : MonoBehaviourPun
         if (micDevices.Length == 0)
         {
             Debug.LogError("PlayerVoice : 마이크 디바이스가 없습니다.");
-            return;
         }
+        else
+        {
+            string micName = micDevices[0];
+            Debug.Log("PlayerVoice :  마이크 선택됨: " + micName);
 
-        string micName = micDevices[0];
-        Debug.Log("PlayerVoice :  마이크 선택됨: " + micName);
-
-        recorder.SourceType = Recorder.InputSourceType.Microphone;
-        recorder.MicrophoneType = Recorder.MicType.Unity;
-        recorder.MicrophoneDevice = new DeviceInfo(micName, micName);
-        recorder.RestartRecording();
+            recorder.SourceType = Recorder.InputSourceType.Microphone;
+            recorder.MicrophoneType = Recorder.MicType.Unity;
+            recorder.MicrophoneDevice = new DeviceInfo(micName, micName);
+            recorder.RestartRecording();
+        }
 
         // 🔥 상태 변화 감지 시작
         punVoiceClient.Client.StateChanged += OnVoiceStateChanged;
-        
-        
     }
 
     private void OnVoiceStateChanged(Photon.Realtime.ClientState fromState, Photon.Realtime.ClientState toState)
@@ -100,7 +93,7 @@ public class PlayerVoice : MonoBehaviourPun
 
     void HandleVoice(bool value)
     {
-        FindComponents();
+
         if (!photonView.IsMine) return;
         if (recorder == null)
         {
@@ -113,7 +106,6 @@ public class PlayerVoice : MonoBehaviourPun
 
     private void HandleVoiceGroup(string flag)
     {
-        FindComponents();
         bool isObserver = flag == "Eliminate" || flag == "Escape";
 
         recorder.InterestGroup = isObserver ? (byte)2 : (byte)1;
@@ -153,15 +145,33 @@ public class PlayerVoice : MonoBehaviourPun
         {
             recorder = GetComponent<Recorder>();
         }
-        
+
         if (audioSource == null)
         {
             audioSource = GetComponent<AudioSource>();
         }
-        
+
         if (punVoiceClient == null)
         {
             punVoiceClient = GameObject.Find("VoiceManager")?.GetComponent<PunVoiceClient>();
         }
+
+        if (voiceView == null)
+        {
+            voiceView = GetComponent<PhotonVoiceView>();
+        }
+
+        if (speaker == null)
+        {
+            speaker = GetComponent<Speaker>();
+        }
+
+
+        if (voiceView != null)
+        {
+            Debug.Log($"PlayerVoice : {voiceView.RecorderInUse}");
+            Debug.Log($"PlayerVoice : {voiceView.SpeakerInUse}");
+        }
     }
+
 }
