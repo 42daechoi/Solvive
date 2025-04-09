@@ -1,12 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
-public class EscUI : MonoBehaviourPunCallbacks
+public class EscUI : MonoBehaviourPun
 {
     public static EscUI Instance;
     public static event Action OnBackGameClicked;
@@ -117,16 +114,7 @@ public class EscUI : MonoBehaviourPunCallbacks
         OnExitGameClicked?.Invoke();
         PhotonNetwork.LeaveRoom();
     }
-    public override void OnLeftRoom()
-    {
-        Debug.Log("onleftroom확인");
-        PhotonNetwork.LeaveLobby();
-    }
 
-    public override void OnLeftLobby()
-    {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
-    }
 
     public void OptionSetting()
     {
