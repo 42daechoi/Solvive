@@ -2,6 +2,7 @@ using Photon.Pun;
 using UnityEngine;
 using System;
 using System.Collections;
+using Photon.Realtime;
 
 public class Generator : MonoBehaviourPun, IInteractableObject
 {
@@ -111,11 +112,15 @@ public class Generator : MonoBehaviourPun, IInteractableObject
 
 		if (!farmingObject.GetIsPickUp())
 		{
-			farmingObject.Interact(playerId);
-			int prevCount = installedBatteryCount;
-			photonView.RPC(nameof(BatterySync), RpcTarget.All, false, 0, Vector3.zero);
+            PhotonView playerPV = PhotonView.Find(playerId);
+			if (!playerPV.GetComponent<Inventory>().IsFull())
+			{
+                farmingObject.Interact(playerId);
+                int prevCount = installedBatteryCount;
+                photonView.RPC(nameof(BatterySync), RpcTarget.All, false, 0, Vector3.zero);
 
-			StartCoroutine(WaitAndCheckGeneratorState(prevCount, installedBatteryCount));
+                StartCoroutine(WaitAndCheckGeneratorState(prevCount, installedBatteryCount));
+            }
 		}
 	}
 

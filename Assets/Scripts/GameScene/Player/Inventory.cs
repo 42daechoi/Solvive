@@ -144,4 +144,13 @@ public class Inventory : MonoBehaviourPunCallbacks
 
         return dropPosition;
     }
+
+    public bool IsFull()
+    {
+        foreach (var item in itemSlots)
+        {
+            if (item == null) return false;
+        }
+        return true;
+    }
 }

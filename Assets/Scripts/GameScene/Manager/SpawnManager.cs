@@ -20,12 +20,12 @@ public class SpawnManager : MonoBehaviourPun
 		EventManager_Game.Instance.OnAllComputerUnlocked += SpawnKeycard;
         EventManager_Game.Instance.OnOneCitizenAlive += SpawnHatch;
         SpawnPlayers();
-        //if (PhotonNetwork.IsMasterClient)
-        //{
-        //    SpawnItemsForDeveloper();
-        //    SpawnInteractableObjectsForDeveloper();
-        //    SpawnHatch();
-        //}
+        if (PhotonNetwork.IsMasterClient)
+        {
+            SpawnItemsForDeveloper();
+            SpawnInteractableObjectsForDeveloper();
+            SpawnHatch();
+        }
     }
 
     private void OnDisable()
@@ -48,13 +48,13 @@ public class SpawnManager : MonoBehaviourPun
 
         //아이템 임시 스폰 - 삭제 필요
 
-        //PhotonNetwork.InstantiateRoomObject("Items/Knife", spawnPosition - new Vector3(-3, 2, 0), spawnRotation);
-        //PhotonNetwork.InstantiateRoomObject("Items/Flashlight", spawnPosition - new Vector3(-2, 2, 0), spawnRotation);
-        //PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(2, 2, 0), spawnRotation);
-        //PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(5, 2, 0), spawnRotation);
-        //PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(4, 2, 0), spawnRotation);
-        //PhotonNetwork.InstantiateRoomObject("Items/Gun", spawnPosition - new Vector3(0, 2, 0), spawnRotation);
-        //PhotonNetwork.InstantiateRoomObject("Items/Keycard", spawnPosition - new Vector3(-4, 2, 0), spawnRotation);
+        PhotonNetwork.InstantiateRoomObject("Items/Knife", spawnPosition - new Vector3(-3, 2, 0), spawnRotation);
+        PhotonNetwork.InstantiateRoomObject("Items/Flashlight", spawnPosition - new Vector3(-2, 2, 0), spawnRotation);
+        PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(2, 2, 0), spawnRotation);
+        PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(5, 2, 0), spawnRotation);
+        PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(4, 2, 0), spawnRotation);
+        PhotonNetwork.InstantiateRoomObject("Items/Gun", spawnPosition - new Vector3(0, 2, 0), spawnRotation);
+        PhotonNetwork.InstantiateRoomObject("Items/Keycard", spawnPosition - new Vector3(-4, 2, 0), spawnRotation);
     }
 	
 	private int GetAvailableSpawnIndex(int playerIdx)
