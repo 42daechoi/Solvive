@@ -512,7 +512,7 @@ public class PlayerController : MonoBehaviourPun
 
 		if (myRole == PlayerRole.Mannequin && otherRole == PlayerRole.Mannequin)
 		{
-			SetBodyColor(Color.yellow);
+			SetBodyColor(Color.blue);
 		}
 		else
 		{
@@ -543,6 +543,10 @@ public class PlayerController : MonoBehaviourPun
 
 		if (bodyMaterial != null)
 			bodyMaterial.SetColor("_BaseColor", color);
+		
+		HitEffect hitEffect = GetComponentInChildren<HitEffect>();
+		if (hitEffect != null)
+			hitEffect.SetOriginalColor(color);
 	}
 
 	public void ResetBodyColor()
