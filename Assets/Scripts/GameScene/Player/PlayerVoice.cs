@@ -4,6 +4,7 @@ using Photon.Voice.Unity;
 using Photon.Voice;
 using Photon.Voice.PUN;
 using UnityEngine.Audio;
+using Photon.Realtime;
 
 public class PlayerVoice : MonoBehaviourPun
 {
@@ -47,10 +48,9 @@ public class PlayerVoice : MonoBehaviourPun
         {
             return;
         }
-        if (photonView.IsMine)
-        {
-            SetOutputVolume(+20f);
-        }
+
+        SetOutputVolume(+20f);
+
 
         FindComponents();
         Debug.Log($"PlayerVoice: PunvoiceClient - {punVoiceClient}");

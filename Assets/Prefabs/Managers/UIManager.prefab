@@ -16,6 +16,9 @@ GameObject:
   - component: {fileID: 4781854705400392578}
   - component: {fileID: 6299995455241439999}
   - component: {fileID: 6773879712975870092}
+  - component: {fileID: 4429908564776428438}
+  - component: {fileID: 3293385737394014601}
+  - component: {fileID: 7327745972220691472}
   m_Layer: 0
   m_Name: UIManager
   m_TagString: Untagged
@@ -88,6 +91,7 @@ MonoBehaviour:
   backToLobby: {fileID: 0}
   leaveGame: {fileID: 0}
   waitForMasterText: {fileID: 0}
+  EndGameToggle: 0
 --- !u!114 &2345560505552743853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,6 +136,8 @@ MonoBehaviour:
   exitGameButton: {fileID: 0}
   SettingButton: {fileID: 0}
   OptionUI: {fileID: 0}
+  esctoogle: 0
+  escUI: 0
   ControlPanel: {fileID: 0}
   resolutionPanel: {fileID: 0}
   AudioPanel: {fileID: 0}
@@ -148,3 +154,49 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   micDropdown: {fileID: 0}
+--- !u!114 &4429908564776428438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8922031823815175291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8ffe9222ec5739408554baad564f1e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roleNoticePanel: {fileID: 0}
+  mannequinText: {fileID: 0}
+  citizenText: {fileID: 0}
+--- !u!114 &3293385737394014601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8922031823815175291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 319f1f7d82e610840a6e40de33ad50c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseSensitivity: 1
+  playerBody: {fileID: 0}
+  sensitivitySlider: {fileID: 0}
+  sensitivityInput: {fileID: 0}
+--- !u!114 &7327745972220691472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8922031823815175291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bb013966294da74c908794b0822cb1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  micImage: {fileID: 0}
+  onSprite: {fileID: 21300000, guid: 464883c791528804496b8c8ef7126e52, type: 3}
+  offSprite: {fileID: 21300000, guid: 89c869f76d8c0474a8da08e71510f0f2, type: 3}

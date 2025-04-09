@@ -8,7 +8,6 @@ using TMPro;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private TextMeshProUGUI playerLeftRoomText;
     public static NetworkManager Instance { get; private set; }
     void Awake()
     {
@@ -53,12 +52,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         // }
     }
 
-    // public void CreateRoom()
-    // {
-    //     RoomOptions roomOptions = new RoomOptions { MaxPlayers = 4 };
-    //     PhotonNetwork.CreateRoom("RoomName", roomOptions);
-    // }
-
     public override void OnCreatedRoom()
     {
         Debug.Log("NetworkManager : 방 생성 완료");
@@ -90,40 +83,24 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         Debug.Log("NetworkManager : 방에서 나갔습니다.");
-        SceneManager.LoadScene("MainScene");
-        if (PunVoiceClient.Instance.Client.IsConnected)
-        {
-            PunVoiceClient.Instance.Client.Disconnect();
-        }
+        StartCoroutine(LeaveRoomAndWaitVoiceDisconnect());
     }
 
+    private IEnumerator LeaveRoomAndWaitVoiceDisconnect()
+    {
+        if (PunVoiceClient.Instance.Client.IsConnected)
+        {
+            Debug.Log("NetworkManager : 포톤보이스 디스커넥");
+            PunVoiceClient.Instance.Client.Disconnect();
 
-    //public override void OnPlayerLeftRoom(Player otherPlayer)
-    //{
-    //    if (SceneManager.GetActiveScene().name == "GameScene")
-    //    {
-    //        if (playerLeftRoomText != null)
-    //        {
-    //            photonView.RPC("SyncPlayerLeftRoomUI", RpcTarget.All, "Player ID (" + otherPlayer.UserId + ") has left the room.");
+            while (PunVoiceClient.Instance.Client.IsConnected)
+            {
+                yield return null;
+            }
+        }
 
-    //            StartCoroutine(ClearTextAfterDelay(3f));
-    //        }
-    //        else
-    //        {
-    //            Debug.LogError("UI 텍스트가 할당되지 않았습니다!");
-    //        }
-    //    }
-    //}
+        Debug.Log("VoiceClient 연결 해제 완료 → 씬 이동");
+        SceneManager.LoadScene("MainScene");
+    }
 
-    //private IEnumerator ClearTextAfterDelay(float delay)
-    //{
-    //    yield return new WaitForSeconds(delay);
-    //    photonView.RPC("SyncPlayerLeftRoomUI", RpcTarget.All, "");
-    //}
-
-    //[PunRPC]
-    //private void SyncPlayerLeftRoomUI(string text)
-    //{
-    //    playerLeftRoomText.text = text;
-    //}
 }
