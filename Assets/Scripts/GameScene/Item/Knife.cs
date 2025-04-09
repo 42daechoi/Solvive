@@ -67,6 +67,7 @@ namespace GameScene.Item
                     
                     if (targetView != null)
                     {
+                        if(!targetView.gameObject.CompareTag("Player")) return;
                         float finalDamage = damage * damageMultiplier;
                         Debug.Log($"맞은 부위: {hitTag}, 배수 적용 데미지: {finalDamage}");
                         // RPC를 이용해 데미지 적용
