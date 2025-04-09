@@ -25,6 +25,7 @@ public class Computer : MonoBehaviourPun, IInteractableObject
         {
             EventManager_Game.Instance.OnAllGeneratorsActivated += HandleAllGeneratorsActivated;
             EventManager_Game.Instance.OnExitComputer += ForceExit;
+            EventManager_Game.Instance.OnLocalIsDie += HandlePlayerDeath;
         }
         isAllGeneratorsActivated = false;
         onInteraction = false;
@@ -57,6 +58,14 @@ public class Computer : MonoBehaviourPun, IInteractableObject
         {
             Debug.Log("이벤트 매니저 호출 성공");
             EventManager_Game.Instance.InvokeUseComputer(onInteraction);
+        }
+    }
+    
+    private void HandlePlayerDeath(bool isDead)
+    {
+        if (isDead && usingPlayerID != -1)
+        {
+            ForceExit(usingPlayerID);
         }
     }
 
