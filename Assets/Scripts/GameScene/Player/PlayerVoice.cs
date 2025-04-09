@@ -80,8 +80,6 @@ public class PlayerVoice : MonoBehaviourPun
 
         // 🔥 상태 변화 감지 시작
         punVoiceClient.Client.StateChanged += OnVoiceStateChanged;
-        
-        
     }
 
     private void OnVoiceStateChanged(Photon.Realtime.ClientState fromState, Photon.Realtime.ClientState toState)

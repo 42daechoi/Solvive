@@ -72,6 +72,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("NetworkManager : 방 입장 완료");
+        if (!PunVoiceClient.Instance.Client.InRoom)
+        {
+            string voiceRoom = PhotonNetwork.CurrentRoom.Name;
+            PunVoiceClient.Instance.Client.OpJoinRoom(new Photon.Realtime.EnterRoomParams
+            {
+                RoomName = voiceRoom
+            });
+        }
     }
 
     public void BackToLobby()
