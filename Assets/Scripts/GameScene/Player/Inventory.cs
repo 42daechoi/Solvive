@@ -114,6 +114,7 @@ public class Inventory : MonoBehaviourPunCallbacks
                 if (itemSlots[i] != null)
                 {
                     Vector3 dropPosition = GetRandomDropPosition(transform.position);
+                    itemSlots[i].SetIsPickUp(false);
                     GameObject dropItem = ObjectPool.instance.GetObject(itemSlots[i].GetViewID(), dropPosition, Quaternion.identity);
                     photonView.RPC("SyncInventory", RpcTarget.All, photonView.ViewID, i, 0);
                     itemSlots[i] = null;
