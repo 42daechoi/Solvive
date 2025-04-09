@@ -47,8 +47,8 @@ public class UIManager : MonoBehaviourPun
         EventManager_Main.OnControlPanelButtonClicked -= Control_P;
         EventManager_Main.OnResolutionPanelButtonClicked -= Resolution_P;
         EventManager_Main.OnAudioPanelButtonClicked -= Audio_P;
-        EventManager_Main.OnOptionConfirmButtonClicked += Option_confirm;
-        EventManager_Main.OnGMS_backgroundClicked += GMS_background;
+        EventManager_Main.OnOptionConfirmButtonClicked -= Option_confirm;
+        EventManager_Main.OnGMS_backgroundClicked -= GMS_background;
         SceneManager.sceneLoaded -= OnSceneLoaded;
         EventManager_Main.OnHowToPlayClicked -= HowToPlay;
         EventManager_Main.OnBackClicked -= Back;
@@ -159,6 +159,7 @@ public class UIManager : MonoBehaviourPun
         ControlPanel = FindFromSceneByName("ControlPanel");
         resolutionPanel = FindFromSceneByName("resolutionPanel");
         AudioPanel = FindFromSceneByName("AudioPanel");
+        HowToPlayPanel = FindFromSceneByName("How To Play");
     }
 
     GameObject FindFromSceneByName(string name)
@@ -181,7 +182,6 @@ public class UIManager : MonoBehaviourPun
 
     void HowToPlay()
     {
-        Debug.Log("HowToPlay");
         HowToPlayPanel.SetActive(true);
     }
 

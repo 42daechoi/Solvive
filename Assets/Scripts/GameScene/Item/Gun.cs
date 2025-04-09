@@ -50,12 +50,11 @@ namespace GameScene.Item
                         PhotonView targetView = hit.collider.GetComponent<PhotonView>();
                         if (targetView == null)
                             targetView = hit.collider.transform.root.GetComponent<PhotonView>();
+                        if (targetView == null) return;
                         
-                        if (targetView == null || !targetView.gameObject.CompareTag("Player"))
-                            return;
-
                         if (targetView != null)
                         {
+                            if(!targetView.gameObject.CompareTag("Player")) return;
                             float finalDamage = damage * damageMultiplier;
                             Debug.Log($"맞은 부위: {hitTag}, 배수 적용 데미지: {finalDamage}");
                             targetView.RPC("TakeDamage", RpcTarget.All, finalDamage);
