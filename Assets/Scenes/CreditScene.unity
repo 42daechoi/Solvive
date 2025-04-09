@@ -342,7 +342,6 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Game Title : The Others
 
-
     Developed by : Daechu(Choi dae young), Gamza(Lee
     sung hoon), Orange(Lee ju hwan)
 
@@ -359,20 +358,24 @@ MonoBehaviour:
     Hand Icon : Hea Poh Lin
 
 
+    Speaker Icon : vectorsmarket15
+
+
 
     Sound
 
 
-    Battery install, Error biff : freesound_community            
-    Card spawn : EdR
+    Battery
+    install, Error biff : freesound_community             Card spawn : EdR
 
 
-    Typing computer : irinairinafomicheva                            
-    Gun miss shot : LuannWepener
+    Typing
+    computer : irinairinafomicheva                             Gun miss shot : LuannWepener
 
 
 
-    Special thanks
+    Special
+    thanks
 
 
     Pixabay                                                                           
