@@ -67,6 +67,7 @@ public class PlayerHealth : MonoBehaviourPun
 	{
 		Debug.Log($"{gameObject.name} 사망");
 		GameManager.Instance.EliminateOrEscapeCitizen(photonView.ViewID, "Eliminate");
+		EventManager_Game.Instance.InvokeDeathState(true);
 	}
 
     public void SetHitEffect(HitEffect effect)

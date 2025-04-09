@@ -30,6 +30,7 @@ public class EventManager_Game : MonoBehaviour
     // Interaction
     public event Action<ItemData, string> OnOpenDoor;
     public event Action<bool> OnUseComputer;
+    public event Action<bool> OnLocalIsDie;
     public event Action<int, Vector3, Quaternion> OnMoveToComputer;
     public event Action<int> OnExitComputer;
     public event Action OnAllGeneratorsActivated;
@@ -290,5 +291,10 @@ public class EventManager_Game : MonoBehaviour
     public void InvokeOnePasswordValid()
     {
         OnOnePasswordValid?.Invoke();
+    }
+
+    public void InvokeDeathState(bool isdeath)
+    {
+        OnLocalIsDie?.Invoke(isdeath);
     }
 }
