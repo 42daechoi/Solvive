@@ -163,6 +163,18 @@ public class PlayerController : MonoBehaviourPun
 			if (thirdPersonModel != null) thirdPersonModel.SetActive(true);
 			if (firstPersonArms != null) firstPersonArms.SetActive(false);
 		}
+		HitEffect hitEffect = GetComponentInChildren<HitEffect>(true);
+		if (hitEffect != null)
+		{
+			SkinnedMeshRenderer renderer = hitEffect.GetComponent<SkinnedMeshRenderer>();
+			if (renderer != null)
+			{
+				Color baseColor = renderer.material.GetColor("_BaseColor");
+				hitEffect.SetOriginalColor(baseColor);
+			}
+
+			_playerHealth?.SetHitEffect(hitEffect);
+		}
 	}
 
 	private IEnumerator WaitForInputManager()
@@ -543,10 +555,6 @@ public class PlayerController : MonoBehaviourPun
 
 		if (bodyMaterial != null)
 			bodyMaterial.SetColor("_BaseColor", color);
-		
-		HitEffect hitEffect = GetComponentInChildren<HitEffect>();
-		if (hitEffect != null)
-			hitEffect.SetOriginalColor(color);
 	}
 
 	public void ResetBodyColor()
