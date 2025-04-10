@@ -180,12 +180,6 @@ public class GameLobbyManager : MonoBehaviourPunCallbacks
         
     }
 
-    public override void OnLeftRoom()
-    {
-        Debug.Log("onleftroom확인");
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
-    }
-
     private void StartGame()
     {
         foreach (var player in PhotonNetwork.PlayerList)

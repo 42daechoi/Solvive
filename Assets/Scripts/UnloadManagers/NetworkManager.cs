@@ -5,6 +5,7 @@ using Photon.Realtime;
 using Photon.Voice.PUN;
 using UnityEngine.SceneManagement;
 using TMPro;
+using Unity.VisualScripting;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
@@ -101,6 +102,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         Debug.Log("VoiceClient 연결 해제 완료 → 씬 이동");
         SceneManager.LoadScene("MainScene");
+        if (PunVoiceClient.Instance != null)
+        {
+            Destroy(PunVoiceClient.Instance.gameObject);
+        }
     }
 
 }

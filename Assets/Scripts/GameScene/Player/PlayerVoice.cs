@@ -117,6 +117,7 @@ public class PlayerVoice : MonoBehaviourPun
 
     private void HandleVoiceGroup(string flag)
     {
+        if (!photonView.IsMine) return;
         bool isObserver = flag == "Eliminate" || flag == "Escape";
 
         recorder.InterestGroup = isObserver ? (byte)2 : (byte)1;
@@ -138,6 +139,7 @@ public class PlayerVoice : MonoBehaviourPun
     
     public void SetMicrophone(string micName)
     {
+        if (!photonView.IsMine) return;
         if (recorder == null)
         {
             Debug.LogWarning("PlayerVoice : Recorder가 없습니다.");
@@ -152,6 +154,7 @@ public class PlayerVoice : MonoBehaviourPun
 
     private void FindComponents()
     {
+        if (!photonView.IsMine) return;
         if (recorder == null)
         {
             recorder = GetComponent<Recorder>();
