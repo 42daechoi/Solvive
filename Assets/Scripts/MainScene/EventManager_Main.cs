@@ -18,7 +18,6 @@ public class EventManager_Main : MonoBehaviour
     public static event Action OnHowToPlayClicked;
     public static event Action OnBackClicked;
     
-    public Button FindGameButton;
     public Button CustomGameButton;
     public Button selectButton;
     public Button OptionButton;
@@ -26,8 +25,6 @@ public class EventManager_Main : MonoBehaviour
     public Button ResolutionPanelButton;
     public Button AudioPanelButton;
     public Button OptionConfirmButton;
-    public Button HowToPlayButton;
-    public Button GMS_background;
     public Button Back;
 
     IEnumerator WaitSecond(Button button)

@@ -1264,7 +1264,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3baec148849075048b4e45897cc58816, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FindGameButton: {fileID: 0}
   CustomGameButton: {fileID: 622121352}
   selectButton: {fileID: 667360600}
   OptionButton: {fileID: 1497214034}
@@ -1272,8 +1271,6 @@ MonoBehaviour:
   ResolutionPanelButton: {fileID: 391405377}
   AudioPanelButton: {fileID: 76782868}
   OptionConfirmButton: {fileID: 717485873}
-  HowToPlayButton: {fileID: 454313251}
-  GMS_background: {fileID: 0}
   Back: {fileID: 1123036638}
 --- !u!114 &636294463
 MonoBehaviour:
@@ -2443,7 +2440,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13406a4c993f90d47887631afd0e1cd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameModeSelect: {fileID: 0}
   OptionUI: {fileID: 2142605471}
   ControlPanel: {fileID: 628682752}
   resolutionPanel: {fileID: 1707768941}
@@ -2843,10 +2839,6 @@ PrefabInstance:
     - target: {fileID: 2915919510760408755, guid: 81687f81fa30fa441b79de1280709859, type: 3}
       propertyPath: m_Name
       value: How To Play
-      objectReference: {fileID: 0}
-    - target: {fileID: 2915919510760408755, guid: 81687f81fa30fa441b79de1280709859, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4604930933863717453, guid: 81687f81fa30fa441b79de1280709859, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
