@@ -1,11 +1,12 @@
 using System;
+using Photon.Pun;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 
-public class VolumeSittings : MonoBehaviour
+public class VolumeSittings : MonoBehaviourPun
 {
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private Slider MusicSlider;
@@ -28,11 +29,7 @@ public class VolumeSittings : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        if (MicModeDropdown == null)
-        {
-            MicModeDropdown = GameObject.Find("Mic Toggle")?.GetComponent<TMP_Dropdown>();
-        }
-
+        
         if (MicModeDropdown != null)
         {
             MicModeDropdown.onValueChanged.AddListener(OnDropdownEvent);
@@ -102,9 +99,11 @@ public class VolumeSittings : MonoBehaviour
 
     private void OnDropdownEvent(int value)
     {
+        //if(!photonView.IsMine) return;
         micMode = value;
         Debug.Log($"OnDropdownEvent: {value}");
         PlayerPrefs.SetInt("MicMode", micMode);
         PlayerPrefs.Save();
     }
+    
 }

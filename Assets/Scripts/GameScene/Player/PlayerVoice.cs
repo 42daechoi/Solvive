@@ -17,6 +17,7 @@ public class PlayerVoice : MonoBehaviourPun
     bool groupChanged = false;
     [SerializeField] private AudioMixer voiceMixer;
     [SerializeField] private AudioMixerGroup voiceMixerGroup;
+    public int micMode;
     
     public static PlayerVoice Instance { get; private set; }
 
@@ -53,7 +54,7 @@ public class PlayerVoice : MonoBehaviourPun
             return;
         }
         FindComponents();
-
+        micMode = VolumeSittings.Instance.micMode;
         SetOutputVolume(+20f);
 
         recorder.InterestGroup = 1;
@@ -95,22 +96,21 @@ public class PlayerVoice : MonoBehaviourPun
 
     void HandleVoice(bool value)
     {
-
         if (!photonView.IsMine) return;
         if (recorder == null)
         {
             Debug.LogWarning("PlayerVoice : Recorder 아직 초기화되지 않음, Transmit 설정 스킵됨");
             return;
         }
+        micMode = VolumeSittings.Instance.micMode;
+        Debug.Log(micMode);
 
-        if (VolumeSittings.Instance.micMode == 0)
+        if (micMode == 0)
         {
-            Debug.Log(VolumeSittings.Instance.micMode);
             recorder.TransmitEnabled = value;
         }
-        else
+        else if(micMode == 1)
         {
-            Debug.Log(VolumeSittings.Instance.micMode);
             recorder.TransmitEnabled = true;
         }
     }
