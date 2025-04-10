@@ -12,8 +12,6 @@ public class PlayerVoice : MonoBehaviourPun
     public Recorder recorder;
     public AudioSource audioSource;
     public PunVoiceClient punVoiceClient;
-    public Speaker speaker;
-    public PhotonVoiceView voiceView;
     bool groupChanged = false;
     [SerializeField] private AudioMixer voiceMixer;
     [SerializeField] private AudioMixerGroup voiceMixerGroup;
@@ -33,21 +31,17 @@ public class PlayerVoice : MonoBehaviourPun
     {
         EventManager_Game.Instance.OnVoice += HandleVoice;
         EventManager_Game.Instance.OnEliminateOrEscape += HandleVoiceGroup;
-        EventManager_Game.Instance.OnAllPlayerSpawned += FindComponents;
+        EventManager_Game.Instance.OnAllPlayerSpawned += Init;
     }
 
     private void OnDisable()
     {
         EventManager_Game.Instance.OnVoice -= HandleVoice;
         EventManager_Game.Instance.OnEliminateOrEscape -= HandleVoiceGroup;
-        EventManager_Game.Instance.OnAllPlayerSpawned -= FindComponents;
-        if (punVoiceClient != null)
-        {
-            punVoiceClient.Client.StateChanged -= OnVoiceStateChanged;
-        }
+        EventManager_Game.Instance.OnAllPlayerSpawned -= Init;
     }
 
-    void Start()
+    void Init()
     {
         if (!photonView.IsMine)
         {
@@ -59,6 +53,8 @@ public class PlayerVoice : MonoBehaviourPun
 
         recorder.InterestGroup = 1;
         recorder.TransmitEnabled = false;
+        byte[] receiveGroups = new byte[] { 1 };
+        punVoiceClient.Client.OpChangeGroups(null, receiveGroups);
 
         string[] micDevices = Microphone.devices;
         if (micDevices.Length == 0)
@@ -75,24 +71,8 @@ public class PlayerVoice : MonoBehaviourPun
             recorder.MicrophoneDevice = new DeviceInfo(micName, micName);
             recorder.RestartRecording();
         }
-
-        // 🔥 상태 변화 감지 시작
-        punVoiceClient.Client.StateChanged += OnVoiceStateChanged;
     }
 
-    private void OnVoiceStateChanged(Photon.Realtime.ClientState fromState, Photon.Realtime.ClientState toState)
-    {
-        if (toState == Photon.Realtime.ClientState.Joined && !groupChanged)
-        {
-            if (punVoiceClient.Client.IsConnected && punVoiceClient.Client.InRoom)
-            {
-                byte[] receiveGroups = new byte[] { 1 };
-                punVoiceClient.Client.OpChangeGroups(null, receiveGroups);
-                groupChanged = true;
-                Debug.Log("PlayerVoice: 그룹 변경 완료 (Group 1 수신)");
-            }
-        }
-    }
 
     void HandleVoice(bool value)
     {
@@ -103,7 +83,6 @@ public class PlayerVoice : MonoBehaviourPun
             return;
         }
         micMode = VolumeSittings.Instance.micMode;
-        Debug.Log(micMode);
 
         if (micMode == 0)
         {
@@ -168,23 +147,6 @@ public class PlayerVoice : MonoBehaviourPun
         if (punVoiceClient == null)
         {
             punVoiceClient = GameObject.Find("VoiceManager")?.GetComponent<PunVoiceClient>();
-        }
-
-        if (voiceView == null)
-        {
-            voiceView = GetComponent<PhotonVoiceView>();
-        }
-
-        if (speaker == null)
-        {
-            speaker = GetComponent<Speaker>();
-        }
-
-
-        if (voiceView != null)
-        {
-            Debug.Log($"PlayerVoice : {voiceView.RecorderInUse}");
-            Debug.Log($"PlayerVoice : {voiceView.SpeakerInUse}");
         }
     }
 
