@@ -25,6 +25,10 @@ public class MicUI : MonoBehaviour
         {
             micImage.sprite = onSprite;
         }
+        else if (VolumeSittings.Instance.micMode == 1)
+        {
+            micImage.sprite = onSprite;
+        }
         else
         {
             micImage.sprite = offSprite;

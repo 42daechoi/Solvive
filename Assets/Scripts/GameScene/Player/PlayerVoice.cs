@@ -5,6 +5,7 @@ using Photon.Voice;
 using Photon.Voice.PUN;
 using UnityEngine.Audio;
 using Photon.Realtime;
+using TMPro;
 
 public class PlayerVoice : MonoBehaviourPun
 {
@@ -102,7 +103,16 @@ public class PlayerVoice : MonoBehaviourPun
             return;
         }
 
-        recorder.TransmitEnabled = value;
+        if (VolumeSittings.Instance.micMode == 0)
+        {
+            Debug.Log(VolumeSittings.Instance.micMode);
+            recorder.TransmitEnabled = value;
+        }
+        else
+        {
+            Debug.Log(VolumeSittings.Instance.micMode);
+            recorder.TransmitEnabled = true;
+        }
     }
 
     private void HandleVoiceGroup(string flag)
