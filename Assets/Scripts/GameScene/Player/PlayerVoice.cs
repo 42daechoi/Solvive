@@ -51,6 +51,7 @@ public class PlayerVoice : MonoBehaviourPun
         {
             return;
         }
+        FindComponents();
 
         SetOutputVolume(+20f);
 
