@@ -6,13 +6,10 @@ using UnityEngine.UI;
 
 public class EventManager_Main : MonoBehaviour
 {
-    public static event Action OnFindGameClicked;
     public static event Action OnCustomGameClicked;
     public static event Action OnCreditsClicked;
     public static event Action OnOptionClicked;
     public static event Action OnQuitClicked;
-    public static event Action OnSoloModeClicked;
-    public static event Action OnMultiModeClicked;
     public static event Action OnControlPanelButtonClicked;
     public static event Action OnResolutionPanelButtonClicked;
     public static event Action OnAudioPanelButtonClicked;
@@ -21,7 +18,6 @@ public class EventManager_Main : MonoBehaviour
     public static event Action OnHowToPlayClicked;
     public static event Action OnBackClicked;
     
-    public Button FindGameButton;
     public Button CustomGameButton;
     public Button selectButton;
     public Button OptionButton;
@@ -29,8 +25,6 @@ public class EventManager_Main : MonoBehaviour
     public Button ResolutionPanelButton;
     public Button AudioPanelButton;
     public Button OptionConfirmButton;
-    public Button HowToPlayButton;
-    public Button GMS_background;
     public Button Back;
 
     IEnumerator WaitSecond(Button button)
@@ -40,13 +34,7 @@ public class EventManager_Main : MonoBehaviour
         Debug.Log("3 초 후");
         button.interactable = true;
         }
-
-    public void OnClickFindGame() 
-    {
-        FindGameButton.interactable = false;   
-        StartCoroutine(WaitSecond(FindGameButton));
-        OnFindGameClicked?.Invoke();
-    }
+    
     public void OnClickCustomGame(){
         CustomGameButton.interactable = false;   
         StartCoroutine(WaitSecond(CustomGameButton));
@@ -93,14 +81,6 @@ public class EventManager_Main : MonoBehaviour
         #else
             Application.Quit();
         #endif
-    }
-    public void OnClickSoloMode() {
-        OnSoloModeClicked?.Invoke();
-        
-    }
-    
-    public void OnClickMultiMode() {
-        OnMultiModeClicked?.Invoke();
     }
     public void OnGMS_background(){
         OnGMS_backgroundClicked?.Invoke();
