@@ -1,16 +1,40 @@
 using System;
+using Photon.Pun;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 
-public class VolumeSittings : MonoBehaviour
+public class VolumeSittings : MonoBehaviourPun
 {
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private Slider MusicSlider;
     [SerializeField] private Slider micVolumeSlider;
     [SerializeField] private AudioMixer voiceMixer;
+    [SerializeField] private TMP_Dropdown MicModeDropdown;
+
     private const string MusicVolumeKey = "MusicVolume";
     private const string MicVolumeKey = "MicVolume";
+    public int micMode;
+    public static VolumeSittings Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        
+        if (MicModeDropdown != null)
+        {
+            MicModeDropdown.onValueChanged.AddListener(OnDropdownEvent);
+        }
+    }
 
     private void Start()
     {
@@ -26,6 +50,11 @@ public class VolumeSittings : MonoBehaviour
         {
             SetMusicVolume();
         }
+        if (PlayerPrefs.HasKey("MicMode"))
+        {
+            micMode = PlayerPrefs.GetInt("MicMode");
+            MicModeDropdown.value = micMode;
+        }
         
         float savedMicVolume = PlayerPrefs.GetFloat(MicVolumeKey, 1f);
         micVolumeSlider.value = savedMicVolume;
@@ -33,6 +62,8 @@ public class VolumeSittings : MonoBehaviour
         
         MusicSlider.onValueChanged.AddListener(delegate { SetMusicVolume(); });
         micVolumeSlider.onValueChanged.AddListener(SetMicVolume);
+        micMode = MicModeDropdown.value;
+        
     }
 
     public void SetMusicVolume()
@@ -65,4 +96,14 @@ public class VolumeSittings : MonoBehaviour
         PlayerPrefs.SetFloat(MicVolumeKey, value);
         PlayerPrefs.Save();
     }
+
+    private void OnDropdownEvent(int value)
+    {
+        //if(!photonView.IsMine) return;
+        micMode = value;
+        Debug.Log($"OnDropdownEvent: {value}");
+        PlayerPrefs.SetInt("MicMode", micMode);
+        PlayerPrefs.Save();
+    }
+    
 }
