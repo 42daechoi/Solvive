@@ -30,9 +30,9 @@ public class SpawnManager : MonoBehaviourPun
         {
             spawnInitialized = true;
             SpawnPlayers();
-            SpawnItemsForDeveloper();
-            SpawnInteractableObjectsForDeveloper();
-            SpawnHatch();
+            //SpawnItemsForDeveloper();
+            //SpawnInteractableObjectsForDeveloper();
+            //SpawnHatch();
         }
     }
 
@@ -71,13 +71,13 @@ public class SpawnManager : MonoBehaviourPun
         photonView.RPC("UsedPlayerSpawnPointSync", RpcTarget.All, spawnIdx);
 
         // 테스트용 아이템 스폰 (삭제 가능)
-        PhotonNetwork.InstantiateRoomObject("Items/Knife", spawnPosition - new Vector3(-3, 2, 0), spawnRotation);
-        PhotonNetwork.InstantiateRoomObject("Items/Flashlight", spawnPosition - new Vector3(-2, 2, 0), spawnRotation);
-        PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(2, 2, 0), spawnRotation);
-        PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(5, 2, 0), spawnRotation);
-        PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(4, 2, 0), spawnRotation);
-        PhotonNetwork.InstantiateRoomObject("Items/Gun", spawnPosition - new Vector3(0, 2, 0), spawnRotation);
-        PhotonNetwork.InstantiateRoomObject("Items/Keycard", spawnPosition - new Vector3(-4, 2, 0), spawnRotation);
+        //PhotonNetwork.InstantiateRoomObject("Items/Knife", spawnPosition - new Vector3(-3, 2, 0), spawnRotation);
+        //PhotonNetwork.InstantiateRoomObject("Items/Flashlight", spawnPosition - new Vector3(-2, 2, 0), spawnRotation);
+        //PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(2, 2, 0), spawnRotation);
+        //PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(5, 2, 0), spawnRotation);
+        //PhotonNetwork.InstantiateRoomObject("Items/Battery", spawnPosition - new Vector3(4, 2, 0), spawnRotation);
+        //PhotonNetwork.InstantiateRoomObject("Items/Gun", spawnPosition - new Vector3(0, 2, 0), spawnRotation);
+        //PhotonNetwork.InstantiateRoomObject("Items/Keycard", spawnPosition - new Vector3(-4, 2, 0), spawnRotation);
     }
 
     private int GetAvailableSpawnIndex(int playerIdx)
