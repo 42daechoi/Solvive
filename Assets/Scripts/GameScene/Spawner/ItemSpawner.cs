@@ -22,7 +22,7 @@ public class ItemSpawner : MonoBehaviourPun
         itemNameCountMap["Knife"] = playerCount * 2;
         itemNameCountMap["Battery"] = 15;
         itemNameCountMap["Flashlight"] = playerCount * 2;
-        itemNameCountMap["PasswordPaper"] = playerCount * 2;
+        itemNameCountMap["PasswordPaper"] = playerCount * 3;
     }
 
     public void SpawnItems()
