@@ -323,7 +323,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 561389139830730110}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.96933866, z: 0, w: 0.24572855}
+  m_LocalRotation: {x: 0, y: -0.9720895, z: 0, w: 0.23461033}
   m_LocalPosition: {x: 0.32, y: -0.00000011920929, z: -0.9762237}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -940,8 +940,6 @@ MonoBehaviour:
   recorder: {fileID: 0}
   audioSource: {fileID: 0}
   punVoiceClient: {fileID: 0}
-  speaker: {fileID: 0}
-  voiceView: {fileID: 0}
   voiceMixer: {fileID: 24100000, guid: e296f62d20eaa774bb4380025ad1da97, type: 2}
   voiceMixerGroup: {fileID: 24300002, guid: e296f62d20eaa774bb4380025ad1da97, type: 2}
   micMode: 0

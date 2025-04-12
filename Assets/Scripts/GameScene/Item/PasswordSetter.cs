@@ -1,5 +1,4 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PasswordSetter : MonoBehaviour
@@ -9,26 +8,36 @@ public class PasswordSetter : MonoBehaviour
 
     private void Start()
     {
+        StartCoroutine(WaitForPasswordManagerInitialized());
+    }
+
+    private System.Collections.IEnumerator WaitForPasswordManagerInitialized()
+    {
         if (GameManager.Instance == null)
         {
             Debug.LogError("PasswordSetter : GameManager 싱글톤이 null입니다.");
-            return;
+            yield break;
         }
+
         PasswordManager passwordManager = PasswordManager.Instance;
+
         if (passwordManager == null)
         {
-            Debug.LogError("PasswordSetter : PasswordGenerator가 null입니다.");
-            return;
+            Debug.LogError("PasswordSetter : PasswordManager가 null입니다.");
+            yield break;
         }
+
+        yield return new WaitUntil(() => passwordManager.IsInitialized());
 
         try
         {
             password = passwordManager.SetPasswordToPaper();
         }
-        catch (InvalidOperatorException e)
+        catch (System.InvalidOperationException e)
         {
             Debug.LogError($"PasswordSetter : {e.Message}");
         }
+
         tmp.text = password;
     }
 
