@@ -67,9 +67,9 @@ public class CreateGameRoom : MonoBehaviourPunCallbacks
 
 
 		// 방 이름 생성 및 방 생성
-		string roomName = "Room_" + Random.Range(1000, 10000);
-		PhotonNetwork.CreateRoom(roomName, roomOptions);
-		Debug.Log($"방 생성 시도: {roomName}, 코드: {roomCode}");
+		string nickname = SteamManager.Initialized ? SteamManager.GetSteamNickname() : "Guest";
+		string safeNickname = nickname.Replace(" ", "_");
+		PhotonNetwork.CreateRoom(safeNickname, roomOptions);
 	}
 
 	private bool IsNotDuplicated(string roomCode)

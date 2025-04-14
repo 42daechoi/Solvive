@@ -56,13 +56,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("NetworkManager : 로비 접속 완료");
         GameLoadingScene.Instance.CheckCountOfPlayer();
-        //여기서 스팀 닉네임을 들고 와야 할듯
-        // if (SteamManager.Initialized)
-        // {
-        //     string steamNickname = SteamFriends.GetPersonaName();
-        //     Debug.Log("스팀 닉네임: " + steamNickname);
-        //     PhotonNetwork.NickName = steamNickname;
-        // }
     }
 
     public override void OnCreatedRoom()
