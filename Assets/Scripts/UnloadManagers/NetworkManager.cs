@@ -24,6 +24,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     void Start()
     {
+        if (SteamManager.Initialized)
+        {
+            string steamNickname = SteamManager.GetSteamNickname();
+            PhotonNetwork.NickName = steamNickname;
+            Debug.Log("스팀 닉네임으로 Photon 닉네임 설정: " + steamNickname);
+        }
+        else
+        {
+            PhotonNetwork.NickName = "Guest_" + Random.Range(1000, 9999);
+            Debug.LogWarning("SteamManager 초기화 실패. 임시 닉네임 설정");
+        }
+
         if (!PhotonNetwork.IsConnected)
         {
             PhotonNetwork.ConnectUsingSettings();
