@@ -54,7 +54,6 @@ public class EquipItem : MonoBehaviourPunCallbacks
         GameObject equipItem = ObjectPool.instance.GetObject(item.GetViewID(), Vector3.zero, Quaternion.identity);
         if (equipItem == null)
         {
-            Debug.Log("EquipItem : 오브젝트 풀에서 장착할 아이템을 받아오지 못했습니다.");
             return null;
         }
         

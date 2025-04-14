@@ -50,13 +50,11 @@ public class Computer : MonoBehaviourPun, IInteractableObject
     private void ForceExit(int playerID)
     {
         if (usingPlayerID != playerID) return;
-
-        Debug.Log("컴퓨터 강제 종료");
+        
         photonView.RPC("SyncEndInteraction", RpcTarget.All, playerID);
 
         if (EventManager_Game.Instance != null)
         {
-            Debug.Log("이벤트 매니저 호출 성공");
             EventManager_Game.Instance.InvokeUseComputer(onInteraction);
         }
     }
@@ -87,7 +85,6 @@ public class Computer : MonoBehaviourPun, IInteractableObject
     {
         isAllGeneratorsActivated = true;
         moniterCanvas.gameObject.SetActive(true);
-        Debug.Log("컴퓨터 상호작용 활성화.");
     }
 
     public int GetUsingPlayerID()

@@ -98,7 +98,6 @@ public class PlayerController : MonoBehaviourPun
 			}
 			else
 			{
-				Debug.LogWarning("로컬 PlayerController가 이미 존재.");
 				Destroy(gameObject);
 			}
 		}
@@ -143,7 +142,6 @@ public class PlayerController : MonoBehaviourPun
 		}
 		else
 		{
-			Debug.LogError("IdleState가 초기화되지 않았습니다!");
 		}
 		
 		if (_photonView != null && _photonView.IsMine)
@@ -262,7 +260,6 @@ public class PlayerController : MonoBehaviourPun
 		}
 		else
 		{
-			Debug.Log("현재 상태에서 Interaction 실행 불가.");
 		}
 	}
 
@@ -461,7 +458,6 @@ public class PlayerController : MonoBehaviourPun
 	
 	public void MannequinEscapeTrigger()
 	{
-		Debug.Log("MannequinEscapeTrigger");
 		if(!_photonView.IsMine)
 			return;
 		localSpeedSettings.walkSpeed += 1f;

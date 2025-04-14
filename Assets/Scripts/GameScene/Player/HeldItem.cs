@@ -212,7 +212,6 @@ public class HeldItem : MonoBehaviourPunCallbacks
         if (!photonView.IsMine) return;
         if (item == null)
         {
-            Debug.Log("HeldItem : 사용할 아이템이 없습니다.");
             return;
         }
         if (equipItem.IsEquipping) return;

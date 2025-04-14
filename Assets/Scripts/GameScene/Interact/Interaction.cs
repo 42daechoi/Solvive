@@ -23,17 +23,14 @@ public class Interaction : MonoBehaviourPun
             IInteractableObject interactableObject = hit.collider.GetComponent<IInteractableObject>();
             if (interactableObject != null)
             {
-                Debug.Log("상호 작용 오브젝트 레이캐스트 히트 성공");
                 interactableObject.Interact(photonView.ViewID);
             }
             else
             {
-                Debug.Log("상호 작용 오브젝트 레이캐스트 히트 실패");
             }
         }
         else
         {
-            Debug.Log("레이캐스트가 아무 오브젝트도 맞추지 못했습니다.");
         }
     }
 

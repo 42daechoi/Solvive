@@ -82,18 +82,14 @@ public class PlayerAnimator : MonoBehaviour
     {
         if (animator == null)
         {
-            Debug.LogWarning("SetAnimationState: animator is null!");
             return;
         }
 
-        Debug.Log($"SetAnimationState: 요청된 상태 = {state}, 현재 상태 = {currentAnimationState}");
 
         if (currentAnimationState == state)
         {
-            Debug.Log($"SetAnimationState: 동일 상태({state}) 재요청 → 무시됨");
             return;
         }
-        Debug.Log($"SetAnimationState: 상태 변경 → {currentAnimationState} → {state}");
         currentAnimationState = state;
         
         ResetWeaponLayerWeights();
@@ -104,7 +100,6 @@ public class PlayerAnimator : MonoBehaviour
                 if (pistolLayerIndex != -1)
                 {
                     float currentWeight = animator.GetLayerWeight(pistolLayerIndex);
-                    Debug.Log("SetAnimationState: Gun 레이어 활성화");
                     DOTween.To(() => currentWeight, 
                         x => {
                             currentWeight = x;
