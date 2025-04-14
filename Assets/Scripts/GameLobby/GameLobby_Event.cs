@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
 
 public class GameLobbyManager : MonoBehaviourPunCallbacks
 {
@@ -241,24 +242,19 @@ public class GameLobbyManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.CloseConnection(player);
+            photonView.RPC("KickPlayerRPC", player);
             Debug.Log($"플레이어 강퇴: {player.NickName}");
         }
     }
-
-    public override void OnDisconnected(DisconnectCause cause)
+    
+    [PunRPC]
+    public void KickPlayerRPC()
     {
-        if (cause == DisconnectCause.DisconnectByServerLogic)
-        {
-            Debug.Log("강퇴되었습니다. 메인 화면으로 돌아갑니다.");
-            UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
-        }
-        else
-        {
-            Debug.Log($"연결이 끊겼습니다: {cause}");
-        }
+        Debug.Log("강퇴당했습니다. 메인 화면으로 이동합니다.");
+        PhotonNetwork.LeaveRoom();
+        SceneManager.LoadScene("MainScene");
     }
-
+    
     [PunRPC]
     public void Loading()
     {
