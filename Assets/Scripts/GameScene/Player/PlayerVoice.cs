@@ -11,7 +11,6 @@ public class PlayerVoice : MonoBehaviourPun
     public Recorder recorder;
     public AudioSource audioSource;
     public PunVoiceClient punVoiceClient;
-    bool groupChanged = false;
     [SerializeField] private AudioMixer voiceMixer;
     [SerializeField] private AudioMixerGroup voiceMixerGroup;
     public int micMode;

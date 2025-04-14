@@ -9,7 +9,6 @@ public class HeldItem : MonoBehaviourPunCallbacks
     [SerializeField] private int slotIndex;
     [SerializeField] private EquipItem equipItem;
     private SpawnPointManager spawnPointManager = new SpawnPointManager();
-    private float dropOffset = 1f;
     public SlotHighlight slotHighlight;
     public Transform[] originalPrefabs;
 
