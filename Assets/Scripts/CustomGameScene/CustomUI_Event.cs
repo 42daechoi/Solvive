@@ -34,6 +34,7 @@ public class CustomUI_Event : MonoBehaviourPunCallbacks
         EventManager_Custom.OnJoinWithCodeButtonClicked += HandleJoinWithCode;
         EventManager_Custom.OnJoinWithCodeEscButtonClicked += HandleJoinWithCodeEsc;
         EventManager_Custom.OnCodeJoinButtonClicked += HandleCodeJoin;
+        EventManager_Custom.OnRefreshButtonClicked += OnRefreshButton;
         roomListComponent = FindObjectOfType<RoomList>();
         if (roomListComponent != null)
         {
@@ -54,6 +55,7 @@ public class CustomUI_Event : MonoBehaviourPunCallbacks
         EventManager_Custom.OnJoinWithCodeButtonClicked -= HandleJoinWithCode;
         EventManager_Custom.OnJoinWithCodeEscButtonClicked -= HandleJoinWithCodeEsc;
         EventManager_Custom.OnCodeJoinButtonClicked -= HandleCodeJoin;
+        EventManager_Custom.OnRefreshButtonClicked -= OnRefreshButton;
         RoomList roomListComponent = FindObjectOfType<RoomList>();
         if (roomListComponent != null)
         {
@@ -220,5 +222,13 @@ public class CustomUI_Event : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         Debug.Log($"{otherPlayer.NickName} 퇴장");
+    }
+    public void OnRefreshButton()
+    {
+        if (PhotonNetwork.InLobby)
+        {
+            PhotonNetwork.LeaveLobby();
+        }
+        PhotonNetwork.JoinLobby();
     }
 }

@@ -137,19 +137,6 @@ public class RoomList : MonoBehaviourPunCallbacks
 		OnRoomSelected?.Invoke(roomInfo);
 		customUIEvent?.OnRoomButtonClicked(roomInfo);
 	}
-	
-	public void OnClick_RefreshButton()
-	{
-		Debug.Log("방 목록 새로 고침 버튼 클릭!");
-
-		// 캐시 초기화 후 로비 재가입 (이후 OnRoomListUpdate 호출)
-		cachedRoomList.Clear();
-		if (PhotonNetwork.InLobby)
-		{
-			PhotonNetwork.LeaveLobby();
-		}
-		PhotonNetwork.JoinLobby();
-	}
 
 	// 커스텀 이벤트(또는 RPC)로 받은 방 정보를 갱신하는 메서드
 	public void AddOrUpdateRoomInfo(string roomName, byte maxPlayers, int currentPlayers, bool isVisible)
