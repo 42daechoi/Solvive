@@ -20,6 +20,7 @@ public class EventManager_Custom : MonoBehaviour
     public static event Action OnJoinWithCodeButtonClicked;
     public static event Action OnJoinWithCodeEscButtonClicked;
     public static event Action OnCodeJoinButtonClicked;
+    public static event Action OnRefreshButtonClicked;
 
     public void OnClickCreateButton() {
         OnCreateButtonClicked?.Invoke();   
@@ -61,5 +62,10 @@ public class EventManager_Custom : MonoBehaviour
     public void OnClickCodeJoinButton()
     {
         OnCodeJoinButtonClicked?.Invoke();
+    }
+
+    public void OnClickRefreshButton()
+    {
+        OnRefreshButtonClicked?.Invoke();
     }
 }
