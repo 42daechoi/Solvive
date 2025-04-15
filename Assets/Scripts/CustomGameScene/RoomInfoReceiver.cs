@@ -33,8 +33,7 @@ public class RoomInfoReceiver : MonoBehaviour, IOnEventCallback
             byte maxPlayers = (byte)roomData[1];
             int currentPlayers = (int)roomData[2];
             bool isPrivate = (bool)roomData[3];
-
-            Debug.Log($"수신된 방 정보: {roomName}, 최대 인원: {maxPlayers}, 현재 인원: {currentPlayers}, 공개 여부: {isPrivate}");
+            
 
             // 예를 들어, RoomList에 커스텀 메서드를 추가해 받은 방 정보를 갱신하도록 할 수 있습니다.
             if (roomList != null)

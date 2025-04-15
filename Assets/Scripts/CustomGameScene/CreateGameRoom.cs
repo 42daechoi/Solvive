@@ -99,7 +99,6 @@ public class CreateGameRoom : MonoBehaviourPunCallbacks
 
 	public override void OnCreatedRoom()
 	{
-		Debug.Log($"방 생성 성공: {PhotonNetwork.CurrentRoom.Name}");
 		bool isPrivate = false;
         if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey("IsPrivate"))
         {

@@ -89,13 +89,11 @@ public class CustomUI_Event : MonoBehaviourPunCallbacks
         {
             CreateGameRoom.SetActive(true);
         }
-        Debug.Log("create버튼");
     }
 
     public void OnRoomButtonClicked(RoomList.CustomRoomInfo roomInfo)
     {
         selectedRoom = roomInfo; // 선택된 방 정보 저장
-        Debug.Log("선택된 방: " + selectedRoom.RoomName);
     }
 
     void Join()
@@ -103,30 +101,20 @@ public class CustomUI_Event : MonoBehaviourPunCallbacks
         if (selectedRoom != null)
         {
             PhotonNetwork.JoinRoom(selectedRoom.RoomName); // 선택된 방 입장
-            Debug.Log("방에 입장: " + selectedRoom.RoomName);
         }
-        else
-        {
-            Debug.Log("선택된 방이 없습니다.");
-        }
-        Debug.Log("join버튼");
     }
 
     public override void OnJoinedRoom()
     {
-        Debug.Log($"방 참가 성공: {PhotonNetwork.CurrentRoom.Name}");
         PhotonNetwork.LoadLevel("GameLobby");
     }
 
     void Search()
     {
-        Debug.Log("search버튼");
-        // Search 버튼 로직 구현 필요
     }
 
     void Previous()
     {
-        Debug.Log("previous버튼");
         SceneManager.LoadScene("MainScene");
     }
 
@@ -191,11 +179,8 @@ public class CustomUI_Event : MonoBehaviourPunCallbacks
                 
                 return;
             }
-            Debug.Log($"CustomUI_Event : 방 코드 {enteredCode}에 해당하는 방({room.Name}) 입장 시도");
             count++;
         }
-
-        Debug.Log($"CustomUI_Event : 해당 방 코드를 가진 방이 없습니다. 방숫자{count}.");
     }
 
     public void CreateComfirm()
@@ -205,7 +190,6 @@ public class CustomUI_Event : MonoBehaviourPunCallbacks
 
     public override void OnCreatedRoom()
     {
-        Debug.Log("방 생성 성공! GameLobby로 이동");
         PhotonNetwork.LoadLevel("GameLobby"); // GameLobby 씬으로 이동
     }
 
