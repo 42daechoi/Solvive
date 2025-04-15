@@ -122,7 +122,6 @@ public class RoomList : MonoBehaviourPunCallbacks
 	public void SelectRoom(CustomRoomInfo roomInfo, Button clickedButton)
 	{
 		selectedRoom = roomInfo;
-		Debug.Log("선택된 방: " + selectedRoom.RoomName);
 
 		// 이전 버튼 색상 초기화
 		if (lastSelectedButton != null)

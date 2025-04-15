@@ -44,7 +44,6 @@ public class UIManager : MonoBehaviourPun
 
     void CustomGame()
     {
-        Debug.Log("CustomGame 버튼 누름");
         PhotonNetwork.LoadLevel("CustomGameScene");
         PhotonNetwork.JoinLobby();
     }
@@ -52,7 +51,6 @@ public class UIManager : MonoBehaviourPun
     void Credits()
     {
         SceneManager.LoadScene("CreditScene");
-        Debug.Log("UIManager : Credits Button 누름");
     }
 
     void Option()
@@ -66,19 +64,16 @@ public class UIManager : MonoBehaviourPun
         Debug.Log("Quit 버튼 누름");
     }
     void Control_P(){
-        Debug.Log("컨트롤");
         ControlPanel.SetActive(true);
         resolutionPanel.SetActive(false);
         AudioPanel.SetActive(false);
     }
     void Resolution_P(){
-        Debug.Log("해상도");
         ControlPanel.SetActive(false);
         resolutionPanel.SetActive(true);
         AudioPanel.SetActive(false);
     }
     void Audio_P(){
-        Debug.Log("오디오");
         ControlPanel.SetActive(false);
         resolutionPanel.SetActive(false);
         AudioPanel.SetActive(true);

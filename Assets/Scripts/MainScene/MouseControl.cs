@@ -32,19 +32,11 @@ public class MouseControl : MonoBehaviour
             sensitivitySlider.value = mouseSensitivity;
             sensitivitySlider.onValueChanged.AddListener(UpdateSensitivityFromSlider);
         }
-        else
-        {
-            Debug.LogWarning("sensitivitySlider가 할당되지 않았습니다!");
-        }
 
         if (sensitivityInput != null)
         {
             sensitivityInput.text = mouseSensitivity.ToString("F2");
             sensitivityInput.onEndEdit.AddListener(UpdateSensitivityFromInput);
-        }
-        else
-        {
-            Debug.LogWarning("sensitivityInput이 할당되지 않았습니다!");
         }
     }
 

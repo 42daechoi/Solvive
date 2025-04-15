@@ -101,7 +101,6 @@ public class VolumeSittings : MonoBehaviourPun
     {
         //if(!photonView.IsMine) return;
         micMode = value;
-        Debug.Log($"OnDropdownEvent: {value}");
         PlayerPrefs.SetInt("MicMode", micMode);
         PlayerPrefs.Save();
     }

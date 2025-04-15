@@ -30,19 +30,16 @@ public class GameLobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        Debug.Log($"플레이어 입장: {newPlayer.NickName}");
         UpdatePlayerList();
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        Debug.Log($"플레이어 퇴장: {otherPlayer.NickName}");
         UpdatePlayerList();
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
-        Debug.Log($"방장 변경: {newMasterClient.NickName}");
         UpdateActionButton();
     }
 
@@ -50,7 +47,6 @@ public class GameLobbyManager : MonoBehaviourPunCallbacks
     {
         if (changedProps.ContainsKey("IsReady"))
         {
-            Debug.Log($"플레이어 {targetPlayer.NickName} 준비 상태 변경: {changedProps["IsReady"]}");
             UpdatePlayerList();
             UpdateActionButton();
         }
@@ -60,13 +56,11 @@ public class GameLobbyManager : MonoBehaviourPunCallbacks
     {
         if (playerListContent == null)
         {
-            Debug.LogError("playerListContent가 null입니다. Inspector에서 Content 오브젝트를 연결하세요.");
             return;
         }
 
         if (playerItemPrefab == null)
         {
-            Debug.LogError("playerItemPrefab이 null입니다. Inspector에서 PlayerCard Prefab을 연결하세요.");
             return;
         }
 
@@ -83,7 +77,6 @@ public class GameLobbyManager : MonoBehaviourPunCallbacks
 
             if (playerItem == null)
             {
-                Debug.LogError("PlayerItem Prefab이 null입니다.");
                 continue;
             }
 
@@ -92,10 +85,6 @@ public class GameLobbyManager : MonoBehaviourPunCallbacks
             if (nameText != null)
             {
                 nameText.text = player.NickName;
-            }
-            else
-            {
-                Debug.LogError("PlayerName 텍스트를 찾을 수 없습니다. PlayerCard Prefab 구조를 확인하세요.");
             }
 
             // Ready 상태 업데이트
@@ -117,10 +106,6 @@ public class GameLobbyManager : MonoBehaviourPunCallbacks
                     readyStatusText.text = "not ready";
                 }
             }
-            else
-            {
-                Debug.LogError("ReadyStatus 텍스트를 찾을 수 없습니다. PlayerCard Prefab 구조를 확인하세요.");
-            }
 
             // Kick 버튼 설정 (방장만 활성화)
             Button kickButton = playerItem.transform.Find("KickButton")?.GetComponent<Button>();
@@ -128,10 +113,6 @@ public class GameLobbyManager : MonoBehaviourPunCallbacks
             {
                 kickButton.gameObject.SetActive(PhotonNetwork.IsMasterClient && !player.IsMasterClient);
                 kickButton.onClick.AddListener(() => KickPlayer(player));
-            }
-            else
-            {
-                Debug.LogError("KickButton을 찾을 수 없습니다. PlayerCard Prefab 구조를 확인하세요.");
             }
         }
     }
@@ -176,7 +157,6 @@ public class GameLobbyManager : MonoBehaviourPunCallbacks
 
     private void LeaveRoom()
     {
-        Debug.Log("방 나가기");
         PhotonNetwork.LeaveRoom();
         
     }
@@ -188,7 +168,6 @@ public class GameLobbyManager : MonoBehaviourPunCallbacks
             object isReady;
             if (player.CustomProperties.TryGetValue("IsReady", out isReady) && !(bool)isReady && !player.IsMasterClient)
             {
-                Debug.LogWarning($"플레이어 {player.NickName}가 준비되지 않았습니다.");
                 return;
             }
         }
@@ -207,8 +186,6 @@ public class GameLobbyManager : MonoBehaviourPunCallbacks
     
     public override void OnJoinedRoom()
     {
-        Debug.Log("방에 입장했습니다.");
-
         // 플레이어의 IsReady 상태를 초기화 (not ready 상태)
         Hashtable props = new Hashtable
         {
@@ -243,14 +220,12 @@ public class GameLobbyManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             photonView.RPC("KickPlayerRPC", player);
-            Debug.Log($"플레이어 강퇴: {player.NickName}");
         }
     }
     
     [PunRPC]
     public void KickPlayerRPC()
     {
-        Debug.Log("강퇴당했습니다. 메인 화면으로 이동합니다.");
         PhotonNetwork.LeaveRoom();
         SceneManager.LoadScene("MainScene");
     }
