@@ -56,7 +56,7 @@ public class GameLoadingScene : MonoBehaviourPunCallbacks
 
     public void CheckCountOfPlayer()
     {
-        if (PhotonNetwork.CountOfPlayers > 100) {
+        if (PhotonNetwork.CountOfPlayers > 20) {
             ShowOverCapacityUI();
         } else {
             if (gameLoadingScenePanel != null)
