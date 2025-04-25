@@ -56,14 +56,8 @@
 
 ## 최대영 개발 내용
 - Jira + Git + Notion을 통한 Unity 팀 개발 환경 구축
-- Photon2 서버 연동
-- LoadingScene - 리소스 로드 및 로딩 화면 구성
-- LobbyScene - 플레이어 스폰 시스템 구현
-- LobbyScene - 준비 기능
-- LobbyScene, GameScene - 총기 스폰 및 동기화
-- LobbyScene, GameScene - 사격, 장전 기능 및 동기화 (ObjectPooling 디자인 패턴을 통한 총알 관리)
-- 기획 변경 이후
-- GameScene - 파밍 시스템 개발 (ScriptableObject를 활용한 아이템 데이터 관리)
+- GameScene - 플레이어 캐릭터 제외 모든 게임 로직 개발
+- GameScene - UI, UX 기획 및 구현
 <br><br><br>
 
 ## 이주환 개발 내용

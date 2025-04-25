@@ -86,6 +86,5 @@ public class ResolutionControl : MonoBehaviour
 
         // 실제로 해상도, 전체화면 모드 변경
         Screen.SetResolution(selectedResolution.width, selectedResolution.height, mode);
-        Debug.Log($"해상도 적용: {selectedResolution.width}x{selectedResolution.height}, 모드: {mode}");
     }
 }

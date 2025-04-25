@@ -16,7 +16,6 @@ public class MICSetting : MonoBehaviour
 
         if (micDevices.Length == 0)
         {
-            Debug.LogWarning("❌ 마이크 디바이스가 없습니다.");
             micDropdown.interactable = false;
             return;
         }
@@ -44,7 +43,7 @@ public class MICSetting : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("⚠️ PlayerVoice.Instance가 null입니다.");
+            Debug.LogWarning("Mic Setting PlayerVoice.Instance가 null입니다.");
         }
     }
 }

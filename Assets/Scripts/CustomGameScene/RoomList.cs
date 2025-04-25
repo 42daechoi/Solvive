@@ -122,7 +122,6 @@ public class RoomList : MonoBehaviourPunCallbacks
 	public void SelectRoom(CustomRoomInfo roomInfo, Button clickedButton)
 	{
 		selectedRoom = roomInfo;
-		Debug.Log("선택된 방: " + selectedRoom.RoomName);
 
 		// 이전 버튼 색상 초기화
 		if (lastSelectedButton != null)
@@ -136,19 +135,6 @@ public class RoomList : MonoBehaviourPunCallbacks
 		// 이벤트와 CustomUI_Event에 선택 정보를 전달
 		OnRoomSelected?.Invoke(roomInfo);
 		customUIEvent?.OnRoomButtonClicked(roomInfo);
-	}
-	
-	public void OnClick_RefreshButton()
-	{
-		Debug.Log("방 목록 새로 고침 버튼 클릭!");
-
-		// 캐시 초기화 후 로비 재가입 (이후 OnRoomListUpdate 호출)
-		cachedRoomList.Clear();
-		if (PhotonNetwork.InLobby)
-		{
-			PhotonNetwork.LeaveLobby();
-		}
-		PhotonNetwork.JoinLobby();
 	}
 
 	// 커스텀 이벤트(또는 RPC)로 받은 방 정보를 갱신하는 메서드

@@ -29,9 +29,7 @@ public class EventManager_Main : MonoBehaviour
 
     IEnumerator WaitSecond(Button button)
         {
-        Debug.Log("WaitSecond 시작됨");
-        yield return new WaitForSeconds(3);
-        Debug.Log("3 초 후");
+        yield return new WaitForSeconds(2);
         button.interactable = true;
         }
     
@@ -70,7 +68,6 @@ public class EventManager_Main : MonoBehaviour
         OptionConfirmButton.interactable=false;
         StartCoroutine(WaitSecond(OptionConfirmButton));
         OnOptionConfirmButtonClicked?.Invoke();
-        Debug.Log("설정 적용");
     }
 
     public void OnClickQuit(){
